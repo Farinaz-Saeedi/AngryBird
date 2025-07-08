@@ -1,0 +1,30 @@
+# Build and output directories
+bin/
+build/
+out/
+
+# Compiled binaries
+*.exe
+*.out
+*.o
+*.obj
+
+# Log and temp files
+*.log
+*.tmp
+
+# CMake generated files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# VS Code settings
+.vscode/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# IDE-specific
+.idea/
