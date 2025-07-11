@@ -1,12 +1,11 @@
 set(PROJECT_SOURCES
-    test.cpp
+    Controler.cpp
+    Missile.cpp
 )
 
 add_executable(${PROJECT_NAME}
     ${PROJECT_SOURCES}
 )
-
-set(RAYLIB_PATH "C:/raylib-5.0_win64_mingw-w64")
 
 # Specify the directories where the headers and libraries are located
 
