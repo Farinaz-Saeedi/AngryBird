@@ -1,5 +1,5 @@
 set(PROJECT_SOURCES
-    #.cpp
+    test.cpp
 )
 
 add_executable(${PROJECT_NAME}
