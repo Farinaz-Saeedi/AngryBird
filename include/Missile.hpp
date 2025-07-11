@@ -2,7 +2,6 @@
 #define MISSILE_H
 
 #include <string>
-#include <fstream>
 
 #define ll long long
 
