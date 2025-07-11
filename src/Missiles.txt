@@ -1,0 +1,8 @@
+HellStorm 2500 500 3 100 A1
+IronRain 2500 500 4 25 A3
+SilentDeath 2500 500 2 130 A2
+BunkerBuster 5000 500 2 90 B1
+FireRoar 5000 500 0 300 B2
+DeathHammer 3000 700 2 110 C1
+ArmorSplitter 2900 900 1 10 C
+BlackThunder 10000 500 2 1488 D1

@@ -2,6 +2,7 @@
 
 #include "Missile.hpp"
 
+
 long long Missile::getDistance()
 {
     return distance;
