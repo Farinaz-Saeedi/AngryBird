@@ -4,22 +4,32 @@
 #include <string>
 #include <fstream>
 
+#define ll long long
+
+enum Type {
+    A , B , C , D
+};
+
 class Missile
 {
     public:
-        long long getDistance();
-        long long getOutOfControl();
-        long long getDemolition();
+        ll getDistance();
+        ll getOutOfControl();
+        ll getDemolition();
         int getDegree();
-        std::string getType();
-        void readMissiles();
+        Type getType();
+        void setDistance(ll distance);
+        void setOutOfControl(ll outOfControl);
+        void setDemolition(ll demolition);
+        void setDegree(int degree);
+        void setType(Type type);
 
     private:
-        long long distance;
-        long long outOfControl;
-        long long demolition;
+        ll distance;
+        ll outOfControl;
+        ll demolition;
         int degree;
-        std::string type;
+        Type type;
 
 };
 
