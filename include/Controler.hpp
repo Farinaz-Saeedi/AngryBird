@@ -1,15 +1,22 @@
-#ifndef CONTROLER1-H
-#define CONTROLER1-H
+#ifndef CONTROLER_H
+#define CONTROLER_H
 
-#include <fstream>
+#include "Missile.hpp"
+
+
+#include <vector>
+
 
 class Controler
 {
     public:
+        Controler();
         void readMissiles();
 
 
     private:
+        std::vector<Missile> missiles;
+
 };
 
 
