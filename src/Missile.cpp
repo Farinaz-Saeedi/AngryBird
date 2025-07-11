@@ -18,10 +18,15 @@ int Missile::getDegree()
 {
     return degree;
 }
+std::string Missile::getName()
+{
+    return name;
+}
 Type Missile::getType()
 {
     return type;
 }
+
 void Missile::setDistance(ll distance)
 {
     this->distance = distance;
@@ -41,5 +46,9 @@ void Missile::setDegree(int degree)
 void Missile::setType(Type type)
 {
     this->type = type;
+}
+void Missile::setName(std::string name)
+{
+    this->name = name;
 }
 

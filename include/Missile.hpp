@@ -16,11 +16,13 @@ class Missile
         ll getOutOfControl();
         ll getDemolition();
         int getDegree();
+        std::string getName();
         Type getType();
         void setDistance(ll distance);
         void setOutOfControl(ll outOfControl);
         void setDemolition(ll demolition);
         void setDegree(int degree);
+        void setName(std::string name);
         void setType(Type type);
 
     private:
@@ -28,6 +30,7 @@ class Missile
         ll outOfControl;
         ll demolition;
         int degree;
+        std::string name;
         Type type;
 
 };
