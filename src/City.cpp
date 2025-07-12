@@ -18,7 +18,7 @@ std::string City::getCountryName()
 {
     return countryName;
 }
-std::string City::getStatus()
+Status City::getStatus()
 {
     return status;
 }
@@ -27,7 +27,7 @@ void City::setCountryName(std::string countryName)
 {
     this->countryName = countryName;
 }
-void City::setStatus(std::string status)
+void City::setStatus(Status status)
 {
     this->status = status;
 }
