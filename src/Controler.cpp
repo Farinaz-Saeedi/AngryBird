@@ -7,6 +7,7 @@
 Controler::Controler()
 {
     missiles.resize(8);
+    cities.resize(getNumberOfCities());
 }
 
 void Controler::readMissiles()
@@ -61,4 +62,13 @@ void Controler::readMissiles()
         }
     }
     input.close();
+}
+
+ll Controler::getNumberOfCities()
+{
+    return numberOfCities;
+}
+void Controler::setNumberOfCities(ll numberOfCities)
+{
+    this->numberOfCities = numberOfCities;
 }
