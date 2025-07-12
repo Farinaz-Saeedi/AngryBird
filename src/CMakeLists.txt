@@ -1,6 +1,7 @@
 set(PROJECT_SOURCES
     Controler.cpp
-    Missile.cpp
+    Bird.cpp
+    City.cpp
 )
 
 add_executable(${PROJECT_NAME}
