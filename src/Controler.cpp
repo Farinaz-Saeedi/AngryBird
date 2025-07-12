@@ -6,7 +6,7 @@
 
 Controler::Controler()
 {
-    missiles.resize(8);
+    birds.resize(8);
     cities.resize(getNumberOfCities());
 }
 
@@ -25,19 +25,19 @@ void Controler::readBirds()
         for (int i = 0; i < 8; i++)
         {
             input >> str;
-            missiles[i].setName(str);
+            birds[i].setName(str);
 
             input >> number;
-            missiles[i].setDistance(number);
+            birds[i].setDistance(number);
 
             input >> number;
-            missiles[i].setOutOfControl(number);
+            birds[i].setOutOfControl(number);
 
             input >> number;
-            missiles[i].setDegree(number);
+            birds[i].setDegree(number);
 
             input >> number;
-            missiles[i].setDemolition(number);
+            birds[i].setDemolition(number);
 
             input >> str;
 
@@ -58,7 +58,7 @@ void Controler::readBirds()
                 bType = D;
             }
 
-            missiles[i].setType(bType);
+            birds[i].setType(bType);
         }
     }
     input.close();

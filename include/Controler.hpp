@@ -21,7 +21,7 @@ class Controler
 
 
     private:
-        std::vector<Bird> missiles;
+        std::vector<Bird> birds;
         std::vector<City> cities;
         ll numberOfCities;
 
