@@ -14,6 +14,12 @@ ll Controler::getNumberOfCities()
 {
     return numberOfCities;
 }
+ll Controler::calDistance(City a , City b)
+{
+    ll yPow = pow((a.getY() - b.getY()) , 2);
+    ll xPow = pow((a.getX() - b.getX()) , 2);
+    return sqrt(yPow + xPow);
+}
 
 void Controler::readBirds()
 {
@@ -122,7 +128,13 @@ void Controler::setNumberOfCities(ll numberOfCities)
 }
 void Controler::makeGraph()
 {
-
+    for ( int i{} ; i < cities.size() ; ++i )
+    {
+        for ( int j{i + 1} ; j < cities.size() ; ++j )
+        {
+            graph[cities[i].getCountryName()].insert(cities[j].getCountryName());
+        }
+    }
 }
 void Controler::sortCities()
 {

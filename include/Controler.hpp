@@ -15,6 +15,7 @@ class Controler
     public:
         Controler();
         ll getNumberOfCities();
+        ll calDistance(City a , City b);
         void readBirds();
         void readCities();
         void setNumberOfCities(ll numberOfCities);
@@ -27,6 +28,7 @@ class Controler
         std::vector<City> cities;
         ll numberOfCities;
         std::unordered_map<std::string , std::unordered_set<std::string>> graph;
+
 
 };
 
