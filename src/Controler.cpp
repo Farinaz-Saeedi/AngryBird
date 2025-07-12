@@ -73,6 +73,7 @@ void Controler::readCities()
     ll count, position;
     std::string str;
     bool spy;
+    Status cStatus;
 
     while (!input.eof())
     {
@@ -88,8 +89,21 @@ void Controler::readCities()
             input >> position;
             cities[i].setY(position);
 
-            input >> str;
-            cities[i].setStatus(str);
+           input >> str;
+
+            if (str.find('N'))
+            {
+                cStatus = N;
+            }
+            else if (str.find('E'))
+            {
+                cStatus = E;
+            }
+            else if (str.find('H'))
+            {
+                cStatus = H;
+            }
+            cities[i].setStatus(cStatus);
 
             input >> spy;
             cities[i].setIsSpy(spy);
