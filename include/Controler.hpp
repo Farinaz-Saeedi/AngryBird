@@ -14,16 +14,19 @@ class Controler
 {
     public:
         Controler();
+        ll getNumberOfCities();
         void readBirds();
         void readCities();
-        ll getNumberOfCities();
         void setNumberOfCities(ll numberOfCities);
+        void makeGraph();
+        void sortCities(); // sort cities based on X
 
 
     private:
         std::vector<Bird> birds;
         std::vector<City> cities;
         ll numberOfCities;
+        std::unordered_map<std::string , std::unordered_set<std::string>> graph;
 
 };
 

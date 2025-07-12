@@ -10,6 +10,11 @@ Controler::Controler()
     cities.resize(getNumberOfCities());
 }
 
+ll Controler::getNumberOfCities()
+{
+    return numberOfCities;
+}
+
 void Controler::readBirds()
 {
     std::ifstream input("Birds.txt");
@@ -111,12 +116,18 @@ void Controler::readCities()
     }
     input.close();
 }
-
-ll Controler::getNumberOfCities()
-{
-    return numberOfCities;
-}
 void Controler::setNumberOfCities(ll numberOfCities)
 {
     this->numberOfCities = numberOfCities;
+}
+void Controler::makeGraph()
+{
+
+}
+void Controler::sortCities()
+{
+    sort(cities.begin() , cities.end() , []( City a , City b)
+    {
+        a.getX() > b.getX();
+    });
 }
