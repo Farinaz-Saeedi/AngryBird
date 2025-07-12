@@ -1,4 +1,4 @@
-number of cities
+number of cities (status ----> input must be one of: NC, EC, HB)
 
 name - x - y - status - spy
 name - x - y - status - spy
