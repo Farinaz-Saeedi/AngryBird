@@ -64,6 +64,40 @@ void Controler::readMissiles()
     input.close();
 }
 
+void Controler::readCities()
+{
+    std::ifstream input("Cities.txt");
+    if (!input.is_open())
+        std::cerr << " Unable to open file ! \n";
+
+    ll count, position;
+    std::string str;
+    bool spy;
+
+    while (!input.eof())
+    {
+        input >> count;
+        for (int i = 0; i < count; i++)
+        {
+            input >> str;
+            cities[i].setCountryName(str);
+
+            input >> position;
+            cities[i].setX(position);
+
+            input >> position;
+            cities[i].setY(position);
+
+            input >> str;
+            cities[i].setStatus(str);
+
+            input >> spy;
+            cities[i].setIsSpy(spy);
+        }
+    }
+    input.close();
+}
+
 ll Controler::getNumberOfCities()
 {
     return numberOfCities;

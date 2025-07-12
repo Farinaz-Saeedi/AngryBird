@@ -1,1 +1,8 @@
-country name - x , y - situation 
+number of cities
+
+name - x - y - status - spy
+name - x - y - status - spy
+------
+------
+------
+name - x - y - status - spy

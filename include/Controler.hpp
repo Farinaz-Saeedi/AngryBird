@@ -15,6 +15,7 @@ class Controler
     public:
         Controler();
         void readMissiles();
+        void readCities();
         ll getNumberOfCities();
         void setNumberOfCities(ll numberOfCities);
 
