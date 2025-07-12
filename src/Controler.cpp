@@ -138,7 +138,7 @@ void Controler::makeGraph()
 }
 void Controler::sortCities()
 {
-    sort(cities.begin() , cities.end() , []( City a , City b)
+    sort(cities.begin() , cities.end() , []( City a , City b )
     {
         a.getX() > b.getX();
     });
