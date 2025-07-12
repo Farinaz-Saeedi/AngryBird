@@ -1,7 +1,7 @@
 #ifndef CONTROLER_H
 #define CONTROLER_H
 
-#include "Missile.hpp"
+#include "Bird.hpp"
 #include "City.hpp"
 
 #define ll long long
@@ -14,14 +14,14 @@ class Controler
 {
     public:
         Controler();
-        void readMissiles();
+        void readBirds();
         void readCities();
         ll getNumberOfCities();
         void setNumberOfCities(ll numberOfCities);
 
 
     private:
-        std::vector<Missile> missiles;
+        std::vector<Bird> missiles;
         std::vector<City> cities;
         ll numberOfCities;
 

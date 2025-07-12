@@ -9,7 +9,7 @@ enum Type {
     A , B , C , D
 };
 
-class Missile
+class Bird
 {
     public:
         ll getDistance();

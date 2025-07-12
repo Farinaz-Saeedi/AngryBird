@@ -10,15 +10,15 @@ Controler::Controler()
     cities.resize(getNumberOfCities());
 }
 
-void Controler::readMissiles()
+void Controler::readBirds()
 {
-    std::ifstream input("Missiles.txt");
+    std::ifstream input("Birds.txt");
     if (!input.is_open())
         std::cerr << " Unable to open file ! \n";
 
     std::string str;
     ll number;
-    Type mType;
+    Type bType;
 
     while (!input.eof())
     {
@@ -43,22 +43,22 @@ void Controler::readMissiles()
 
             if (str.find('A'))
             {
-                mType = A;
+                bType = A;
             }
             else if (str.find('B'))
             {
-                mType = B;
+                bType = B;
             }
             else if (str.find('C'))
             {
-                mType = C;
+                bType = C;
             }
             else if (str.find('D'))
             {
-                mType = D;
+                bType = D;
             }
 
-            missiles[i].setType(mType);
+            missiles[i].setType(bType);
         }
     }
     input.close();
