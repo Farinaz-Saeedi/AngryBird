@@ -29,7 +29,4 @@ class Controler
 
 
 
-
-
-
 #endif
