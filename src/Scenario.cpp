@@ -2,7 +2,11 @@
 
 #include "Scenario.hpp"
 
-void Scenario::readOurBirds()
+std::vector<Bird> Scenario::getBirds()
 {
-    
+    return birds;
+}
+void Scenario::setBirds(std::vector<Bird> birds)
+{
+    this->birds = birds;
 }
