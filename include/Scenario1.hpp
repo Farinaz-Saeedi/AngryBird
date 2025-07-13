@@ -6,7 +6,7 @@
 class Scenario1 : public Scenario
 {
     public:
-        void readOurBirds(std::string fileName) override;
+        void readInputs(std::string fileName) override;
 
 
     private:
