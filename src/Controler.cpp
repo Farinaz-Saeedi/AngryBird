@@ -132,7 +132,12 @@ void Controler::makeGraph()
     {
         for (int j{i + 1}; j < cities.size(); ++j)
         {
+            // ld dist = calDistance(cities[i], cities[j]);
             graph[cities[i].getCountryName()].insert(cities[j].getCountryName());
+            // if (graph[cities[i].getCountryName()].find(cities[j].getCountryName()) == graph[cities[i].getCountryName()].end())
+            // {
+            //     graph[cities[i].getCountryName()][cities[j].getCountryName()] = dist;
+            // }
         }
     }
 }
