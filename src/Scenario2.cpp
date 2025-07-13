@@ -1,6 +1,6 @@
 #include "Scenario2.hpp"
 
-void Scenario::readInputs(std::string fileName)
+void Scenario2::readInputs(std::string fileName)
 {
     std::ifstream input("Scenario2.txt");
     if (!input.is_open())
@@ -17,23 +17,23 @@ void Scenario::readInputs(std::string fileName)
         for (int i = 0; i < count; i++)
         {
             input >> str;
-            birds[i].setName(str);
+            getBirds()[i].setName(str);
 
             input >> number;
-            birds[i].setDistance(number);
+            getBirds()[i].setDistance(number);
 
             input >> number;
-            birds[i].setOutOfControl(number);
+            getBirds()[i].setOutOfControl(number);
 
             input >> number;
-            birds[i].setDegree(number);
+            getBirds()[i].setDegree(number);
 
             input >> number;
-            birds[i].setDemolition(number);
+            getBirds()[i].setDemolition(number);
 
             input >> str;
             bType = A;
-            birds[i].setType(bType);
+            getBirds()[i].setType(bType);
 
             input >> str;
             if (str.find('N'))
@@ -49,9 +49,9 @@ void Scenario::readInputs(std::string fileName)
                 base = H;
             }
 
-            birds[i].setBase(base);
+            getBirds()[i].setBase(base);
         }
     }
-    
+
     input.close();
 }

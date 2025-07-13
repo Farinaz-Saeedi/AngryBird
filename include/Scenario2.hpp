@@ -3,7 +3,7 @@
 
 #include "Scenario.hpp"
 
-class Scenario1 : public Scenario
+class Scenario2 : public Scenario
 {
     public:
         void readInputs(std::string fileName) override;
