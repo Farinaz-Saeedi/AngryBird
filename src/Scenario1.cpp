@@ -35,5 +35,6 @@ void Scenario::readInputs(std::string fileName)
             birds[i].setType(bType);
         }
     }
+
     input.close();
 }
