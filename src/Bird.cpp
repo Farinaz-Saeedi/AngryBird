@@ -27,6 +27,10 @@ Type Bird::getType()
 {
     return type;
 }
+Base Bird::getBase()
+{
+    return base;
+}
 
 void Bird::setDistance(ll distance)
 {
@@ -51,5 +55,9 @@ void Bird::setType(Type type)
 void Bird::setName(std::string name)
 {
     this->name = name;
+}
+void Bird::setBase(Base base)
+{
+    this->base = base;
 }
 

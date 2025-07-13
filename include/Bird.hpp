@@ -9,6 +9,10 @@ enum Type {
     A , B , C , D
 };
 
+enum Base {
+    N , E , H 
+};
+
 class Bird
 {
     public:
@@ -18,12 +22,14 @@ class Bird
         int getDegree();
         std::string getName();
         Type getType();
+        Base getBase();
         void setDistance(ll distance);
         void setOutOfControl(ll outOfControl);
         void setDemolition(ll demolition);
         void setDegree(int degree);
         void setName(std::string name);
         void setType(Type type);
+        void setBase(Base base);
 
     private:
         ll distance;
@@ -32,6 +38,7 @@ class Bird
         int degree;
         std::string name;
         Type type;
+        Base base;
 
 };
 
