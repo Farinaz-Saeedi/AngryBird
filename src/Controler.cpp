@@ -14,10 +14,10 @@ ll Controler::getNumberOfCities()
 {
     return numberOfCities;
 }
-ll Controler::calDistance(City a , City b)
+ll Controler::calDistance(City a, City b)
 {
-    ll yPow = pow((a.getY() - b.getY()) , 2);
-    ll xPow = pow((a.getX() - b.getX()) , 2);
+    ll yPow = pow((a.getY() - b.getY()), 2);
+    ll xPow = pow((a.getX() - b.getX()), 2);
     return sqrt(yPow + xPow);
 }
 
@@ -100,7 +100,7 @@ void Controler::readCities()
             input >> position;
             cities[i].setY(position);
 
-           input >> str;
+            input >> str;
 
             if (str.find('N'))
             {
@@ -128,9 +128,9 @@ void Controler::setNumberOfCities(ll numberOfCities)
 }
 void Controler::makeGraph()
 {
-    for ( int i{} ; i < cities.size() ; ++i )
+    for (int i{}; i < cities.size(); ++i)
     {
-        for ( int j{i + 1} ; j < cities.size() ; ++j )
+        for (int j{i + 1}; j < cities.size(); ++j)
         {
             graph[cities[i].getCountryName()].insert(cities[j].getCountryName());
         }
@@ -138,8 +138,6 @@ void Controler::makeGraph()
 }
 void Controler::sortCities()
 {
-    sort(cities.begin() , cities.end() , []( City a , City b )
-    {
-        a.getX() > b.getX();
-    });
+    sort(cities.begin(), cities.end(), [](City &a, City &b)
+         { return a.getX() > b.getX(); });
 }
