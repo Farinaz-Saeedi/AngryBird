@@ -6,3 +6,4 @@ Fury 5000 500 0 300 B2
 Blaze 3000 700 2 110 C1
 Viper 2900 900 1 10 C
 Titan 10000 500 2 1488 D1
+dis out deg dem t name

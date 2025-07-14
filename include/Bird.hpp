@@ -13,7 +13,7 @@ class Bird
 {
     public:
         Bird();
-        Bird(ll dis, ll out, ll dem, int deg, std::string name, Type t);
+        Bird(std::string name, ll dis, ll out, int deg, ll dem, Type t);
         ll getDistance();
         ll getOutOfControl();
         ll getDemolition();

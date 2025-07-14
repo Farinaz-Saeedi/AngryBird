@@ -4,7 +4,7 @@
 
 
 Bird::Bird(){}
-Bird::Bird(ll dis, ll out, ll dem, int deg, std::string name, Type t)
+Bird::Bird(std::string name, ll dis, ll out, int deg, ll dem, Type t)
 {
     setDistance(dis);
     setOutOfControl(out);
