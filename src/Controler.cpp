@@ -164,4 +164,19 @@ void Controler::sortCities()
  void Controler::run()
  {
     int numberOfScen;
+    int whichScen;
+
+    std::ifstream input("Scenario.txt");
+    if (!input.is_open())
+        std::cerr << " Unable to open file ! \n";
+
+    input >> numberOfScen;
+
+    while ( numberOfScen-- )
+    {
+        input >> whichScen;
+        readScenario(whichScen);
+        // funtion to solve the scenarios
+    }
+
  }
