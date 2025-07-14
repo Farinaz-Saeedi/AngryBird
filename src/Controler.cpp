@@ -133,12 +133,12 @@ void Controler::makeGraph()
     {
         for (int j{i + 1}; j < cities.size(); ++j)
         {
-            // ld dist = calDistance(cities[i], cities[j]);
+            ld dist = calDistance(cities[i], cities[j]);
             graph[cities[i].getCityName()].insert(cities[j].getCityName());
-            // if (graph[cities[i].getCityName()].find(cities[j].getCityName()) == graph[cities[i].getCityName()].end())
-            // {
-            //     graph[cities[i].getCityName()][cities[j].getCityName()] = dist;
-            // }
+            if (distBetween[cities[i].getCityName()].find(cities[j].getCityName()) == distBetween[cities[i].getCityName()].end())
+            {
+                distBetween[cities[i].getCityName()][cities[j].getCityName()] = dist;
+            }
         }
     }
 }
@@ -147,3 +147,21 @@ void Controler::sortCities()
     sort(cities.begin(), cities.end(), [](City &a, City &b)
          { return a.getX() > b.getX(); });
 }
+ void Controler::readScenario(int scen)
+ {
+    if ( scen == 1 ) {
+        Scenario1 scenario;
+        scenario.readInputs();
+    } else if ( scen == 2 ) {
+        Scenario2 scenario;
+        scenario.readInputs();
+    } else if ( scen == 4 ) {
+        Scenario4 scenario;
+        scenario.readInputs();
+    } // else ...
+
+ }
+ void Controler::run()
+ {
+    int numberOfScen;
+ }
