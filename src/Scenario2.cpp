@@ -6,33 +6,21 @@ void Scenario2::readInputs(std::vector<Bird> & birds, std::vector<Home> & homes)
     if (!input.is_open())
         std::cerr << " Unable to open file ! \n";
 
-    ll count, number;
-    std::string str;
-    Type bType;
+    ll count;
+    std::string name;
+    int  cp;
 
     while (!input.eof())
     {
         input >> count;
         for (int i = 0; i < count; i++)
         {
-            input >> str;
-            getBirds()[i].setName(str);
+           input >> name;
+           readBird(name , birds);
 
-            input >> number;
-            getBirds()[i].setDistance(number);
-
-            input >> number;
-            getBirds()[i].setOutOfControl(number);
-
-            input >> number;
-            getBirds()[i].setDegree(number);
-
-            input >> number;
-            getBirds()[i].setDemolition(number);
-
-            input >> str;
-            bType = A;
-            getBirds()[i].setType(bType);
+           input >> name;
+           input >> cp;
+           readHome(name, cp, homes);
         }
     }
 
