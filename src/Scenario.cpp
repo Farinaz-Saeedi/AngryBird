@@ -25,6 +25,10 @@ void Scenario::readBird(std::string targetName , std::vector<Bird> & birds)
         }
     }
 }
+void Scenario::readHome(std::string homeName, int cap,std::vector<Home> & homes)
+{
+    homes.push_back(Home(homeName, cap));
+}
 
 // std::vector<Bird> Scenario::getBirds()
 // {
