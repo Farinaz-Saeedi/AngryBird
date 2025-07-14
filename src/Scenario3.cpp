@@ -1,6 +1,6 @@
 #include "Scenario3.hpp"
 
-void Scenario3::readInputs()
+void Scenario3::readInputs(std::vector<Bird> & birds)
 {
     std::ifstream input("Scenario3.txt");
     if (!input.is_open())

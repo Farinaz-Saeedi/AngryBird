@@ -21,60 +21,60 @@ ll Controler::calDistance(City a, City b)
     return sqrt(yPow + xPow);
 }
 
-void Controler::readBirds()
-{
-    std::ifstream input("Birds.txt");
-    if (!input.is_open())
-        std::cerr << " Unable to open file ! \n";
+// void Controler::readBird(std::string name)
+// {
+//     std::ifstream input("Birds.txt");
+//     if (!input.is_open())
+//         std::cerr << " Unable to open file ! \n";
 
-    std::string str;
-    ll number;
-    Type bType;
+//     std::string str;
+    // ll number;
+    // Type bType;
 
-    while (!input.eof())
-    {
-        for (int i = 0; i < 8; i++)
-        {
-            input >> str;
-            birds[i].setName(str);
+    // while (!input.eof())
+    // {
+    //     for (int i = 0; i < 8; i++)
+    //     {
+    //         input >> str;
+    //         birds[i].setName(str);
 
-            input >> number;
-            birds[i].setDistance(number);
+    //         input >> number;
+    //         birds[i].setDistance(number);
 
-            input >> number;
-            birds[i].setOutOfControl(number);
+    //         input >> number;
+    //         birds[i].setOutOfControl(number);
 
-            input >> number;
-            birds[i].setDegree(number);
+    //         input >> number;
+    //         birds[i].setDegree(number);
 
-            input >> number;
-            birds[i].setDemolition(number);
+    //         input >> number;
+    //         birds[i].setDemolition(number);
 
-            input >> str;
+    //         input >> str;
 
-            if (str.find('A'))
-            {
-                bType = A;
-            }
-            else if (str.find('B'))
-            {
-                bType = B;
-            }
-            else if (str.find('C'))
-            {
-                bType = C;
-            }
-            else if (str.find('D'))
-            {
-                bType = D;
-            }
+    //         if (str.find('A'))
+    //         {
+    //             bType = A;
+    //         }
+    //         else if (str.find('B'))
+    //         {
+    //             bType = B;
+    //         }
+    //         else if (str.find('C'))
+    //         {
+    //             bType = C;
+    //         }
+    //         else if (str.find('D'))
+    //         {
+    //             bType = D;
+    //         }
 
-            birds[i].setType(bType);
+    //         birds[i].setType(bType);
 
-        }
-    }
-    input.close();
-}
+    //     }
+    // }
+    // input.close();
+// }
 
 void Controler::readCities()
 {
@@ -144,7 +144,7 @@ void Controler::makeGraph()
 }
 void Controler::sortCities()
 {
-    sort(cities.begin(), cities.end(), [](City &a, City &b)
+    sort(cities.begin(), cities.end(), [](City a, City b)
          { return a.getX() > b.getX(); });
 }
  void Controler::readScenario(int scen)

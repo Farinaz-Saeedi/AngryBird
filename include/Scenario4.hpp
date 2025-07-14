@@ -6,7 +6,7 @@
 class Scenario4 : public Scenario
 {
     public:
-        void readInputs() override;
+        void readInputs(std::vector<Bird> & birds) override;
 
 
     private:

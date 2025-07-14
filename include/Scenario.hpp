@@ -7,15 +7,15 @@
 class Scenario {
 
     public:
-        virtual void readInputs() = 0; // read the birds we have in each scenario
+        virtual void readInputs(std::vector<Bird> & birds) = 0; // read the birds we have in each scenario
         virtual ~Scenario() = default;
 
-        std::vector<Bird> getBirds();
-        void setBirds( std::vector<Bird> birds);
+        // std::vector<Bird> getBirds();
+        // void setBirds(std::vector<Bird> birds);
 
 
     private:
-        std::vector<Bird> birds;
+        // std::vector<Bird> birds;
 
 
 };
