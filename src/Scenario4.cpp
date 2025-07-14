@@ -9,7 +9,6 @@ void Scenario4::readInputs(std::string fileName)
     ll count, number;
     std::string str;
     Type bType;
-    Base base;
 
     while (!input.eof())
     {
@@ -46,22 +45,6 @@ void Scenario4::readInputs(std::string fileName)
             }
             
             getBirds()[i].setType(bType);
-
-            input >> str;
-            if (str.find('N'))
-            {
-                base = N;
-            }
-            else if (str.find('E'))
-            {
-                base = E;
-            }
-            else if (str.find('H'))
-            {
-                base = H;
-            }
-
-            getBirds()[i].setBase(base);
         }
     }
 

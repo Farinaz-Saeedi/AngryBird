@@ -70,6 +70,7 @@ void Controler::readBirds()
             }
 
             birds[i].setType(bType);
+
         }
     }
     input.close();
