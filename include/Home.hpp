@@ -10,12 +10,15 @@ class Home : City {
 
     public:
         Home();
-        Home(int cap);
+        Home(std::string nm, int cap);
         int getCapacity();
         void setCapacity(int capacity);
+        void setName(std::string name);
+        std::string getName();
 
     private:
         int capacity;
+        std::string name;
        // std::vector<Bird> slingshot;
 
 };
