@@ -12,6 +12,8 @@ enum Type {
 class Bird
 {
     public:
+        Bird();
+        Bird(ll dis, ll out, ll dem, int deg, std::string name, Type t);
         ll getDistance();
         ll getOutOfControl();
         ll getDemolition();

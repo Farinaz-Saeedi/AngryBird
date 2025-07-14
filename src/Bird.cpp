@@ -3,6 +3,17 @@
 #include "Bird.hpp"
 
 
+Bird::Bird(){}
+Bird::Bird(ll dis, ll out, ll dem, int deg, std::string name, Type t)
+{
+    setDistance(dis);
+    setOutOfControl(out);
+    setDemolition(dem);
+    setDegree(deg);
+    setName(name);
+    setType(t);
+}
+
 long long Bird::getDistance()
 {
     return distance;
