@@ -14,18 +14,18 @@ bool City::getIsSpy()
 {
     return isSpy;
 }
-std::string City::getCountryName()
+std::string City::getCityName()
 {
-    return countryName;
+    return cityName;
 }
 Status City::getStatus()
 {
     return status;
 }
 
-void City::setCountryName(std::string countryName)
+void City::setCityName(std::string countryName)
 {
-    this->countryName = countryName;
+    this->cityName = countryName;
 }
 void City::setStatus(Status status)
 {

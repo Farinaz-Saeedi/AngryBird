@@ -93,7 +93,7 @@ void Controler::readCities()
         for (int i = 0; i < count; i++)
         {
             input >> str;
-            cities[i].setCountryName(str);
+            cities[i].setCityName(str);
 
             input >> position;
             cities[i].setX(position);
@@ -134,10 +134,10 @@ void Controler::makeGraph()
         for (int j{i + 1}; j < cities.size(); ++j)
         {
             // ld dist = calDistance(cities[i], cities[j]);
-            graph[cities[i].getCountryName()].insert(cities[j].getCountryName());
-            // if (graph[cities[i].getCountryName()].find(cities[j].getCountryName()) == graph[cities[i].getCountryName()].end())
+            graph[cities[i].getCityName()].insert(cities[j].getCityName());
+            // if (graph[cities[i].getCityName()].find(cities[j].getCityName()) == graph[cities[i].getCityName()].end())
             // {
-            //     graph[cities[i].getCountryName()][cities[j].getCountryName()] = dist;
+            //     graph[cities[i].getCityName()][cities[j].getCityName()] = dist;
             // }
         }
     }

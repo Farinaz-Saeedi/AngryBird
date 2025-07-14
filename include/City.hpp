@@ -13,20 +13,20 @@ enum Status
 class City
 {
     public:
-        std::string getCountryName();
+        std::string getCityName();
         Status getStatus();
         ll getX();
         ll getY();
         bool getIsSpy();
 
-        void setCountryName(std::string countryName);
+        void setCityName(std::string countryName);
         void setStatus(Status status);
         void setX(ll x);
         void setY(ll y);
         void setIsSpy(bool isSpy);
 
     private:
-        std::string countryName;
+        std::string cityName;
         Status status; // Normal city - Enemy city - Home base
         ll x;
         ll y;
