@@ -1,6 +1,6 @@
 #include "Scenario1.hpp"
 
-void Scenario1::readInputs(std::vector<Bird> & birds)
+void Scenario1::readInputs(std::vector<Bird> & birds,  std::vector<Home> & homes)
 {
     std::ifstream input("Scenario1.txt");
     if (!input.is_open())
