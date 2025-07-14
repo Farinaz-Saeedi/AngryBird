@@ -3,6 +3,28 @@
 #include "Bird.hpp"
 
 
+std::istream & operator>>(std::istream & input , Type & type)
+{   
+    std::string str;
+    input >> str;
+    if (str.find('A'))
+    {
+        type = A;
+    }
+    else if (str.find('B'))
+    {
+        type = B;
+    }
+    else if (str.find('C'))
+    {
+        type = C;
+    }
+    else if (str.find('D'))
+    {
+        type = D;
+    }
+}
+
 Bird::Bird(){}
 Bird::Bird(std::string name, ll dis, ll out, int deg, ll dem, Type t)
 {
