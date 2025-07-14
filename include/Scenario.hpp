@@ -7,7 +7,7 @@
 class Scenario {
 
     public:
-        virtual void readInputs(std::string fileName) = 0; // read the birds we have in each scenario
+        virtual void readInputs() = 0; // read the birds we have in each scenario
         virtual ~Scenario() = default;
 
         std::vector<Bird> getBirds();

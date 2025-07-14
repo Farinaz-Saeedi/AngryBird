@@ -1,6 +1,6 @@
 #include "Scenario1.hpp"
 
-void Scenario1::readInputs(std::string fileName)
+void Scenario1::readInputs()
 {
     std::ifstream input("Scenario1.txt");
     if (!input.is_open())

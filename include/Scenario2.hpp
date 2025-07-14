@@ -6,7 +6,7 @@
 class Scenario2 : public Scenario
 {
     public:
-        void readInputs(std::string fileName) override;
+        void readInputs() override;
 
 
     private:
