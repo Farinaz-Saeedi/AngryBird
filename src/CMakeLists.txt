@@ -2,6 +2,14 @@ set(PROJECT_SOURCES
     Controler.cpp
     Bird.cpp
     City.cpp
+    Scenario.cpp
+    Scenario1.cpp
+    Scenario2.cpp
+    Scenario3.cpp
+    Scenario4.cpp
+    Scenario5.cpp
+    Scenario6.cpp
+    Scenario7~.cpp
 )
 
 add_executable(${PROJECT_NAME}
