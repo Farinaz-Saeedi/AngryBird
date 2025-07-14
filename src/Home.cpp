@@ -2,13 +2,20 @@
 
 #include "Home.hpp"
 
+Home::Home(){};
+
+Home::Home(int cap)
+{
+    setCapacity(cap);
+}
+
 int Home::getCapacity()
 {
     return capacity;
 }
 
-void Home::setCapacity(int cap)
+void Home::setCapacity(int capacity)
 {
-    capacity = cap;
-    slingshot.resize(capacity);
+    this->capacity = capacity;
+   // slingshot.resize(capacity);
 }

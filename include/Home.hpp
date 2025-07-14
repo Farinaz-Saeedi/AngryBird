@@ -9,12 +9,14 @@
 class Home : City {
 
     public:
+        Home();
+        Home(int cap);
         int getCapacity();
-        void setCapacity(int cap);
+        void setCapacity(int capacity);
 
     private:
         int capacity;
-        std::vector<Bird> slingshot;
+       // std::vector<Bird> slingshot;
 
 };
 
