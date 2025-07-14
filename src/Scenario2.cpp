@@ -9,7 +9,6 @@ void Scenario2::readInputs()
     ll count, number;
     std::string str;
     Type bType;
-    // Base base;
 
     while (!input.eof())
     {
