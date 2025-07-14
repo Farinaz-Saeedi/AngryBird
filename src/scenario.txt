@@ -11,3 +11,7 @@
 #5 all of birds
 #6 
 #7
+
+number of scenario 
+#1 #2 ... function ...
+Bird bird ->  distance ,...

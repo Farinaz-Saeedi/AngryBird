@@ -1,7 +1,7 @@
 number of birds 
-name - distance - out of control range - degree - demolition - type - base 
-name - distance - out of control range - degree - demolition - type - base 
+name - slingShot place 
+name - slingShot place 
 ------
 ------
 ------
-name - distance - out of control range - degree - demolition - type - base 
+name - slingShot place 
