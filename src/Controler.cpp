@@ -27,43 +27,39 @@ void Controler::readCities()
     if (!input.is_open())
         std::cerr << " Unable to open file ! \n";
 
-    ll count, position;
-    std::string str;
+    ll count, x, y;
+    std::string str , situation;
     bool spy;
-    Status cStatus;
+    // Status cStatus;
 
     while (!input.eof())
     {
         input >> count;
         for (int i = 0; i < count; i++)
         {
-            input >> str;
-            cities[i]->setCityName(str);
+            input >> str >> x >> y >> situation >> spy ;
 
-            input >> position;
-            cities[i]->setX(position);
-
-            input >> position;
-            cities[i]->setY(position);
-
-            input >> str;
-
-            if (str.find('N'))
+            if (situation == "Normal")
             {
-                cStatus = N;
+                auto city = std::make_unique<City>(str, x, y, spy);
+                city->setStatus(N);
+                cities.push_back(std::move(city));
             }
-            else if (str.find('E'))
+            else if (situation == "Enemy")
             {
-                cStatus = E;
+                auto city = std::make_unique<Enemy>(str, x, y, spy);
+                city->setStatus(E);
+                cities.push_back(std::move(city));
             }
-            else if (str.find('H'))
+            else if (situation == "Home")
             {
-                cStatus = H;
-            }
-            cities[i]->setStatus(cStatus);
+                int capacity;
+                input >> capacity;
 
-            input >> spy;
-            cities[i]->setIsSpy(spy);
+                auto city = std::make_unique<Home>(str, x, y, spy, capacity);
+                city->setStatus(H);
+                cities.push_back(std::move(city));
+            }
         }
     }
     input.close();

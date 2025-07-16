@@ -7,6 +7,7 @@
 #include "Scenario1.hpp"
 #include "Scenario2.hpp"
 #include "Scenario4.hpp"
+#include "Enemy.hpp"
 
 
 #define ll long long
