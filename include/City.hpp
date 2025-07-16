@@ -13,6 +13,8 @@ enum Status
 class City
 {
     public:
+        City();
+        City(std::string name, Status st, ll x, ll y, bool is);
         std::string getCityName();
         Status getStatus();
         ll getX();
