@@ -4,10 +4,13 @@
 
 Home::Home() {};
 
-Home::Home(std::string nm, int cap)
+Home::Home(std::string name, ll x, ll y, bool is, int cap)
 {
     setCapacity(cap);
-    setName(nm);
+    setCityName(name);
+    setX(x);
+    setY(y);
+    setIsSpy(is);
 }
 
 int Home::getCapacity()
@@ -19,12 +22,4 @@ void Home::setCapacity(int capacity)
 {
     this->capacity = capacity;
     // slingshot.resize(capacity);
-}
-std::string Home::getName()
-{
-    return name;
-}
-void Home::setName(std::string name)
-{
-    this->name = name;
 }

@@ -6,15 +6,14 @@
 
 #include <vector>
 
-class Home : City {
+class Home : public City {
 
     public:
         Home();
-        Home(std::string nm, int cap);
+        Home(std::string name, ll x, ll y, bool is, int cap);
+        virtual ~Home() = default;
         int getCapacity();
         void setCapacity(int capacity);
-        void setName(std::string name);
-        std::string getName();
 
     private:
         int capacity;

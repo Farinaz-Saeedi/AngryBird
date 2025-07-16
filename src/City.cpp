@@ -3,10 +3,9 @@
 #include "City.hpp"
 
 City::City(){}
-City::City(std::string name, Status st, ll x, ll y, bool is)
+City::City(std::string name, ll x, ll y, bool is)
 {
     setCityName(name);
-    setStatus(st);
     setX(x);
     setY(y);
     setIsSpy(is);

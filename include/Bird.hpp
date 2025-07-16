@@ -9,10 +9,10 @@ enum Type {
     A , B , C , D
 };
 
-std::istream & operator>>(std::istream & is, Type & type);
 
 class Bird
 {
+    friend std::istream & operator>>(std::istream & input, Type & type);
     public:
         Bird();
         Bird(std::string name, ll dis, ll out, int deg, ll dem, Type t);
