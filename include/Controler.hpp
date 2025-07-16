@@ -30,7 +30,7 @@ class Controler
 
     private:
         std::vector<Bird> birds;
-        std::vector<City> cities;
+        std::vector<std::unique_ptr<City>> cities;
         ll numberOfCities;
         std::unordered_map<std::string, std::unordered_set<std::string>> graph;
         std::unordered_map<std::string, std::unordered_map<std::string, ld>> distBetween;

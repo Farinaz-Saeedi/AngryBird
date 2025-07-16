@@ -21,61 +21,6 @@ ll Controler::calDistance(City a, City b)
     return sqrt(yPow + xPow);
 }
 
-// void Controler::readBird(std::string name)
-// {
-//     std::ifstream input("Birds.txt");
-//     if (!input.is_open())
-//         std::cerr << " Unable to open file ! \n";
-
-//     std::string str;
-    // ll number;
-    // Type bType;
-
-    // while (!input.eof())
-    // {
-    //     for (int i = 0; i < 8; i++)
-    //     {
-    //         input >> str;
-    //         birds[i].setName(str);
-
-    //         input >> number;
-    //         birds[i].setDistance(number);
-
-    //         input >> number;
-    //         birds[i].setOutOfControl(number);
-
-    //         input >> number;
-    //         birds[i].setDegree(number);
-
-    //         input >> number;
-    //         birds[i].setDemolition(number);
-
-    //         input >> str;
-
-    //         if (str.find('A'))
-    //         {
-    //             bType = A;
-    //         }
-    //         else if (str.find('B'))
-    //         {
-    //             bType = B;
-    //         }
-    //         else if (str.find('C'))
-    //         {
-    //             bType = C;
-    //         }
-    //         else if (str.find('D'))
-    //         {
-    //             bType = D;
-    //         }
-
-    //         birds[i].setType(bType);
-
-    //     }
-    // }
-    // input.close();
-// }
-
 void Controler::readCities()
 {
     std::ifstream input("Cities.txt");
@@ -93,13 +38,13 @@ void Controler::readCities()
         for (int i = 0; i < count; i++)
         {
             input >> str;
-            cities[i].setCityName(str);
+            cities[i]->setCityName(str);
 
             input >> position;
-            cities[i].setX(position);
+            cities[i]->setX(position);
 
             input >> position;
-            cities[i].setY(position);
+            cities[i]->setY(position);
 
             input >> str;
 
@@ -115,10 +60,10 @@ void Controler::readCities()
             {
                 cStatus = H;
             }
-            cities[i].setStatus(cStatus);
+            cities[i]->setStatus(cStatus);
 
             input >> spy;
-            cities[i].setIsSpy(spy);
+            cities[i]->setIsSpy(spy);
         }
     }
     input.close();
@@ -133,11 +78,11 @@ void Controler::makeGraph()
     {
         for (int j{i + 1}; j < cities.size(); ++j)
         {
-            ld dist = calDistance(cities[i], cities[j]);
-            graph[cities[i].getCityName()].insert(cities[j].getCityName());
-            if (distBetween[cities[i].getCityName()].find(cities[j].getCityName()) == distBetween[cities[i].getCityName()].end())
+            ld dist = calDistance(*cities[i], *cities[j]);
+            graph[cities[i]->getCityName()].insert(cities[j]->getCityName());
+            if (distBetween[cities[i]->getCityName()].find(cities[j]->getCityName()) == distBetween[cities[i]->getCityName()].end())
             {
-                distBetween[cities[i].getCityName()][cities[j].getCityName()] = dist;
+                distBetween[cities[i]->getCityName()][cities[j]->getCityName()] = dist;
             }
         }
     }
@@ -151,13 +96,13 @@ void Controler::sortCities()
  {
     if ( scen == 1 ) {
         Scenario1 scenario;
-        scenario.readInputs();
+        scenario.readInputs(birds);
     } else if ( scen == 2 ) {
         Scenario2 scenario;
-        scenario.readInputs();
+        scenario.readInputs(birds);
     } else if ( scen == 4 ) {
         Scenario4 scenario;
-        scenario.readInputs();
+        scenario.readInputs(birds);
     } // else ...
 
  }
