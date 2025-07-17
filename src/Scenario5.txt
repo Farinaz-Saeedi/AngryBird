@@ -1,4 +1,4 @@
-number of nights - number of birds 
+5 - number of birds 
 
 name - slingShot place - capacity
 name - slingShot place - capacity
