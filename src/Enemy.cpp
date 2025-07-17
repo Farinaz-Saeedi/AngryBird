@@ -9,3 +9,13 @@ Enemy::Enemy(std::string name, ll x, ll y, bool is)
     setY(y);
     setIsSpy(is);
 }
+
+void Enemy::setDefenseLevel(int defenseLevel)
+{
+    this->defenseLevel = defenseLevel;
+}
+
+int Enemy::getDefenseLevel()
+{
+    return defenseLevel;
+}
