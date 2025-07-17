@@ -9,7 +9,9 @@ set(PROJECT_SOURCES
     Scenario4.cpp
     Scenario5.cpp
     Scenario6.cpp
-    Scenario7~.cpp
+    Scenario7.cpp
+    Home.cpp
+    Enemy.cpp
 )
 
 add_executable(${PROJECT_NAME}
