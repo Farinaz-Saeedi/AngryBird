@@ -1,5 +1,5 @@
-#ifndef SCENARIO4_H
-#define SCENARIO4_H
+#ifndef SCENARIO3_H
+#define SCENARIO3_H
 
 #include "Scenario.hpp"
 

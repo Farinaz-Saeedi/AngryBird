@@ -7,7 +7,11 @@
 #include "Scenario.hpp"
 #include "Scenario1.hpp"
 #include "Scenario2.hpp"
+#include "Scenario3.hpp"
 #include "Scenario4.hpp"
+#include "Scenario5.hpp"
+#include "Scenario6.hpp"
+#include "Scenario7.hpp"
 #include "Enemy.hpp"
 
 

@@ -28,7 +28,7 @@ void Controler::readCities()
         std::cerr << " Unable to open file ! \n";
 
     ll count, x, y;
-    std::string str , situation;
+    std::string str, situation;
     bool spy;
     // Status cStatus;
 
@@ -37,7 +37,7 @@ void Controler::readCities()
         input >> count;
         for (int i = 0; i < count; i++)
         {
-            input >> str >> x >> y >> situation >> spy ;
+            input >> str >> x >> y >> situation >> spy;
 
             if (situation == "Normal")
             {
@@ -88,22 +88,46 @@ void Controler::sortCities()
     sort(cities.begin(), cities.end(), [](City a, City b)
          { return a.getX() > b.getX(); });
 }
- void Controler::readScenario(int scen)
- {
-    if ( scen == 1 ) {
+void Controler::readScenario(int scen)
+{
+    if (scen == 1)
+    {
         Scenario1 scenario;
         scenario.readInputs(birds, homes);
-    } else if ( scen == 2 ) {
+    }
+    else if (scen == 2)
+    {
         Scenario2 scenario;
         scenario.readInputs(birds, homes);
-    } else if ( scen == 4 ) {
+    }
+    else if (scen == 3)
+    {
+        Scenario3 scenario;
+        scenario.readInputs(birds, homes);
+    }
+    else if (scen == 4)
+    {
         Scenario4 scenario;
         scenario.readInputs(birds, homes);
-    } // else ...
-
- }
- void Controler::run()
- {
+    }
+    else if (scen == 5)
+    {
+        Scenario5 scenario;
+        scenario.readInputs(birds, homes);
+    }
+    else if (scen == 6)
+    {
+        Scenario6 scenario;
+        scenario.readInputs(birds, homes);
+    }
+    else
+    {
+        Scenario7 scenario;
+        scenario.readInputs(birds, homes);
+    }
+}
+void Controler::run()
+{
     int numberOfScen;
     int whichScen;
 
@@ -113,11 +137,10 @@ void Controler::sortCities()
 
     input >> numberOfScen;
 
-    while ( numberOfScen-- )
+    while (numberOfScen--)
     {
         input >> whichScen;
         readScenario(whichScen);
         // funtion to solve the scenarios
     }
-
- }
+}
