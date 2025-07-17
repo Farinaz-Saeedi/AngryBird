@@ -2,6 +2,7 @@
 #define CONTROLER_H
 
 #include "Bird.hpp"
+#include "Home.hpp"
 #include "City.hpp"
 #include "Scenario.hpp"
 #include "Scenario1.hpp"
@@ -31,6 +32,7 @@ class Controler
 
     private:
         std::vector<Bird> birds;
+        std::vector<Home> homes;
         std::vector<std::unique_ptr<City>> cities;
         ll numberOfCities;
         std::unordered_map<std::string, std::unordered_set<std::string>> graph;

@@ -92,13 +92,13 @@ void Controler::sortCities()
  {
     if ( scen == 1 ) {
         Scenario1 scenario;
-        scenario.readInputs(birds);
+        scenario.readInputs(birds, homes);
     } else if ( scen == 2 ) {
         Scenario2 scenario;
-        scenario.readInputs(birds);
+        scenario.readInputs(birds, homes);
     } else if ( scen == 4 ) {
         Scenario4 scenario;
-        scenario.readInputs(birds);
+        scenario.readInputs(birds, homes);
     } // else ...
 
  }
