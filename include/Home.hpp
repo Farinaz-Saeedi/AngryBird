@@ -14,6 +14,7 @@ class Home : public City {
         virtual ~Home() = default;
         int getCapacity();
         void setCapacity(int capacity);
+        void setCoordinates(ll newX, ll newY);
 
     private:
         int capacity;
