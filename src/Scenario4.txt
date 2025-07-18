@@ -1,7 +1,7 @@
 number of birds 
-name - slingShot place - capacity
-name - slingShot place - capacity
+name - slingShot place 
+name - slingShot place 
 ------
 ------
 ------
-name - slingShot place - capacity
+name - slingShot place 

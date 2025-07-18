@@ -9,6 +9,7 @@ enum Type {
     A , B , C , D
 };
 
+std::istream & operator>>(std::istream & input, Type & type);
 
 class Bird
 {

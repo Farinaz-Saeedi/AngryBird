@@ -1,11 +1,12 @@
 #include "Scenario3.hpp"
 
+
 void Scenario3::readInputs(std::vector<Bird> &birds, std::vector<Home> &homes)
 {
     std::ifstream input("Scenario3.txt");
     if (!input.is_open())
-        std::cerr << " Unable to open file ! \n";
-
+    std::cerr << " Unable to open file ! \n";
+    
     ll count, number;
     std::string name;
     int cp;
@@ -13,13 +14,8 @@ void Scenario3::readInputs(std::vector<Bird> &birds, std::vector<Home> &homes)
     while (!input.eof())
     {
         input >> count;
-        for (int i = 0; i < count; i++)
-        {
-            input >> name;
-            input >> cp;
-
-            readHome(name, cp, homes);
-        }
+        setSlingshot(count);
+        
         input >> count;
         for (int i = 0; i < count; i++)
         {
@@ -31,6 +27,14 @@ void Scenario3::readInputs(std::vector<Bird> &birds, std::vector<Home> &homes)
             }
         }
     }
-
+    
     input.close();
+}
+void Scenario3::setSlingshot(int number)
+{
+    numberOfSlingshot = number;
+}
+int Scenario3::getSlingshot()
+{
+    return numberOfSlingshot;
 }

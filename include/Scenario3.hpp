@@ -7,9 +7,12 @@ class Scenario3 : public Scenario
 {
     public:
         void readInputs(std::vector<Bird> & birds, std::vector<Home> & homes) override;
+        void setSlingshot(int number);
+        int getSlingshot();
 
 
     private:
+        int numberOfSlingshot;
 
 };
 

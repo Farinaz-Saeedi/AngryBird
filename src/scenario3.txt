@@ -1,9 +1,4 @@
 number of slingshots
-name - capacity 
--------
--------
--------
-name - capacity
 
 number of birds' kind
 birdName - number

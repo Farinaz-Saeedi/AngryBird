@@ -28,8 +28,7 @@ void Controler::readCities()
     ll count, x, y;
     std::string str, situation;
     bool spy;
-    // Status cStatus;
-
+    
     while (!input.eof())
     {
         input >> count;
