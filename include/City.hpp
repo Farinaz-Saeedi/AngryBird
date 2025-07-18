@@ -13,7 +13,6 @@ enum Status
 
 class City
 {
-    // friend std::istream & operator>>(std::istream & input, Status & type);
     public:
         City();
         City(std::string name, ll x, ll y, bool is);

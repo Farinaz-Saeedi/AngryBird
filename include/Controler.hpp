@@ -26,7 +26,6 @@ class Controler
         Controler();
         ll getNumberOfCities();
         ll calDistance(City a, City b);
-        // void readBird(std::string name);
         void readCities();
         void setNumberOfCities(ll numberOfCities);
         void makeGraph();

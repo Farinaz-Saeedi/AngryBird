@@ -19,7 +19,6 @@ int Home::getCapacity()
 void Home::setCapacity(int capacity)
 {
     this->capacity = capacity;
-    // slingshot.resize(capacity);
 }
 void Home::setCoordinates(ll newX, ll newY)
 {

@@ -1,6 +1,6 @@
 number of cities (status ----> input must be one of: Normal, Enemy, Home)
 
-name - x - y - Home - spy - 2
+name - x - y - Home - spy - capacity
 name - x - y - Enemy - spy
 ------
 ------
