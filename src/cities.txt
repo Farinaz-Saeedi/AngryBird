@@ -1,4 +1,4 @@
-number of cities (status ----> input must be one of: NC, EC, HB)
+number of cities (status ----> input must be one of: Normal, Enemy, Home)
 
 name - x - y - status - spy
 name - x - y - status - spy

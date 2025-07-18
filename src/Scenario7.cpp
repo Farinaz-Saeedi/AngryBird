@@ -24,22 +24,23 @@ void Scenario7::readInputs(std::vector<Bird> &birds, std::vector<Home> &homes)
 
     int cp, nights;
     ll count;
-    ld p;
+    ld temp;
     std::string name;
 
     while (!input.eof())
     {
-        input >> nights;
+        input >> nights >> temp;
         setNumberOfNights(nights);
+        setDamage(temp);
 
         input >> count;
         for (int i = 0; i < count; i++)
         {
             input >> name;
-            input >> p;
+            input >> temp;
             readBird(name, birds);
 
-            lst.push_back({name, p});
+            lst.push_back({name, temp});
 
             input >> name;
             input >> cp;

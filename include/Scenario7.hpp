@@ -9,18 +9,17 @@
 
 class Scenario7 : public Scenario
 {
-    public:
-        void readInputs(std::vector<Bird> & birds, std::vector<Home> & homes) override;
-        void setNumberOfNights(int numberOfNights);
-        int  getNumberOfNights();
-        ld get
+public:
+    void readInputs(std::vector<Bird> &birds, std::vector<Home> &homes) override;
+    void setNumberOfNights(int numberOfNights);
+    int getNumberOfNights();
+    ld getDamage();
+    void setDamage(ld damage);
 
-    private:
-        int numberOfNights;
-        ld damage;
-        std::vector<std::pair<std::string , ld>> lst;
-
+private:
+    int numberOfNights;
+    ld damage;
+    std::vector<std::pair<std::string, ld>> lst;
 };
 
-
-#endif 
+#endif
