@@ -15,7 +15,7 @@ void Scenario5::readInputs(std::vector<Bird> &birds, std::vector<Home> &homes)
     if (!input.is_open())
         std::cerr << " Unable to open file ! \n";
 
-    int cp, nights;
+    int nights;
     ll count;
     std::string name;
 
@@ -31,8 +31,7 @@ void Scenario5::readInputs(std::vector<Bird> &birds, std::vector<Home> &homes)
            readBird(name , birds);
 
            input >> name;
-           input >> cp;
-           readHome(name, cp, homes);
+           birds[birds.size()-1].setHomePlace(name);
         }
     }
 

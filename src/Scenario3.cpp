@@ -9,7 +9,6 @@ void Scenario3::readInputs(std::vector<Bird> &birds, std::vector<Home> &homes)
     
     ll count, number;
     std::string name;
-    int cp;
 
     while (!input.eof())
     {

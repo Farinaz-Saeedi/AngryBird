@@ -8,7 +8,6 @@ void Scenario4::readInputs(std::vector<Bird> &birds, std::vector<Home> &homes)
 
     ll count;
     std::string name;
-    int cp;
 
     while (!input.eof())
     {
@@ -19,8 +18,7 @@ void Scenario4::readInputs(std::vector<Bird> &birds, std::vector<Home> &homes)
            readBird(name , birds);
 
            input >> name;
-           input >> cp;
-           readHome(name, cp, homes);
+           birds[birds.size()-1].setHomePlace(name);
         }
     }
 
