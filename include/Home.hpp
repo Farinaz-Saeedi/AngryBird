@@ -19,6 +19,7 @@ class Home : public City {
     private:
         int capacity;
         std::string name;
+        std::vector<Bird> myBirds;
 
 };
 

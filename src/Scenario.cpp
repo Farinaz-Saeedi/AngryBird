@@ -29,12 +29,3 @@ void Scenario::readHome(std::string homeName, int cap,std::vector<Home> & homes)
 {
     homes.push_back(Home(homeName, cap));
 }
-
-// std::vector<Bird> Scenario::getBirds()
-// {
-//     return birds;
-// }
-// void Scenario::setBirds(std::vector<Bird> birds)
-// {
-//     this->birds = birds;
-// }

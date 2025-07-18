@@ -55,6 +55,11 @@ std::string Bird::getName()
 {
     return name;
 }
+std::string Bird::getHomePlace()
+{
+    return homePlace;
+}
+
 Type Bird::getType()
 {
     return type;
@@ -82,4 +87,8 @@ void Bird::setType(Type type)
 void Bird::setName(std::string name)
 {
     this->name = name;
+}
+void Bird::setHomePlace(std::string homePlace)
+{
+    this->homePlace = homePlace;
 }

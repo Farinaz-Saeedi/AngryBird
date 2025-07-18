@@ -22,6 +22,7 @@ class Bird
         ll getDemolition();
         int getDegree();
         std::string getName();
+        std::string getHomePlace();
         Type getType();
         void setDistance(ll distance);
         void setOutOfControl(ll outOfControl);
@@ -29,6 +30,7 @@ class Bird
         void setDegree(int degree);
         void setName(std::string name);
         void setType(Type type);
+        void setHomePlace(std::string homeName);
 
     private:
         ll distance;
@@ -36,6 +38,7 @@ class Bird
         ll demolition;
         int degree;
         std::string name;
+        std::string homePlace;
         Type type;
 
 };
