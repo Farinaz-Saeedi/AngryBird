@@ -9,7 +9,6 @@ Controler::Controler()
     birds.resize(8);
     cities.resize(getNumberOfCities());
 }
-
 ll Controler::getNumberOfCities()
 {
     return numberOfCities;
@@ -20,7 +19,6 @@ ll Controler::calDistance(City a, City b)
     ll xPow = pow((a.getX() - b.getX()), 2);
     return sqrt(yPow + xPow);
 }
-
 void Controler::readCities()
 {
     std::ifstream input("Cities.txt");

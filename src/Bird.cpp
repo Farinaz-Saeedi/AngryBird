@@ -35,7 +35,6 @@ Bird::Bird(std::string name, ll dis, ll out, int deg, ll dem, Type t)
     setName(name);
     setType(t);
 }
-
 long long Bird::getDistance()
 {
     return distance;
@@ -60,7 +59,6 @@ Type Bird::getType()
 {
     return type;
 }
-
 void Bird::setDistance(ll distance)
 {
     this->distance = distance;

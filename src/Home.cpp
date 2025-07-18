@@ -12,12 +12,10 @@ Home::Home(std::string name, ll x, ll y, bool is, int cap)
     setY(y);
     setIsSpy(is);
 }
-
 int Home::getCapacity()
 {
     return capacity;
 }
-
 void Home::setCapacity(int capacity)
 {
     this->capacity = capacity;

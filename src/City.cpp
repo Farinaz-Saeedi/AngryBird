@@ -10,7 +10,6 @@ City::City(std::string name, ll x, ll y, bool is)
     setY(y);
     setIsSpy(is);
 }
-
 ll City::getX()
 {
     return x;
@@ -31,7 +30,6 @@ Status City::getStatus()
 {
     return status;
 }
-
 void City::setCityName(std::string countryName)
 {
     this->cityName = countryName;

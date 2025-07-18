@@ -1,4 +1,4 @@
-7 - number of birds 
+7 - damage - number of birds 
 
 name - price - slingShot place - capacity  
 name - price - slingShot place - capacity 
