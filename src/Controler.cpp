@@ -28,7 +28,7 @@ void Controler::readCities()
     ll count, x, y;
     std::string str, situation;
     bool spy;
-    
+
     while (!input.eof())
     {
         input >> count;
@@ -126,18 +126,11 @@ void Controler::readScenario(int scen)
 void Controler::run()
 {
     int numberOfScen;
-    int whichScen;
 
     std::ifstream input("Scenario.txt");
     if (!input.is_open())
         std::cerr << " Unable to open file ! \n";
 
     input >> numberOfScen;
-
-    while (numberOfScen--)
-    {
-        input >> whichScen;
-        readScenario(whichScen);
-        // funtion to solve the scenarios
-    }
+    readScenario(numberOfScen);
 }

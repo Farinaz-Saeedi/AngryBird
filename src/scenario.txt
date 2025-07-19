@@ -1,15 +1,1 @@
 number of scenario 
-#1 titan 2
-#2 Venomtail 2 [name1]
-   Skyrage 1 [name2]
-   Ironbeak 3 [name3]
-#3 name of homes and their capacity
-   Stonewing 3
-   Fury 5
-   Blaze 1
-   Viper 2
-#4 we have A , B , C and homes and their capacity
-#5 all of birds
-#6 
-#7
-(just numbers!)
