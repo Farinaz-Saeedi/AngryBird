@@ -32,6 +32,7 @@ class Controler
         void readScenario( int scen ); // read each scenario
         void run();
         std::pair<std::string, std::string> findBestPair();
+        ld heuristic(City & a, City & b);
 
     private:
         std::vector<Bird> birds;
