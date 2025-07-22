@@ -7,7 +7,7 @@ class Enemy : public City {
 
     public:
         Enemy();
-        Enemy(std::string name, ll x, ll y, bool is);
+        Enemy(std::string name, ld x, ld y, bool is);
         virtual ~Enemy() = default;
         void setDefenseLevel(int defenseLevel);
         int getDefenseLevel();

@@ -4,7 +4,7 @@
 
 Home::Home() {};
 
-Home::Home(std::string name, ll x, ll y, bool is, int cap)
+Home::Home(std::string name, ld x, ld y, bool is, int cap)
 {
     setCapacity(cap);
     setCityName(name);
@@ -20,7 +20,7 @@ void Home::setCapacity(int capacity)
 {
     this->capacity = capacity;
 }
-void Home::setCoordinates(ll newX, ll newY)
+void Home::setCoordinates(ld newX, ld newY)
 {
     setX(newX);
     setY(newY);

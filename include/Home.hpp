@@ -10,11 +10,11 @@ class Home : public City {
 
     public:
         Home();
-        Home(std::string name, ll x, ll y, bool is, int cap);
+        Home(std::string name, ld x, ld y, bool is, int cap);
         virtual ~Home() = default;
         int getCapacity();
         void setCapacity(int capacity);
-        void setCoordinates(ll newX, ll newY);
+        void setCoordinates(ld newX, ld newY);
 
     private:
         int capacity;

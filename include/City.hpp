@@ -4,6 +4,7 @@
 #include <string>
 
 #define ll long long
+#define ld long double
 
 enum Status
 {
@@ -15,25 +16,25 @@ class City
 {
     public:
         City();
-        City(std::string name, ll x, ll y, bool is);
+        City(std::string name, ld x, ld y, bool is);
         virtual ~City() = default;
         std::string getCityName();
         Status getStatus();
-        ll getX();
-        ll getY();
+        ld getX();
+        ld getY();
         bool getIsSpy();
 
         void setCityName(std::string countryName);
         void setStatus(Status status);
-        void setX(ll x);
-        void setY(ll y);
+        void setX(ld x);
+        void setY(ld y);
         void setIsSpy(bool isSpy);
 
     private:
         std::string cityName;
         Status status; // Normal city - Enemy city - Home base
-        ll x;
-        ll y;
+        ld x;
+        ld y;
         bool isSpy;
 };
 

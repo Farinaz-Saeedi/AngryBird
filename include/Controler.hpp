@@ -28,18 +28,18 @@ class Controler
         ll calDistance(City a, City b);
         void readCities();
         void setNumberOfCities(ll numberOfCities);
-        void makeGraph();
         void sortCities(); // sort cities based on X
         void readScenario( int scen ); // read each scenario
         void run();
+        std::pair<std::string, std::string> findBestPair();
 
     private:
         std::vector<Bird> birds;
         std::vector<Home> homes;
         std::vector<std::unique_ptr<City>> cities;
+        std::vector<std::unique_ptr<City>> startCities;
+        std::vector<std::unique_ptr<City>> goalCities;
         ll numberOfCities;
-        std::unordered_map<std::string, std::unordered_set<std::string>> graph;
-        std::unordered_map<std::string, std::unordered_map<std::string, ld>> distBetween;
 };
 
 #endif

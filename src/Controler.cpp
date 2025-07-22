@@ -25,7 +25,8 @@ void Controler::readCities()
     if (!input.is_open())
         std::cerr << " Unable to open file ! \n";
 
-    ll count, x, y;
+    ll count;
+    ld x, y;
     std::string str, situation;
     bool spy;
 
@@ -47,6 +48,7 @@ void Controler::readCities()
                 auto city = std::make_unique<Enemy>(str, x, y, spy);
                 city->setStatus(E);
                 cities.push_back(std::move(city));
+                goalCities.push_back(std::move(city));
             }
             else if (situation == "Home")
             {
@@ -56,6 +58,7 @@ void Controler::readCities()
                 auto city = std::make_unique<Home>(str, x, y, spy, capacity);
                 city->setStatus(H);
                 cities.push_back(std::move(city));
+                startCities.push_back(std::move(city));
             }
         }
     }
@@ -64,21 +67,6 @@ void Controler::readCities()
 void Controler::setNumberOfCities(ll numberOfCities)
 {
     this->numberOfCities = numberOfCities;
-}
-void Controler::makeGraph()
-{
-    for (int i{}; i < cities.size(); ++i)
-    {
-        for (int j{i + 1}; j < cities.size(); ++j)
-        {
-            ld dist = calDistance(*cities[i], *cities[j]);
-            graph[cities[i]->getCityName()].insert(cities[j]->getCityName());
-            if (distBetween[cities[i]->getCityName()].find(cities[j]->getCityName()) == distBetween[cities[i]->getCityName()].end())
-            {
-                distBetween[cities[i]->getCityName()][cities[j]->getCityName()] = dist;
-            }
-        }
-    }
 }
 void Controler::sortCities()
 {
@@ -133,4 +121,21 @@ void Controler::run()
 
     input >> numberOfScen;
     readScenario(numberOfScen);
+}
+std::pair<std::string, std::string> Controler::findBestPair()
+{
+    ld bestEstimate = std::numeric_limits<double>::infinity();
+    std::pair<std::string, std::string> bestPair = {NULL , NULL};
+
+    for (const auto& start : startCities) {
+        for (const auto& goal : goalCities) {
+            double estimate = heuristic(*start, *goal);
+            if (estimate < bestEstimate) {
+                bestEstimate = estimate;
+                bestPair = {start->getCityName(), goal->getCityName()};
+            }
+        }
+    }
+
+    return bestPair;
 }

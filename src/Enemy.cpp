@@ -2,7 +2,7 @@
 
 Enemy::Enemy() {};
 
-Enemy::Enemy(std::string name, ll x, ll y, bool is)
+Enemy::Enemy(std::string name, ld x, ld y, bool is)
 {
     setCityName(name);
     setX(x);
