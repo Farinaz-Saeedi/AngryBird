@@ -129,7 +129,7 @@ std::pair<std::string, std::string> Controler::findBestPair()
 
     for (const auto& start : startCities) {
         for (const auto& goal : goalCities) {
-            double estimate = heuristic(*start, *goal);
+            ld estimate = heuristic(*start, *goal);
             if (estimate < bestEstimate) {
                 bestEstimate = estimate;
                 bestPair = {start->getCityName(), goal->getCityName()};

@@ -20,6 +20,17 @@
 
 #include <vector>
 
+struct Node {
+    std::string cityNamee;
+    double gCost; 
+    double fCost; 
+
+    bool operator>(const Node & other) const 
+    {
+        return fCost > other.fCost;
+    }
+};
+
 class Controler
 {
     public:
