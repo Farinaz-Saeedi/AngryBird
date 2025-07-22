@@ -45,6 +45,7 @@ class Controler
         std::pair<std::string, std::string> findBestPair();
         ld heuristic(City & a, City & b);
         std::vector<std::string> aStar(std::string start, std::string goal, ld max_flight_range);
+        bool canBirdReach(Bird & bird , ld distance);
 
     private:
         std::vector<Bird> birds;

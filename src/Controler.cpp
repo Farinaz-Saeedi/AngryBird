@@ -233,4 +233,12 @@ std::vector<std::string> Controler::aStar(std::string start, std::string goal, l
     reverse(path.begin(), path.end());
     return path;
 }
+bool Controler::canBirdReach(Bird & bird , ld distance)
+{
+    if (bird.getDistance() < distance)
+    {
+        return false;
+    }
+    return true;
+}
 
