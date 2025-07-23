@@ -39,9 +39,9 @@ class Controler
         ll calDistance(City a, City b);
         void readCities();
         void setNumberOfCities(ll numberOfCities);
-        void sortCities(); // sort cities based on X
         void readScenario( int scen ); // read each scenario
         void run();
+        void printBirds();
         std::pair<std::string, std::string> findBestPair();
         ld heuristic(City & a, City & b);
         std::vector<std::string> aStar(std::string start, std::string goal, ld maxDistance);

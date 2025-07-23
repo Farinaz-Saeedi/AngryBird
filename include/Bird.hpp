@@ -1,5 +1,5 @@
-#ifndef MISSILE_H
-#define MISSILE_H
+#ifndef BIRD_H
+#define BIRD_H
 
 #include <string>
 
@@ -42,12 +42,5 @@ class Bird
         Type type;
 
 };
-
-
-
-
-
-
-
 
 #endif

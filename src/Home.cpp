@@ -2,7 +2,7 @@
 
 #include "Home.hpp"
 
-Home::Home() {};
+Home::Home() {}
 
 Home::Home(std::string name, ld x, ld y, bool is, int cap)
 {

@@ -4,11 +4,7 @@
 
 #define ll long long
 
-Controler::Controler()
-{
-    birds.resize(8);
-    cities.resize(getNumberOfCities());
-}
+Controler::Controler(){}
 ll Controler::getNumberOfCities()
 {
     return numberOfCities;
@@ -21,7 +17,7 @@ ll Controler::calDistance(City a, City b)
 }
 void Controler::readCities()
 {
-    std::ifstream input("Cities.txt");
+    std::ifstream input("../src/Cities.txt");
     if (!input.is_open())
         std::cerr << " Unable to open file ! \n";
 
@@ -67,11 +63,6 @@ void Controler::readCities()
 void Controler::setNumberOfCities(ll numberOfCities)
 {
     this->numberOfCities = numberOfCities;
-}
-void Controler::sortCities()
-{
-    sort(cities.begin(), cities.end(), [](City a, City b)
-         { return a.getX() > b.getX(); });
 }
 void Controler::readScenario(int scen)
 {
@@ -121,6 +112,11 @@ void Controler::run()
 
     input >> numberOfScen;
     readScenario(numberOfScen);
+}
+void Controler::printBirds()
+{
+    for ( auto & bird : birds )
+        std::cout << bird.getName() << " " ;
 }
 std::pair<std::string, std::string> Controler::findBestPair()
 {
@@ -241,4 +237,3 @@ bool Controler::canBirdReach(Bird & bird , ld distance)
     }
     return true;
 }
-
