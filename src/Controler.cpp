@@ -146,7 +146,7 @@ ld Controler::heuristic(City &a, City &b)
 {
     return sqrt(pow((a.getX() - b.getX()), 2) + pow((a.getY() - b.getY()), 2));
 }
-std::vector<std::string> Controler::aStar(std::string start, std::string goal, ld max_flight_range)
+std::vector<std::string> Controler::aStar(std::string start, std::string goal, ld maxDistance)
 {
     ll n = cities.size();
 
@@ -163,7 +163,7 @@ std::vector<std::string> Controler::aStar(std::string start, std::string goal, l
     std::vector<int> cameFrom(n, -1);
 
     std::priority_queue<std::shared_ptr<Node>, std::vector<std::shared_ptr<Node>>,
-    std::function<bool(std::shared_ptr<Node>, std::shared_ptr<Node>)>>open
+    std::function<bool(std::shared_ptr<Node>, std::shared_ptr<Node>)>>openList
     (
         [](std::shared_ptr<Node> a, std::shared_ptr<Node> b)
         { return a->fCost > b->gCost; }
@@ -175,12 +175,12 @@ std::vector<std::string> Controler::aStar(std::string start, std::string goal, l
     startNode->gCost = 0.0;
     startNode->fCost = heuristic(*cities[startIdx], *cities[goalIdx]);
 
-    open.push(startNode);
+    openList.push(startNode);
 
-    while (!open.empty())
+    while (!openList.empty())
     {
-        auto current = open.top();
-        open.pop();
+        auto current = openList.top();
+        openList.pop();
 
         int u = nameToIndex[current->cityNamee];
         if (u == goalIdx)
@@ -196,7 +196,7 @@ std::vector<std::string> Controler::aStar(std::string start, std::string goal, l
             }
 
             ld dist = heuristic(*cities[u], *cities[v]);
-            if (dist > max_flight_range)
+            if (dist > maxDistance)
             {
                 continue;
             }
@@ -212,7 +212,7 @@ std::vector<std::string> Controler::aStar(std::string start, std::string goal, l
                 neighborNode->gCost = tentative_g;
                 neighborNode->fCost = tentative_g + heuristic(*cities[v], *cities[goalIdx]);
 
-                open.push(neighborNode);
+                openList.push(neighborNode);
             }
         }
     }
@@ -235,7 +235,7 @@ std::vector<std::string> Controler::aStar(std::string start, std::string goal, l
 }
 bool Controler::canBirdReach(Bird & bird , ld distance)
 {
-    if (bird.getDistance() < distance)
+    if (bird.getOutOfControl() < distance)
     {
         return false;
     }
