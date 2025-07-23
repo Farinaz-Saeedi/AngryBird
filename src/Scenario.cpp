@@ -4,9 +4,9 @@
 
 void Scenario::readBird(std::string targetName , std::vector<Bird> & birds)
 {
-    std::ifstream input("birds.txt");
+    std::ifstream input("../src/Birds.txt");
     if (!input.is_open())
-        std::cerr << " Unable to open file ! \n";
+        std::cerr << " Unable to open Birds file ! \n";
 
     std::string line;
 

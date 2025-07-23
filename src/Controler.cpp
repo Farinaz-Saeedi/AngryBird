@@ -17,9 +17,9 @@ ll Controler::calDistance(City a, City b)
 }
 void Controler::readCities()
 {
-    std::ifstream input("../src/Cities.txt");
+    std::ifstream input("Cities.txt");
     if (!input.is_open())
-        std::cerr << " Unable to open file ! \n";
+        std::cerr << " Unable to open Cities file ! \n";
 
     ll count;
     ld x, y;
@@ -96,28 +96,31 @@ void Controler::readScenario(int scen)
         Scenario6 scenario;
         scenario.readInputs(birds, homes);
     }
-    else
+    else if (scen == 7)
     {
         Scenario7 scenario;
         scenario.readInputs(birds, homes);
     }
+    else std::cout << "WRONG NUMBER!";
 }
 void Controler::run()
 {
     int numberOfScen;
 
-    std::ifstream input("Scenario.txt");
+    std::ifstream input("../src/Scenario.txt");
     if (!input.is_open())
-        std::cerr << " Unable to open file ! \n";
+        std::cerr << " Unable to open Scenario file ! \n";
 
     input >> numberOfScen;
     readScenario(numberOfScen);
+    printBirds();
 }
-void Controler::printBirds()
-{
-    for ( auto & bird : birds )
-        std::cout << bird.getName() << " " ;
-}
+// void Controler::printBirds() // testing
+// {
+//     std::cout << birds.size() << '\n';
+//     for ( auto & bird : birds )
+//         std::cout << bird.getName() << " \n" ;
+// }
 std::pair<std::string, std::string> Controler::findBestPair()
 {
     ld bestEstimate = std::numeric_limits<double>::infinity();

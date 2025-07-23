@@ -11,9 +11,9 @@ void Scenario5::setNumberOfNights(int numberOfNights)
 
 void Scenario5::readInputs(std::vector<Bird> &birds, std::vector<Home> &homes)
 {
-    std::ifstream input("Scenario5.txt");
+    std::ifstream input("../src/Scenario5.txt");
     if (!input.is_open())
-        std::cerr << " Unable to open file ! \n";
+        std::cerr << " Unable to open Scen-5 file ! \n";
 
     int nights;
     ll count;

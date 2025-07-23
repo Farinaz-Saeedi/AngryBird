@@ -2,9 +2,9 @@
 
 void Scenario4::readInputs(std::vector<Bird> &birds, std::vector<Home> &homes)
 {
-    std::ifstream input("Scenario4.txt");
+    std::ifstream input("../src/Scenario4.txt");
     if (!input.is_open())
-        std::cerr << " Unable to open file ! \n";
+        std::cerr << " Unable to open Scen-4 file ! \n";
 
     ll count;
     std::string name;
