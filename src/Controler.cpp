@@ -256,7 +256,7 @@ bool Controler::canDestroy(Bird & bird , ld distance)
 }
 bool Controler::isDetected(Bird & bird)
 {
-
+    // here, bird detection should be implemented based on the number of spies who have seen them
 }
 
 void Controler::shootDownMissile()
