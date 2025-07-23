@@ -145,7 +145,7 @@ ld Controler::heuristic(City &a, City &b)
 {
     return sqrt(pow((a.getX() - b.getX()), 2) + pow((a.getY() - b.getY()), 2));
 }
-std::vector<std::string> Controler::aStar(std::string start, std::string goal, ld maxDistance)
+std::vector<std::string> Controler::aStar(std::string start, std::string goal)
 {
     ll n = cities.size();
 
@@ -195,15 +195,22 @@ std::vector<std::string> Controler::aStar(std::string start, std::string goal, l
             {
                 continue;
             }
-
-            ld dist = heuristic(*cities[u], *cities[v]);
-          
             
-            if (dist > maxDistance)
+            bool flag = false;
+            ld dist = heuristic(*cities[u], *cities[v]);
+            for (int i = 0; i < birds.size(); i++)
             {
-                continue;
+                if (canDestroy(birds[i], totalDistance) && canBirdReach(birds[i], dist))
+                {
+                    flag = true;
+                    break;
+                }
             }
-
+            if (flag)
+            {
+               continue;
+            }
+            
             double tentative_g = g[u] + dist;
             if (tentative_g < g[v])
             {
@@ -238,7 +245,7 @@ std::vector<std::string> Controler::aStar(std::string start, std::string goal, l
 }
 bool Controler::canBirdReach(Bird & bird , ld distance)
 {
-    return bird.getOutOfControl() >= distance;
+    return bird.getOutOfControl() > distance;
 }
 bool Controler::canDestroy(Bird & bird , ld distance)
 {
