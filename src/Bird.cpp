@@ -7,22 +7,23 @@ std::istream & operator>>(std::istream & input , Type & type)
 {   
     std::string str;
     input >> str;
-    if (str.find('A'))
+    if (str.find('A') != std::string::npos)
     {
         type = A;
     }
-    else if (str.find('B'))
+    else if (str.find('B') != std::string::npos)
     {
         type = B;
     }
-    else if (str.find('C'))
+    else if (str.find('C') != std::string::npos)
     {
         type = C;
     }
-    else if (str.find('D'))
+    else if (str.find('D') != std::string::npos)
     {
         type = D;
     }
+    return input;
 }
 
 Bird::Bird(){}
