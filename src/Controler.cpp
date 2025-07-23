@@ -167,7 +167,7 @@ std::vector<std::string> Controler::aStar(std::string start, std::string goal)
     std::function<bool(std::shared_ptr<Node>, std::shared_ptr<Node>)>>openList
     (
         [](std::shared_ptr<Node> a, std::shared_ptr<Node> b)
-        { return a->fCost > b->gCost; }
+        { return a->fCost > b->fCost; }
     );
 
     g[startIdx] = 0.0;
@@ -212,6 +212,9 @@ std::vector<std::string> Controler::aStar(std::string start, std::string goal)
             }
             
             double tentative_g = g[u] + dist;
+            // double penalty = cities[v]->hasSpy() ? maxDistance : 0.0;
+            // double tentative_g = g[u] + dist + penalty;
+
             if (tentative_g < g[v])
             {
                 g[v] = tentative_g;
@@ -251,3 +254,41 @@ bool Controler::canDestroy(Bird & bird , ld distance)
 {
     return bird.getDistance() >= distance;
 }
+bool Controler::isDetected(Bird & bird)
+{
+
+}
+
+void Controler::shootDownMissile()
+{
+    std::vector<Bird> detectedBirds;
+    Enemy enemy;
+
+    for (auto &it : birds)
+    {
+        if (isDetected(it))
+        {
+            detectedBirds.push_back(it);
+        }
+    }
+
+   
+    std::sort(detectedBirds.begin(), detectedBirds.end(), [](Bird &a, Bird &b)
+              {
+                  return a.getDemolition() > b.getDemolition();
+              });
+
+
+    for (int i = 0; i < enemy.getDefenseLevel() && i < detectedBirds.size(); i++)
+    {
+        for (auto it = birds.begin(); it != birds.end(); ++it)
+        {
+            if (it->getName() == detectedBirds[i].getName())
+            {
+                birds.erase(it);
+                break;
+            }
+        }
+    }
+}
+

@@ -47,6 +47,8 @@ class Controler
         std::vector<std::string> aStar(std::string start, std::string goal);
         bool canBirdReach(Bird & bird , ld distance);
         bool canDestroy(Bird & bird , ld distance);
+        bool isDetected(Bird & bird);
+        void shootDownMissile();
 
     private:
         std::vector<Bird> birds;
