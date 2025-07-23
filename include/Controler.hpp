@@ -46,6 +46,7 @@ class Controler
         ld heuristic(City & a, City & b);
         std::vector<std::string> aStar(std::string start, std::string goal, ld maxDistance);
         bool canBirdReach(Bird & bird , ld distance);
+        bool canDestroy(Bird & bird , ld distance);
 
     private:
         std::vector<Bird> birds;

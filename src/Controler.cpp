@@ -113,7 +113,7 @@ void Controler::run()
 
     input >> numberOfScen;
     readScenario(numberOfScen);
-    printBirds();
+   // printBirds();
 }
 // void Controler::printBirds() // testing
 // {
@@ -158,6 +158,8 @@ std::vector<std::string> Controler::aStar(std::string start, std::string goal, l
     int startIdx = nameToIndex[start];
     int goalIdx = nameToIndex[goal];
 
+    ld totalDistance = calDistance(*cities[startIdx], *cities[goalIdx]);
+
     std::vector<ld> g(n, std::numeric_limits<ld>::infinity());
     std::vector<int> cameFrom(n, -1);
 
@@ -195,6 +197,8 @@ std::vector<std::string> Controler::aStar(std::string start, std::string goal, l
             }
 
             ld dist = heuristic(*cities[u], *cities[v]);
+          
+            
             if (dist > maxDistance)
             {
                 continue;
@@ -234,9 +238,9 @@ std::vector<std::string> Controler::aStar(std::string start, std::string goal, l
 }
 bool Controler::canBirdReach(Bird & bird , ld distance)
 {
-    if (bird.getOutOfControl() < distance)
-    {
-        return false;
-    }
-    return true;
+    return bird.getOutOfControl() >= distance;
+}
+bool Controler::canDestroy(Bird & bird , ld distance)
+{
+    return bird.getDistance() >= distance;
 }
