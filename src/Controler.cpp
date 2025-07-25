@@ -145,7 +145,7 @@ ld Controler::heuristic(City &a, City &b)
 {
     return sqrt(pow((a.getX() - b.getX()), 2) + pow((a.getY() - b.getY()), 2));
 }
-std::vector<std::string> Controler::aStar(std::string start, std::string goal)
+std::vector<std::string> Controler::aStar(std::string start, std::string goal, Bird myBird)
 {
     ll n = cities.size();
 
@@ -157,8 +157,6 @@ std::vector<std::string> Controler::aStar(std::string start, std::string goal)
 
     int startIdx = nameToIndex[start];
     int goalIdx = nameToIndex[goal];
-
-    ld totalDistance = calDistance(*cities[startIdx], *cities[goalIdx]);
 
     std::vector<ld> g(n, std::numeric_limits<ld>::infinity());
     std::vector<int> cameFrom(n, -1);
@@ -192,38 +190,24 @@ std::vector<std::string> Controler::aStar(std::string start, std::string goal)
         for (int v = 0; v < n; ++v)
         {
             if (v == u)
-            {
                 continue;
-            }
             
-            bool flag = false;
             ld dist = heuristic(*cities[u], *cities[v]);
-            for (int i = 0; i < birds.size(); i++)
-            {
-                if (canDestroy(birds[i], totalDistance) && canBirdReach(birds[i], dist))
-                {
-                    flag = true;
-                    break;
-                }
-            }
-            if (flag)
-            {
-               continue;
-            }
+            if (canBirdReach(myBird, dist))
+                continue;
             
-            double tentative_g = g[u] + dist;
-            // double penalty = cities[v]->hasSpy() ? maxDistance : 0.0;
-            // double tentative_g = g[u] + dist + penalty;
+            ld penalty = cities[v]->getIsSpy() ? myBird.getOutOfControl() : 0.0;
+            ld tempG = g[u] + dist + penalty;
 
-            if (tentative_g < g[v])
+            if (tempG < g[v])
             {
-                g[v] = tentative_g;
+                g[v] = tempG;
                 cameFrom[v] = u;
 
                 auto neighborNode = std::make_shared<Node>();
                 neighborNode->cityNamee = cities[v]->getCityName();
-                neighborNode->gCost = tentative_g;
-                neighborNode->fCost = tentative_g + heuristic(*cities[v], *cities[goalIdx]);
+                neighborNode->gCost = tempG;
+                neighborNode->fCost = tempG + heuristic(*cities[v], *cities[goalIdx]);
 
                 openList.push(neighborNode);
             }
@@ -237,13 +221,25 @@ std::vector<std::string> Controler::aStar(std::string start, std::string goal)
         return {};
     }
 
+    ld totalDistance = 0.0;
+
     while (curr != -1)
     {
         path.push_back(cities[curr]->getCityName());
-        curr = cameFrom[curr];
+        int prev = cameFrom[curr];
+        if ( prev != -1 )
+        {
+            totalDistance += heuristic(*cities[prev], *cities[curr]);
+        }
+        curr = prev;
     }
 
-    reverse(path.begin(), path.end());
+    std::reverse(path.begin(), path.end());
+    if (!canDestroy(myBird, totalDistance))
+    {
+        return {"Bird CAN NOT reach the goal"}; 
+    }
+
     return path;
 }
 bool Controler::canBirdReach(Bird & bird , ld distance)
@@ -259,7 +255,7 @@ bool Controler::isDetected(Bird & bird)
     // here, bird detection should be implemented based on the number of spies who have seen them
 }
 
-void Controler::shootDownMissile()
+void Controler::shootDownBird()
 {
     std::vector<Bird> detectedBirds;
     Enemy enemy;

@@ -44,11 +44,11 @@ class Controler
         // void printBirds(); // testing
         std::pair<std::string, std::string> findBestPair();
         ld heuristic(City & a, City & b);
-        std::vector<std::string> aStar(std::string start, std::string goal);
+        std::vector<std::string> aStar(std::string start, std::string goal, Bird myBird);
         bool canBirdReach(Bird & bird , ld distance);
         bool canDestroy(Bird & bird , ld distance);
         bool isDetected(Bird & bird);
-        void shootDownMissile();
+        void shootDownBird();
 
     private:
         std::vector<Bird> birds;
