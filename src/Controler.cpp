@@ -108,16 +108,10 @@ void Controler::run()
         std::cerr << " Unable to open Scenario file ! \n";
 
     input >> numberOfScen;
-    readScenario(numberOfScen);
-   
+    std::shared_ptr<Scenario> whichScen = readScenario(numberOfScen);
+    whichScen->printOutput(*this);
 }
-// void Controler::printBirds() // testing
-// {
-//     std::cout << birds.size() << '\n';
-//     for ( auto & bird : birds )
-//         std::cout << bird.getName() << " \n" ;
-// }
-std::pair<std::string, std::string> Controler::findBestPair()
+void Controler::findBestPairs()
 {
     ld bestEstimate = std::numeric_limits<double>::infinity();
     std::pair<std::string, std::string> bestPair = {NULL, NULL};
@@ -130,12 +124,14 @@ std::pair<std::string, std::string> Controler::findBestPair()
             if (estimate < bestEstimate)
             {
                 bestEstimate = estimate;
-                bestPair = {start->getCityName(), goal->getCityName()};
+                bestPairs.clear(); 
+                bestPairs.emplace_back(start->getCityName(), goal->getCityName());
+            } else if (estimate == bestEstimate)
+            {
+                bestPairs.emplace_back(start->getCityName(), goal->getCityName());
             }
         }
     }
-
-    return bestPair;
 }
 ld Controler::heuristic(City &a, City &b)
 {
