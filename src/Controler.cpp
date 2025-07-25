@@ -109,7 +109,7 @@ void Controler::run()
 
     input >> numberOfScen;
     readScenario(numberOfScen);
-   // printBirds();
+   
 }
 // void Controler::printBirds() // testing
 // {

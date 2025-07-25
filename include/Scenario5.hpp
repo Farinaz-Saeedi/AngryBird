@@ -7,6 +7,7 @@ class Scenario5 : public Scenario
 {
     public:
         void readInputs(std::vector<Bird> & birds, std::vector<Home> & homes) override;
+        void printOutput(Controler & control) override;
         void setNumberOfNights(int numberOfNights);
         int getNumberOfNights();
 

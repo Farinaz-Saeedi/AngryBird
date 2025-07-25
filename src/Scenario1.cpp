@@ -21,3 +21,7 @@ void Scenario1::readInputs(std::vector<Bird> & birds,  std::vector<Home> & homes
 
     input.close();
 }
+void Scenario1::printOutput(Controler & control) 
+{
+    
+}
