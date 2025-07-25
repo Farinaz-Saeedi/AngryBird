@@ -39,7 +39,7 @@ class Controler
         ll calDistance(City a, City b);
         void readCities();
         void setNumberOfCities(ll numberOfCities);
-        void readScenario( int scen ); // read each scenario
+        std::shared_ptr<Scenario> readScenario( int scen ); // read each scenario
         void run();
         // void printBirds(); // testing
         std::pair<std::string, std::string> findBestPair();

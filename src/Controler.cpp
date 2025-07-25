@@ -64,44 +64,40 @@ void Controler::setNumberOfCities(ll numberOfCities)
 {
     this->numberOfCities = numberOfCities;
 }
-void Controler::readScenario(int scen)
+std::shared_ptr<Scenario> Controler::readScenario(int scen)
 {
+    std::shared_ptr<Scenario> scenario;
     if (scen == 1)
     {
-        Scenario1 scenario;
-        scenario.readInputs(birds, homes);
+        scenario = std::make_shared<Scenario1>();
     }
     else if (scen == 2)
     {
-        Scenario2 scenario;
-        scenario.readInputs(birds, homes);
+        scenario = std::make_shared<Scenario2>();
     }
     else if (scen == 3)
     {
-        Scenario3 scenario;
-        scenario.readInputs(birds, homes);
+        scenario = std::make_shared<Scenario3>();
     }
     else if (scen == 4)
     {
-        Scenario4 scenario;
-        scenario.readInputs(birds, homes);
+        scenario = std::make_shared<Scenario4>();
     }
     else if (scen == 5)
     {
-        Scenario5 scenario;
-        scenario.readInputs(birds, homes);
+        scenario = std::make_shared<Scenario5>();
     }
     else if (scen == 6)
     {
-        Scenario6 scenario;
-        scenario.readInputs(birds, homes);
+        scenario = std::make_shared<Scenario6>();
     }
     else if (scen == 7)
     {
-        Scenario7 scenario;
-        scenario.readInputs(birds, homes);
+        scenario = std::make_shared<Scenario7>();
     }
     else std::cout << "WRONG NUMBER!";
+    scenario->readInputs(birds, homes);
+    return scenario;
 }
 void Controler::run()
 {
@@ -270,9 +266,9 @@ void Controler::shootDownBird()
 
    
     std::sort(detectedBirds.begin(), detectedBirds.end(), [](Bird &a, Bird &b)
-              {
-                  return a.getDemolition() > b.getDemolition();
-              });
+    {
+        return a.getDemolition() > b.getDemolition();
+    });
 
 
     for (int i = 0; i < enemy.getDefenseLevel() && i < detectedBirds.size(); i++)
