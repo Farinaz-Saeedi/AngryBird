@@ -48,6 +48,8 @@ class Controler
         bool canDestroy(Bird & bird , ld distance);
         bool isDetected(Bird & bird);
         void shootDownBird();
+        std::pair<std::string , std::string> getTopBestPair();
+
 
     private:
         std::vector<Bird> birds;

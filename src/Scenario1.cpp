@@ -23,5 +23,5 @@ void Scenario1::readInputs(std::vector<Bird> & birds,  std::vector<Home> & homes
 }
 void Scenario1::printOutput(Controler & control) 
 {
-    control.aStar()
+    // for : number of birds { do the astar for each of them } 
 }

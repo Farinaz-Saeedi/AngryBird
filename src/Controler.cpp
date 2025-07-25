@@ -279,4 +279,9 @@ void Controler::shootDownBird()
         }
     }
 }
-
+std::pair<std::string , std::string> Controler::getTopBestPair()
+{
+    std::pair<std::string , std::string> top = bestPairs[bestPairs.size()-1];
+    bestPairs.pop_back();
+    return top;
+}
