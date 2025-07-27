@@ -1,13 +1,13 @@
 #include "Scenario1.hpp"
 
-void Scenario1::readInputs(std::vector<Bird> & birds,  std::vector<Home> & homes)
+void Scenario1::readInputs(std::vector<Bird> &birds, std::vector<Home> &homes)
 {
     std::ifstream input("../src/Scenario1.txt");
     if (!input.is_open())
         std::cerr << " Unable to open Scen-1 file ! \n";
 
-    std::string name ;
-    int count ;
+    std::string name;
+    int count;
 
     while (!input.eof())
     {
@@ -15,13 +15,29 @@ void Scenario1::readInputs(std::vector<Bird> & birds,  std::vector<Home> & homes
         for (int i = 0; i < count; i++)
         {
             input >> name;
-            readBird(name , birds);
+            readBird(name, birds);
         }
     }
 
     input.close();
 }
-void Scenario1::printOutput(Controler & control) 
+void Scenario1::utpuprintOt(Controler &control)
 {
-    // for : number of birds { do the astar for each of them } 
+    ld totalDamage = 0.0;
+
+    for (auto &bird : control.getBirds())
+    {
+        auto path = control.aStar(control.getTopBestPair().first, control.getTopBestPair().second, bird);
+
+        std::cout << "\nBird : " << bird.getName() << "\nPath: ";
+        for (auto &city : path)
+        {
+            std::cout << city << " ";
+        }
+
+        std::cout << "\n\n";
+        totalDamage += control.totoalDamage(path, bird);
+    }
+
+    std::cout << "Total Damage: " << totalDamage << "\n";
 }
