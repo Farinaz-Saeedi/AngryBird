@@ -24,3 +24,23 @@ void Scenario4::readInputs(std::vector<Bird> &birds, std::vector<Home> &homes)
 
     input.close();
 }
+void Scenario4::printOutput(Controler &control)
+{
+    ld totalDamage = 0.0;
+
+    for (auto &bird : control.getBirds())
+    {
+        auto path = control.aStar(control.getTopBestPair().first, control.getTopBestPair().second, bird);
+
+        std::cout << "\nBird : " << bird.getName() << "\nPath: ";
+        for (auto &city : path)
+        {
+            std::cout << city << " ";
+        }
+
+        std::cout << "\n\n";
+        totalDamage += control.totoalDamage(path, bird);
+    }
+
+    std::cout << "Total Damage: " << totalDamage << "\n";
+}
