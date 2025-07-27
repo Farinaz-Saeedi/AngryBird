@@ -185,7 +185,7 @@ std::vector<std::string> Controler::aStar(std::string start, std::string goal, B
                 continue;
             
             ld dist = heuristic(*cities[u], *cities[v]);
-            if (canBirdReach(myBird, dist))
+            if (!canBirdReach(myBird, dist))
                 continue;
             
             ld penalty = cities[v]->getIsSpy() ? myBird.getOutOfControl() : 0.0;
@@ -259,7 +259,6 @@ bool Controler::isDetected(Bird & bird)
     }
     return false; 
 }
-
 void Controler::shootDownBird()
 {
     std::vector<Bird> detectedBirds;
@@ -297,4 +296,23 @@ std::pair<std::string , std::string> Controler::getTopBestPair()
     std::pair<std::string , std::string> top = bestPairs[bestPairs.size()-1];
     bestPairs.pop_back();
     return top;
+}
+ld Controler::totoalDamage(std::vector<std::string> &path, Bird & bird)
+{
+    ld damage = 0.0;
+
+    std::unordered_set<std::string> enemyCityNames;
+    for (auto &goalCity : goalCities)
+    {
+        enemyCityNames.insert(goalCity->getCityName());
+    }
+
+    for (auto& cityName : path)
+    {
+        if (enemyCityNames.count(cityName))
+        {
+            damage += bird.getDemolition();
+        }
+    }
+    return damage;
 }

@@ -49,6 +49,7 @@ class Controler
         bool isDetected(Bird & bird);
         void shootDownBird();
         std::pair<std::string , std::string> getTopBestPair();
+        ld totoalDamage(std::vector<std::string> &path, Bird & bird);
 
 
     private:
