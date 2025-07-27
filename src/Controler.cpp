@@ -9,6 +9,10 @@ ll Controler::getNumberOfCities()
 {
     return numberOfCities;
 }
+std::vector<Bird> Controler::getBirds()
+{
+    return birds;
+}
 ll Controler::calDistance(City a, City b)
 {
     ll yPow = pow((a.getY() - b.getY()), 2);
@@ -259,7 +263,7 @@ bool Controler::isDetected(Bird & bird)
     }
     return false; 
 }
-void Controler::shootDownBird()
+void Controler::shootDownBird() // call after A*
 {
     std::vector<Bird> detectedBirds;
     Enemy enemy;
@@ -307,7 +311,7 @@ ld Controler::totoalDamage(std::vector<std::string> &path, Bird & bird)
         enemyCityNames.insert(goalCity->getCityName());
     }
 
-    for (auto& cityName : path)
+    for (auto &cityName : path)
     {
         if (enemyCityNames.count(cityName))
         {
