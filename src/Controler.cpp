@@ -244,7 +244,20 @@ bool Controler::canDestroy(Bird & bird , ld distance)
 }
 bool Controler::isDetected(Bird & bird)
 {
-    // here, bird detection should be implemented based on the number of spies who have seen them
+    ll numberOfSpy = 0;
+    for(auto &it : cities)
+    {
+        if (it->getIsSpy())
+        {
+            numberOfSpy++;
+        } 
+    }
+
+    if (numberOfSpy >= bird.getDegree())
+    {
+        return true;
+    }
+    return false; 
 }
 
 void Controler::shootDownBird()
