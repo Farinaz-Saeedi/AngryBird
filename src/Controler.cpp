@@ -157,7 +157,7 @@ ld Controler::heuristic(City &a, City &b)
 {
     return sqrt(pow((a.getX() - b.getX()), 2) + pow((a.getY() - b.getY()), 2));
 }
-std::vector<std::string> Controler::aStar(std::string start, std::string goal, Bird myBird)
+void Controler::aStar(std::string start, std::string goal, Bird myBird)
 {
     ll n = cities.size();
     
@@ -226,18 +226,18 @@ std::vector<std::string> Controler::aStar(std::string start, std::string goal, B
         }
     }
 
-    std::vector<std::string> path;
     int curr = goalIdx;
     if (cameFrom[curr] == -1)
     {
-        return {};
+        return;
     }
 
     ld totalDistance = 0.0;
 
     while (curr != -1)
     {
-        path.push_back(cities[curr]->getCityName());
+        path.push_back(cities[curr]);
+
         int prev = cameFrom[curr];
         if ( prev != -1 )
         {
@@ -255,8 +255,6 @@ std::vector<std::string> Controler::aStar(std::string start, std::string goal, B
             birds.erase(it);
         }
     }
-
-    return path;
 }
 bool Controler::canBirdReach(Bird & bird , ld distance)
 {
@@ -269,7 +267,7 @@ bool Controler::canDestroy(Bird & bird , ld distance)
 bool Controler::isDetected(Bird & bird)
 {
     ll numberOfSpy = 0;
-    for(auto &it : cities)
+    for(auto &it : path)
     {
         if (it->getIsSpy())
         {
@@ -283,10 +281,9 @@ bool Controler::isDetected(Bird & bird)
     }
     return false; 
 }
-void Controler::shootDownBird() // call after A*
+void Controler::shootDownBird(Enemy &enemy) // call after A*
 {
     std::vector<Bird> detectedBirds;
-    Enemy enemy;
 
     for (auto &it : birds)
     {

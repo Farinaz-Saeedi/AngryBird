@@ -44,11 +44,11 @@ class Controler
         void run();
         void findBestPairs();
         ld heuristic(City & a, City & b);
-        std::vector<std::string> aStar(std::string start, std::string goal, Bird myBird);
+        void aStar(std::string start, std::string goal, Bird myBird);
         bool canBirdReach(Bird & bird , ld distance);
         bool canDestroy(Bird & bird , ld distance);
         bool isDetected(Bird & bird);
-        void shootDownBird();
+        void shootDownBird(Enemy &enemy);
         std::pair<std::string , std::string> getTopBestPair();
         ld totoalDamage(std::vector<std::string> &path, Bird & bird);
         std::vector<Bird> getBirds();
@@ -60,6 +60,7 @@ class Controler
         std::vector<std::shared_ptr<City>> cities;
         std::vector<std::shared_ptr<City>> goalCities;
         std::vector<std::shared_ptr<City>> startCities;
+        std::vector<std::shared_ptr<City>> path;
         std::vector<std::pair<std::string , std::string>> bestPairs;
        
         ll numberOfCities;
