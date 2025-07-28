@@ -27,7 +27,15 @@ void Scenario1::printOutput(Controler &control)
 
     for (auto &bird : control.getBirds())
     {
-        auto path = control.aStar(control.getTopBestPair().first, control.getTopBestPair().second, bird);
+        std::cout << "in scenario1\n";
+        auto pair = control.getTopBestPair();
+        if (pair.first.empty() || pair.second.empty()) {
+            std::cerr << "Invalid city pair!\n";
+        
+        }
+        std::cout <<"Sadf";
+        auto path = control.aStar(pair.first, pair.second, bird);
+        // auto path = control.aStar(control.getTopBestPair().first, control.getTopBestPair().second, bird);
 
         std::cout << "\nBird : " << bird.getName() << "\nPath: ";
         for (auto &city : path)

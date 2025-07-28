@@ -4,7 +4,8 @@
 
 #define ll long long
 
-Controler::Controler(){}
+Controler::Controler(){ std::cout << "inclontrol\n";}
+
 ll Controler::getNumberOfCities()
 {
     return numberOfCities;
@@ -21,7 +22,7 @@ ll Controler::calDistance(City a, City b)
 }
 void Controler::readCities()
 {
-    std::ifstream input("Cities.txt");
+    std::ifstream input("../src/Cities.txt");
     if (!input.is_open())
         std::cerr << " Unable to open Cities file ! \n";
 
@@ -33,32 +34,34 @@ void Controler::readCities()
     while (!input.eof())
     {
         input >> count;
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < count; ++i)
         {
             input >> str >> x >> y >> situation >> spy;
 
+            std::cout << str << '\n';
+
             if (situation == "Normal")
             {
-                auto city = std::make_unique<City>(str, x, y, spy);
+                auto city = std::make_shared<City>(str, x, y, spy);
                 city->setStatus(N);
-                cities.push_back(std::move(city));
+                cities.push_back(city);
             }
             else if (situation == "Enemy")
             {
-                auto city = std::make_unique<Enemy>(str, x, y, spy);
+                auto city = std::make_shared<Enemy>(str, x, y, spy);
                 city->setStatus(E);
-                cities.push_back(std::move(city));
-                goalCities.push_back(std::move(city));
+                cities.push_back(city);
+                goalCities.push_back(city);      
             }
             else if (situation == "Home")
             {
                 int capacity;
                 input >> capacity;
 
-                auto city = std::make_unique<Home>(str, x, y, spy, capacity);
+                auto city = std::make_shared<Home>(str, x, y, spy, capacity);
                 city->setStatus(H);
-                cities.push_back(std::move(city));
-                startCities.push_back(std::move(city));
+                cities.push_back(city);
+                startCities.push_back(city);
             }
         }
     }
@@ -105,20 +108,26 @@ std::shared_ptr<Scenario> Controler::readScenario(int scen)
 }
 void Controler::run()
 {
-    int numberOfScen;
-
+    readCities();
+    findBestPairs();
+    
     std::ifstream input("../src/Scenario.txt");
     if (!input.is_open())
         std::cerr << " Unable to open Scenario file ! \n";
-
+        
+    int numberOfScen;
     input >> numberOfScen;
     std::shared_ptr<Scenario> whichScen = readScenario(numberOfScen);
+    std::cout << numberOfScen;
     whichScen->printOutput(*this);
 }
 void Controler::findBestPairs()
 {
+std::cout << "Start Cities: " << startCities.size() << "\n";
+std::cout << "Goal Cities: " << goalCities.size() << "\n";
+
     ld bestEstimate = std::numeric_limits<double>::infinity();
-    std::pair<std::string, std::string> bestPair = {NULL, NULL};
+    std::pair<std::string, std::string> bestPair = {"", ""};
 
     for (const auto &start : startCities)
     {
@@ -129,12 +138,18 @@ void Controler::findBestPairs()
             {
                 bestEstimate = estimate;
                 bestPairs.clear(); 
-                bestPairs.emplace_back(start->getCityName(), goal->getCityName());
+                bestPairs.push_back({start->getCityName(), goal->getCityName()});
             } else if (estimate == bestEstimate)
             {
-                bestPairs.emplace_back(start->getCityName(), goal->getCityName());
+                bestPairs.push_back({start->getCityName(), goal->getCityName()});
             }
         }
+    }
+
+    std::cout << "meow" << bestPairs.size();
+    for ( auto x : bestPairs )
+    {
+        std::cout << x.first << " " << x.second << '\n';
     }
 }
 ld Controler::heuristic(City &a, City &b)
@@ -144,34 +159,34 @@ ld Controler::heuristic(City &a, City &b)
 std::vector<std::string> Controler::aStar(std::string start, std::string goal, Bird myBird)
 {
     ll n = cities.size();
-
+    
     std::unordered_map<std::string, int> nameToIndex;
     for (int i = 0; i < n; i++)
     {
         nameToIndex[cities[i]->getCityName()] = i;
     }
-
+    
     int startIdx = nameToIndex[start];
     int goalIdx = nameToIndex[goal];
-
+    
     std::vector<ld> g(n, std::numeric_limits<ld>::infinity());
     std::vector<int> cameFrom(n, -1);
-
+    
     std::priority_queue<std::shared_ptr<Node>, std::vector<std::shared_ptr<Node>>,
     std::function<bool(std::shared_ptr<Node>, std::shared_ptr<Node>)>>openList
     (
         [](std::shared_ptr<Node> a, std::shared_ptr<Node> b)
         { return a->fCost > b->fCost; }
     );
-
+    
     g[startIdx] = 0.0;
     auto startNode = std::make_shared<Node>();
     startNode->cityNamee = start;
     startNode->gCost = 0.0;
     startNode->fCost = heuristic(*cities[startIdx], *cities[goalIdx]);
-
+    
     openList.push(startNode);
-
+    
     while (!openList.empty())
     {
         auto current = openList.top();

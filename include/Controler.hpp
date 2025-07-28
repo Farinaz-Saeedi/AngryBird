@@ -35,6 +35,7 @@ class Controler
 {
     public:
         Controler();
+        // ~Controler();
         ll getNumberOfCities();
         ll calDistance(City a, City b);
         void readCities();
@@ -56,9 +57,9 @@ class Controler
     private:
         std::vector<Bird> birds;
         std::vector<Home> homes;
-        std::vector<std::unique_ptr<City>> cities;
-        std::vector<std::unique_ptr<City>> startCities;
-        std::vector<std::unique_ptr<City>> goalCities;
+        std::vector<std::shared_ptr<City>> cities;
+        std::vector<std::shared_ptr<City>> goalCities;
+        std::vector<std::shared_ptr<City>> startCities;
         std::vector<std::pair<std::string , std::string>> bestPairs;
         ll numberOfCities;
 };
