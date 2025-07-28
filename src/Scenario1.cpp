@@ -18,6 +18,7 @@ void Scenario1::readInputs(std::vector<Bird> &birds, std::vector<Home> &homes)
             readBird(name, birds);
         }
     }
+    
 
     input.close();
 }

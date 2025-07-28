@@ -25,3 +25,11 @@ void Home::setCoordinates(ld newX, ld newY)
     setX(newX);
     setY(newY);
 }
+void Home::push(Bird &bird)
+{
+    myBirds.push_back(bird);
+}
+std::vector<Bird> Home::getMyBirds()
+{
+    return myBirds;
+}
