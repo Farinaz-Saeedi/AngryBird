@@ -37,3 +37,4 @@ void Scenario5::readInputs(std::vector<Bird> &birds, std::vector<Home> &homes)
 
     input.close();
 }
+void Scenario5::printOutput(Controler &control){}

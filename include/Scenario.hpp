@@ -4,7 +4,8 @@
 #include <bits/stdc++.h>
 #include "Bird.hpp"
 #include "Home.hpp"
-#include "Controler.hpp"
+
+class Controler;
 
 class Scenario {
 

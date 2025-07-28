@@ -2,6 +2,7 @@
 #define SCENARIO6_H
 
 #include "Scenario.hpp"
+#include "Controler.hpp"
 
 class Scenario6 : public Scenario
 {
