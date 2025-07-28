@@ -38,15 +38,24 @@ void Scenario7::readInputs(std::vector<Bird> &birds, std::vector<Home> &homes)
         {
             input >> name;
             input >> temp;
-            readBird(name, birds);
+            Bird tempBird = readBird(name, birds);
 
             lst.push_back({name, temp});
 
             input >> name;
-           birds[birds.size()-1].setHomePlace(name);
+            birds[birds.size() - 1].setHomePlace(name);
+
+            for (int j = 0; j < homes.size(); j++)
+            {
+                if (homes[j].getCityName() == name)
+                {
+                    homes[j].push(tempBird);
+                    break;
+                }
+            }
         }
     }
 
     input.close();
 }
-void Scenario7::printOutput(Controler &control){}
+void Scenario7::printOutput(Controler &control) {}
