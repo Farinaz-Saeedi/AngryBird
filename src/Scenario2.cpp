@@ -15,9 +15,18 @@ void Scenario2::readInputs(std::vector<Bird> &birds, std::vector<Home> &homes)
         for (int i = 0; i < count; i++)
         {
             input >> name;
-            readBird(name, birds);
+            Bird temp = readBird(name, birds);
             input >> name;
             birds[birds.size() - 1].setHomePlace(name);
+
+            for (int j = 0; j < homes.size(); j++)
+            {
+                if (homes[j].getCityName() == name)
+                {
+                    homes[j].push(temp);
+                    break;
+                }
+            }
         }
     }
 
