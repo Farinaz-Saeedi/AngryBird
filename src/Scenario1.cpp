@@ -34,7 +34,7 @@ void Scenario1::printOutput(Controler &control)
             std::cerr << "Invalid city pair!\n";
         
         }
-        auto path = control.aStar(pair.first, pair.second, bird);
+        auto path = control.getPath(); 
 
         std::cout << "\nBird : " << bird.getName() << "\nPath: ";
         for (auto &city : path)

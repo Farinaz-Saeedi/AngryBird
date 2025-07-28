@@ -52,6 +52,7 @@ class Controler
         std::pair<std::string , std::string> getTopBestPair();
         ld totoalDamage(std::vector<std::string> &path, Bird & bird);
         std::vector<Bird> getBirds();
+        std::vector<std::shared_ptr<City>> getPath();
 
 
     private:

@@ -143,6 +143,7 @@ void Controler::findBestPairs()
         if (!bestGoalName.empty())
         {
             bestPairs.push_back({start->getCityName(), bestGoalName});
+            // push the bird to goal city
         }
     }
 
@@ -285,7 +286,7 @@ void Controler::shootDownBird(Enemy &enemy) // call after A*
 {
     std::vector<Bird> detectedBirds;
 
-    for (auto &it : birds)
+    for (auto &it : enemy.getReachBirds())
     {
         if (isDetected(it))
         {
@@ -336,4 +337,8 @@ ld Controler::totoalDamage(std::vector<std::string> &path, Bird & bird)
         }
     }
     return damage;
+}
+std::vector<std::shared_ptr<City>> Controler::getPath()
+{
+    return path;
 }
