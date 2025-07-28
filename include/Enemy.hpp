@@ -2,6 +2,9 @@
 #define ENEMY_H
 
 #include "City.hpp"
+#include "Bird.hpp"
+
+#include <vector>
 
 class Enemy : public City {
 
@@ -11,10 +14,12 @@ class Enemy : public City {
         virtual ~Enemy() = default;
         void setDefenseLevel(int defenseLevel);
         int getDefenseLevel();
-        // kill birds ...
+        void pushReachBird(Bird bird);
+        std::vector<Bird> getReachBirds();
 
     private:
         int defenseLevel;
+        std::vector<Bird> reachBirds;
 
 
 };

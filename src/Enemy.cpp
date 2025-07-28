@@ -17,3 +17,11 @@ int Enemy::getDefenseLevel()
 {
     return defenseLevel;
 }
+void Enemy::pushReachBird(Bird bird)
+{
+    reachBirds.push_back(bird);
+}
+std::vector<Bird> Enemy::getReachBirds()
+{
+    return reachBirds;
+}
