@@ -1,8 +1,7 @@
-number of cities (status ----> input must be one of: Normal, Enemy, Home)
-
-name - x - y - Home - spy - capacity
-name - x - y - Enemy - spy
-------
-------
-------
-name - x - y - Normal - spy
+6
+cityA 10 30 Home 1 4
+cityB 60 50 Home 0 3
+cityC 40 20 Normal 0
+cityD -30 10 Enemy 1
+cityE -20 -30 Enemy 0
+cityF 0 0 Normal 1
