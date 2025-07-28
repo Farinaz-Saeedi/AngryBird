@@ -123,35 +123,36 @@ void Controler::run()
 }
 void Controler::findBestPairs()
 {
-std::cout << "Start Cities: " << startCities.size() << "\n";
-std::cout << "Goal Cities: " << goalCities.size() << "\n";
-
-    ld bestEstimate = std::numeric_limits<double>::infinity();
-    std::pair<std::string, std::string> bestPair = {"", ""};
+    bestPairs.clear();
 
     for (const auto &start : startCities)
     {
+        ld bestEstimate = std::numeric_limits<double>::infinity();
+        std::string bestGoalName = "";
+
         for (const auto &goal : goalCities)
         {
             ld estimate = heuristic(*start, *goal);
             if (estimate < bestEstimate)
             {
                 bestEstimate = estimate;
-                bestPairs.clear(); 
-                bestPairs.push_back({start->getCityName(), goal->getCityName()});
-            } else if (estimate == bestEstimate)
-            {
-                bestPairs.push_back({start->getCityName(), goal->getCityName()});
+                bestGoalName = goal->getCityName();
             }
+        }
+
+        if (!bestGoalName.empty())
+        {
+            bestPairs.push_back({start->getCityName(), bestGoalName});
         }
     }
 
-    std::cout << "meow" << bestPairs.size();
-    for ( auto x : bestPairs )
+    std::cout << "Best Pairs (" << bestPairs.size() << "):\n";
+    for (const auto &x : bestPairs)
     {
-        std::cout << x.first << " " << x.second << '\n';
+        std::cout << x.first << " -> " << x.second << '\n';
     }
 }
+
 ld Controler::heuristic(City &a, City &b)
 {
     return sqrt(pow((a.getX() - b.getX()), 2) + pow((a.getY() - b.getY()), 2));
