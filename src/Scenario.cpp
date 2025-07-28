@@ -2,7 +2,7 @@
 
 #include "Scenario.hpp"
 
-void Scenario::readBird(std::string targetName , std::vector<Bird> & birds)
+Bird Scenario::readBird(std::string targetName , std::vector<Bird> & birds)
 {
     std::ifstream input("../src/Birds.txt");
     if (!input.is_open())

@@ -11,15 +11,16 @@ void Scenario1::readInputs(std::vector<Bird> &birds, std::vector<Home> &homes)
 
     while (!input.eof())
     {
-        input >> count;
-        for (int i = 0; i < count; i++)
+        input >> count >> name;
+        for (int i = 0; i < homes.size(); i++)
         {
-            input >> name;
-            readBird(name, birds);
+            for (int i = 0; i < count; i++)
+            {
+                Bird temp = readBird(name, birds);
+                homes[i].push(temp);
+            } 
         }
     }
-    
-
     input.close();
 }
 void Scenario1::printOutput(Controler &control)
