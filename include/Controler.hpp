@@ -61,6 +61,7 @@ class Controler
         std::vector<std::shared_ptr<City>> goalCities;
         std::vector<std::shared_ptr<City>> startCities;
         std::vector<std::pair<std::string , std::string>> bestPairs;
+       
         ll numberOfCities;
 };
 

@@ -249,7 +249,11 @@ std::vector<std::string> Controler::aStar(std::string start, std::string goal, B
     std::reverse(path.begin(), path.end());
     if (!canDestroy(myBird, totalDistance))
     {
-        return {"Bird CAN NOT reach the goal"}; 
+        auto it = std::find(birds.begin(), birds.end(), myBird);
+        if (it != birds.end())
+        {
+            birds.erase(it);
+        }
     }
 
     return path;

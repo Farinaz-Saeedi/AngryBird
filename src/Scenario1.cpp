@@ -39,10 +39,9 @@ void Scenario1::printOutput(Controler &control)
         {
             std::cout << city << " ";
         }
-
-        std::cout << "\n\n";
-        totalDamage += control.totoalDamage(path, bird);
     }
+        std::cout << "\n\n";
+        //totalDamage += control.totoalDamage(path, bird);
 
     std::cout << "Total Damage: " << totalDamage << "\n";
 }
