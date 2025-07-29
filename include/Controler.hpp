@@ -21,7 +21,7 @@
 #include <vector>
 
 struct Node {
-    std::string cityNamee;
+    std::string cityName;
     double gCost; 
     double fCost; 
 
@@ -35,24 +35,24 @@ class Controler
 {
     public:
         Controler();
-        // ~Controler();
         ll getNumberOfCities();
-        ll calDistance(City a, City b);
+        ll calDistance(City a , City b);
         void readCities();
         void setNumberOfCities(ll numberOfCities);
         std::shared_ptr<Scenario> readScenario( int scen ); // read each scenario
         void run();
         void findBestPairs();
-        ld heuristic(City & a, City & b);
-        void aStar(std::string start, std::string goal, Bird myBird);
+        ld heuristic(City & a , City & b);
+        void aStar(std::string start , std::string goal, Bird myBird);
         bool canBirdReach(Bird & bird , ld distance);
         bool canDestroy(Bird & bird , ld distance);
         bool isDetected(Bird & bird);
-        void shootDownBird(Enemy &enemy, Home &home);
+        void shootDownBird(Enemy & enemy , Home & home);
         std::pair<std::string , std::string> getTopBestPair();
-        ld totoalDamage(std::vector<std::string> &path, Bird & bird);
+        ld totoalDamage(std::vector<std::string> & path , Bird & bird);
         std::vector<Bird> getBirds();
         std::vector<std::shared_ptr<City>> getPath();
+        int countSpiesOnPath(std::vector<std::shared_ptr<City>> & path);
 
 
     private:

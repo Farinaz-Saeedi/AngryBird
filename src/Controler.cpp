@@ -176,14 +176,13 @@ void Controler::aStar(std::string start, std::string goal, Bird myBird)
     std::vector<int> cameFrom(n, -1);
 
     std::priority_queue<std::shared_ptr<Node>, std::vector<std::shared_ptr<Node>>,
-                        std::function<bool(std::shared_ptr<Node>, std::shared_ptr<Node>)>>
-        openList(
-            [](std::shared_ptr<Node> a, std::shared_ptr<Node> b)
+    std::function<bool(std::shared_ptr<Node>, std::shared_ptr<Node>)>>
+        openList( [](std::shared_ptr<Node> a, std::shared_ptr<Node> b)
             { return a->fCost > b->fCost; });
 
     g[startIdx] = 0.0;
     auto startNode = std::make_shared<Node>();
-    startNode->cityNamee = start;
+    startNode->cityName = start;
     startNode->gCost = 0.0;
     startNode->fCost = heuristic(*cities[startIdx], *cities[goalIdx]);
 
@@ -194,7 +193,7 @@ void Controler::aStar(std::string start, std::string goal, Bird myBird)
         auto current = openList.top();
         openList.pop();
 
-        int u = nameToIndex[current->cityNamee];
+        int u = nameToIndex[current->cityName];
         if (u == goalIdx)
         {
             break;
@@ -218,7 +217,7 @@ void Controler::aStar(std::string start, std::string goal, Bird myBird)
                 cameFrom[v] = u;
 
                 auto neighborNode = std::make_shared<Node>();
-                neighborNode->cityNamee = cities[v]->getCityName();
+                neighborNode->cityName = cities[v]->getCityName();
                 neighborNode->gCost = tempG;
                 neighborNode->fCost = tempG + heuristic(*cities[v], *cities[goalIdx]);
 
@@ -344,4 +343,14 @@ ld Controler::totoalDamage(std::vector<std::string> &path, Bird &bird)
 std::vector<std::shared_ptr<City>> Controler::getPath()
 {
     return path;
+}
+int Controler::countSpiesOnPath(std::vector<std::shared_ptr<City>> & path)
+{
+    int numberOfspies = 0;
+    for ( auto city : path )
+    {
+        if (city->getIsSpy())
+            numberOfspies++;
+    }
+    return numberOfspies;
 }
