@@ -1,6 +1,6 @@
 #include "Scenario4.hpp"
 
-void Scenario4::readInputs(std::vector<Bird> & birds , std::vector<std::shared_ptr<City>> & homes)
+void Scenario4::readInputs(std::vector<Bird> &birds, std::vector<std::shared_ptr<City>> &homes)
 {
     std::ifstream input("../src/Scenario4.txt");
     if (!input.is_open())
@@ -34,23 +34,35 @@ void Scenario4::readInputs(std::vector<Bird> & birds , std::vector<std::shared_p
 
     input.close();
 }
-void Scenario4::printOutput(Controler & control , std::vector<std::shared_ptr<City>> &homes)
+void Scenario4::printOutput(Controler &control, std::vector<std::shared_ptr<City>> &homes)
 {
-//     ld totalDamage = 0.0;
+    ld totalDamage = 0.0;
 
-//     for (auto &bird : control.getBirds())
-//     {
-//         auto path = control.aStar(control.getTopBestPair().first, control.getTopBestPair().second, bird);
+    for (auto &home : homes)
+    {
+        auto myHome = std::dynamic_pointer_cast<Home>(home);
+        if (!myHome)
+            continue;
 
-//         std::cout << "\nBird : " << bird.getName() << "\nPath: ";
-//         for (auto &city : path)
-//         {
-//             std::cout << city << " ";
-//         }
+        auto &birds = myHome->getMyBirds();
+        if (birds.empty())
+            continue;
 
-//         std::cout << "\n\n";
-//         totalDamage += control.totoalDamage(path, bird);
-//     }
+        for (auto &bird : birds)
+        {
+            std::string enemy = control.findBestPairFor(home, bird);
+            auto path = control.aStar(home->getCityName(), enemy, bird);
+            totalDamage += control.totoalDamage(path, bird);
 
-//     std::cout << "Total Damage: " << totalDamage << "\n";
+            std::cout << "-----------------------------\n";
+            std::cout << "\nBird : " << bird.getName() << "\nPath: ";
+            for (auto &city : path)
+            {
+                std::cout << city->getCityName() << " ";
+            }
+            std::cout << "\n";
+        }
+    }
+    std::cout << "\n-----------------------------\n";
+    std::cout << "\nTotal Damage: " << totalDamage << "\n";
 }

@@ -38,7 +38,7 @@ void Scenario1::printOutput(Controler &control, std::vector<std::shared_ptr<City
         if (birds.empty())
             continue;
 
-            
+
         for (auto &bird : birds)
         {
             std::string enemy = control.findBestPairFor(home, bird);

@@ -1,7 +1,5 @@
-number of birds 
-name - slingShot place 
-name - slingShot place 
-------
-------
-------
-name - slingShot place 
+4
+Blaze cityA
+Venomtail cityB
+Viper cityA
+Stonewing cityB
