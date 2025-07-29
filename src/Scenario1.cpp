@@ -1,6 +1,6 @@
 #include "Scenario1.hpp"
 
-void Scenario1::readInputs(std::vector<Bird> &birds, std::vector<Home> &homes)
+void Scenario1::readInputs(std::vector<Bird> & birds , std::vector<std::shared_ptr<City>> & homes)
 {
     std::ifstream input("../src/Scenario1.txt");
     if (!input.is_open())
@@ -17,7 +17,8 @@ void Scenario1::readInputs(std::vector<Bird> &birds, std::vector<Home> &homes)
             for (int i = 0; i < count; i++)
             {
                 Bird temp = readBird(name, birds);
-                homes[i].push(temp);
+                auto home = std::dynamic_pointer_cast<Home>(homes[i]);
+                home->push(temp);
             } 
         }
     }
