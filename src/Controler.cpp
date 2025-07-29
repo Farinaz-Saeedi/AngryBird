@@ -130,7 +130,7 @@ std::string Controler::findBestPairFor(std::shared_ptr<City> & start , Bird & bi
         auto path = aStar(start->getCityName(), goal->getCityName(), bird); 
         int spies = countSpiesOnPath(path);
 
-        if (spies < minSpies) {
+        if (spies < minSpies) { 
             minSpies = spies;
             bestGoal = goal;
         }
@@ -180,6 +180,7 @@ std::vector<std::shared_ptr<City>> Controler::aStar(std::string start, std::stri
         int u = nameToIndex[current->cityName];
         if (u == goalIdx)
         {
+            cameFrom[goalIdx] = cameFrom[u]; 
             break;
         }
 
@@ -289,7 +290,7 @@ void Controler::shootDownBird(Enemy &enemy, Home &home) // call after A*
         const std::string &name = detectedBirds[i].getName();
         if (birdMap.count(name))
         {
-            // home.del(birdMap[name]);
+            home.del(birdMap[name]);
         }
     }
 }

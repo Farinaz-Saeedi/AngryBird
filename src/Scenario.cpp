@@ -29,4 +29,5 @@ Bird Scenario::readBird(std::string targetName, std::vector<Bird> &birds)
             }
         }
     }
+    return {};
 }
