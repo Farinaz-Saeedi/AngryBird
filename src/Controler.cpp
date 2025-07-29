@@ -110,7 +110,7 @@ std::shared_ptr<Scenario> Controler::readScenario(int scen)
 void Controler::run()
 {
     readCities();
-    findBestPairs();
+    // findBestPairs();
 
     std::ifstream input("../src/Scenario.txt");
     if (!input.is_open())
@@ -122,46 +122,31 @@ void Controler::run()
     std::cout << numberOfScen;
     whichScen->printOutput(*this);
 }
-void Controler::findBestPairs()
+std::string Controler::findBestPairFor(std::shared_ptr<City> & start , Bird & bird)
 {
-    bestPairs.clear();
+    int minSpies = INT_MAX;
+    std::shared_ptr<City> bestGoal = nullptr;
 
-    for (const auto &start : startCities)
-    {
-        ld bestEstimate = std::numeric_limits<double>::infinity();
-        std::string bestGoalName = "";
+    for (auto & goal : goalCities) {
+        auto path = aStar(start->getCityName(), goal->getCityName(), bird); 
+        int spies = countSpiesOnPath(path);
 
-        for (const auto &goal : goalCities)
-        {
-            ld estimate = heuristic(*start, *goal);
-            if (estimate < bestEstimate)
-            {
-                bestEstimate = estimate;
-                bestGoalName = goal->getCityName();
-            }
-        }
-
-        if (!bestGoalName.empty())
-        {
-            bestPairs.push_back({start->getCityName(), bestGoalName});
-            // push the bird to goal city
+        if (spies < minSpies) {
+            minSpies = spies;
+            bestGoal = goal;
         }
     }
 
-    std::cout << "Best Pairs (" << bestPairs.size() << "):\n";
-    for (const auto &x : bestPairs)
-    {
-        std::cout << x.first << " -> " << x.second << '\n';
-    }
+    return bestGoal->getCityName();
 }
-
 ld Controler::heuristic(City &a, City &b)
 {
     return sqrt(pow((a.getX() - b.getX()), 2) + pow((a.getY() - b.getY()), 2));
 }
-void Controler::aStar(std::string start, std::string goal, Bird myBird)
+std::vector<std::shared_ptr<City>> Controler::aStar(std::string start, std::string goal, Bird myBird)
 {
     ll n = cities.size();
+    std::vector<std::shared_ptr<City>> path;
 
     std::unordered_map<std::string, int> nameToIndex;
     for (int i = 0; i < n; i++)
@@ -255,6 +240,7 @@ void Controler::aStar(std::string start, std::string goal, Bird myBird)
             birds.erase(it);
         }
     }
+    return path;
 }
 bool Controler::canBirdReach(Bird &bird, ld distance)
 {
@@ -266,14 +252,7 @@ bool Controler::canDestroy(Bird &bird, ld distance)
 }
 bool Controler::isDetected(Bird &bird)
 {
-    ll numberOfSpy = 0;
-    for (auto &it : path)
-    {
-        if (it->getIsSpy())
-        {
-            numberOfSpy++;
-        }
-    }
+    int numberOfSpy = countSpiesOnPath(chosenPath);
 
     if (numberOfSpy >= bird.getDegree())
     {
@@ -315,12 +294,6 @@ void Controler::shootDownBird(Enemy &enemy, Home &home) // call after A*
         }
     }
 }
-std::pair<std::string, std::string> Controler::getTopBestPair()
-{
-    std::pair<std::string, std::string> top = bestPairs[bestPairs.size() - 1];
-    bestPairs.pop_back();
-    return top;
-}
 ld Controler::totoalDamage(std::vector<std::string> &path, Bird &bird)
 {
     ld damage = 0.0;
@@ -342,7 +315,7 @@ ld Controler::totoalDamage(std::vector<std::string> &path, Bird &bird)
 }
 std::vector<std::shared_ptr<City>> Controler::getPath()
 {
-    return path;
+    return chosenPath;
 }
 int Controler::countSpiesOnPath(std::vector<std::shared_ptr<City>> & path)
 {
