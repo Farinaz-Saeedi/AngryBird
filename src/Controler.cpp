@@ -4,7 +4,7 @@
 
 #define ll long long
 
-Controler::Controler() { std::cout << "inclontrol\n"; }
+Controler::Controler() {}
 
 ll Controler::getNumberOfCities()
 {
@@ -37,8 +37,6 @@ void Controler::readCities()
         for (int i = 0; i < count; ++i)
         {
             input >> str >> x >> y >> situation >> spy;
-
-            std::cout << str << '\n';
 
             if (situation == "Normal")
             {
@@ -118,7 +116,6 @@ void Controler::run()
     int numberOfScen;
     input >> numberOfScen;
     std::shared_ptr<Scenario> whichScen = readScenario(numberOfScen);
-    std::cout << numberOfScen;
     whichScen->printOutput(*this , startCities);
 }
 std::string Controler::findBestPairFor(std::shared_ptr<City> & start , Bird & bird)

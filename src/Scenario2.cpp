@@ -1,28 +1,31 @@
 #include "Scenario2.hpp"
 
-void Scenario2::readInputs(std::vector<Bird> & birds , std::vector<std::shared_ptr<City>> & homes)
+void Scenario2::readInputs(std::vector<Bird> &birds, std::vector<std::shared_ptr<City>> &homes)
 {
     std::ifstream input("../src/Scenario2.txt");
     if (!input.is_open())
         std::cerr << " Unable to open Scen-2 file ! \n";
 
     ll count;
-    std::string name;
+    std::string name, city;
 
     while (!input.eof())
     {
         input >> count;
         for (int i = 0; i < count; i++)
-        {
+        { 
             input >> name;
             Bird temp = readBird(name, birds);
-            input >> name;
-            birds[birds.size() - 1].setHomePlace(name);
+
+            input >> city;
+            birds[birds.size() - 1].setHomePlace(city);
 
             for (int j = 0; j < homes.size(); j++)
             {
                 auto home = std::dynamic_pointer_cast<Home>(homes[j]);
-                if (home->getCityName() == name)
+                if (!home) continue;
+
+                if (home->getCityName() == city)
                 {
                     home->push(temp);
                     break;
@@ -33,23 +36,35 @@ void Scenario2::readInputs(std::vector<Bird> & birds , std::vector<std::shared_p
 
     input.close();
 }
-void Scenario2::printOutput(Controler & control , std::vector<std::shared_ptr<City>> &homes)
+void Scenario2::printOutput(Controler &control, std::vector<std::shared_ptr<City>> &homes)
 {
-//     ld totalDamage = 0.0;
+    ld totalDamage = 0.0;
 
-//     for (auto &bird : control.getBirds())
-//     {
-//         auto path = control.aStar(control.getTopBestPair().first, control.getTopBestPair().second, bird);
+    for (auto &home : homes)
+    {
+        auto myHome = std::dynamic_pointer_cast<Home>(home);
+        if (!myHome)
+            continue;
 
-//         std::cout << "\nBird : " << bird.getName() << "\nPath: ";
-//         for (auto &city : path)
-//         {
-//             std::cout << city << " ";
-//         }
+        auto &birds = myHome->getMyBirds();
+        if (birds.empty())
+            continue;
 
-//         std::cout << "\n\n";
-//         totalDamage += control.totoalDamage(path, bird);
-//     }
+        for (auto &bird : birds)
+        {
+            std::string enemy = control.findBestPairFor(home, bird);
+            auto path = control.aStar(home->getCityName(), enemy, bird);
+            totalDamage += control.totoalDamage(path, bird);
 
-//     std::cout << "Total Damage: " << totalDamage << "\n";
+            std::cout << "-----------------------------\n";
+            std::cout << "\nBird : " << bird.getName() << "\nPath: ";
+            for (auto &city : path)
+            {
+                std::cout << city->getCityName() << " ";
+            }
+            std::cout << "\n";
+        }
+    }
+    std::cout << "\n-----------------------------\n";
+    std::cout << "\nTotal Damage: " << totalDamage << "\n";
 }

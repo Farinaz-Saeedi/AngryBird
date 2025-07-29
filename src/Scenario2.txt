@@ -1,7 +1,6 @@
-number of birds 
-name - slingShot place 
-name - slingShot place
-------
-------
-------
-name - slingShot place
+5 
+Venomtail cityA
+Skyrage cityB
+Skyrage cityB
+Ironbeak cityB
+Venomtail cityA
