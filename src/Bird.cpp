@@ -25,6 +25,10 @@ std::istream & operator>>(std::istream & input , Type & type)
     }
     return input;
 }
+bool Bird::operator==(const Bird & other) 
+{
+    return name == other.name ;
+}
 
 Bird::Bird(){}
 Bird::Bird(std::string name, ll dis, ll out, int deg, ll dem, Type t)

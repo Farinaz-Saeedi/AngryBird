@@ -213,7 +213,7 @@ std::vector<std::shared_ptr<City>> Controler::aStar(std::string start, std::stri
     int curr = goalIdx;
     if (cameFrom[curr] == -1)
     {
-        return;
+        return{};
     }
 
     ld totalDistance = 0.0;
@@ -289,7 +289,7 @@ void Controler::shootDownBird(Enemy &enemy, Home &home) // call after A*
         const std::string &name = detectedBirds[i].getName();
         if (birdMap.count(name))
         {
-            home.del(birdMap[name]);
+            // home.del(birdMap[name]);
         }
     }
 }

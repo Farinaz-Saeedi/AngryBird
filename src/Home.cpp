@@ -33,7 +33,8 @@ std::vector<Bird> &Home::getMyBirds()
 {
     return myBirds;
 }
-void Home::del(auto &bird)
+void Home::del(Bird &bird)
 {
-    myBirds.erase(bird);
+    auto it = bird ;
+    // myBirds.erase(it);
 }

@@ -15,6 +15,7 @@ class Bird
 {
     friend std::istream & operator>>(std::istream & input, Type & type);
     public:
+        bool operator==(const Bird & other);
         Bird();
         Bird(std::string name, ll dis, ll out, int deg, ll dem, Type t);
         ll getDistance();

@@ -35,21 +35,21 @@ void Scenario2::readInputs(std::vector<Bird> & birds , std::vector<std::shared_p
 }
 void Scenario2::printOutput(Controler & control , std::vector<std::shared_ptr<City>> &homes)
 {
-    ld totalDamage = 0.0;
+//     ld totalDamage = 0.0;
 
-    for (auto &bird : control.getBirds())
-    {
-        auto path = control.aStar(control.getTopBestPair().first, control.getTopBestPair().second, bird);
+//     for (auto &bird : control.getBirds())
+//     {
+//         auto path = control.aStar(control.getTopBestPair().first, control.getTopBestPair().second, bird);
 
-        std::cout << "\nBird : " << bird.getName() << "\nPath: ";
-        for (auto &city : path)
-        {
-            std::cout << city << " ";
-        }
+//         std::cout << "\nBird : " << bird.getName() << "\nPath: ";
+//         for (auto &city : path)
+//         {
+//             std::cout << city << " ";
+//         }
 
-        std::cout << "\n\n";
-        totalDamage += control.totoalDamage(path, bird);
-    }
+//         std::cout << "\n\n";
+//         totalDamage += control.totoalDamage(path, bird);
+//     }
 
-    std::cout << "Total Damage: " << totalDamage << "\n";
+//     std::cout << "Total Damage: " << totalDamage << "\n";
 }
