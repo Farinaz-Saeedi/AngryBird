@@ -1,7 +1,7 @@
 #include "Scenario3.hpp"
 
 
-void Scenario3::readInputs(std::vector<Bird> &birds, std::vector<Home> &homes)
+void Scenario3::readInputs(std::vector<Bird> & birds , std::vector<std::shared_ptr<City>> & homes)
 {
     std::ifstream input("../src/Scenario3.txt");
     if (!input.is_open())
@@ -37,7 +37,7 @@ int Scenario3::getSlingshot()
 {
     return numberOfSlingshot;
 }
-void Scenario3::printOutput(Controler &control)
+void Scenario3::printOutput(Controler & control , std::vector<std::shared_ptr<City>> &homes)
 {
     ld totalDamage = 0.0;
 

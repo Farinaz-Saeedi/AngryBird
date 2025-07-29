@@ -1,6 +1,6 @@
 #include "Scenario2.hpp"
 
-void Scenario2::readInputs(std::vector<Bird> &birds, std::vector<Home> &homes)
+void Scenario2::readInputs(std::vector<Bird> & birds , std::vector<std::shared_ptr<City>> & homes)
 {
     std::ifstream input("../src/Scenario2.txt");
     if (!input.is_open())
@@ -21,9 +21,10 @@ void Scenario2::readInputs(std::vector<Bird> &birds, std::vector<Home> &homes)
 
             for (int j = 0; j < homes.size(); j++)
             {
-                if (homes[j].getCityName() == name)
+                auto home = std::dynamic_pointer_cast<Home>(homes[j]);
+                if (home->getCityName() == name)
                 {
-                    homes[j].push(temp);
+                    home->push(temp);
                     break;
                 }
             }
@@ -32,7 +33,7 @@ void Scenario2::readInputs(std::vector<Bird> &birds, std::vector<Home> &homes)
 
     input.close();
 }
-void Scenario2::printOutput(Controler &control)
+void Scenario2::printOutput(Controler & control , std::vector<std::shared_ptr<City>> &homes)
 {
     ld totalDamage = 0.0;
 
