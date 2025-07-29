@@ -33,3 +33,11 @@ std::vector<Bird> Home::getMyBirds()
 {
     return myBirds;
 }
+void Home::del(Bird &bird)
+{
+    auto it = std::find(myBirds.begin(), myBirds.end(), bird);
+    if (it != myBirds.end())
+    {
+        myBirds.erase(it);
+    }
+}

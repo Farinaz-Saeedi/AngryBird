@@ -17,6 +17,7 @@ class Home : public City {
         void setCoordinates(ld newX, ld newY);
         void push(Bird &bird);
         std::vector<Bird> getMyBirds();
+        void del(Bird &bird);
 
     private:
         int capacity;

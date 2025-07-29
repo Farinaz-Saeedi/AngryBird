@@ -303,7 +303,7 @@ void Controler::shootDownBird(Enemy &enemy) // call after A*
 
     for (int i = 0; i < enemy.getDefenseLevel() && i < detectedBirds.size(); i++)
     {
-        for (auto it = birds.begin(); it != birds.end(); ++it)
+        for (auto it = birds.begin(); it != birds.end(); it++)
         {
             if (it->getName() == detectedBirds[i].getName())
             {
