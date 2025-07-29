@@ -14,7 +14,7 @@ void Scenario1::readInputs(std::vector<Bird> & birds , std::vector<std::shared_p
         input >> count >> name;
         for (int i = 0; i < homes.size(); i++)
         {
-            for (int i = 0; i < count; i++)
+            for (int j = 0; j < count; j++)
             {
                 Bird temp = readBird(name, birds);
                 auto home = std::dynamic_pointer_cast<Home>(homes[i]);
@@ -31,6 +31,7 @@ void Scenario1::printOutput(Controler &control , std::vector<std::shared_ptr<Cit
     for ( auto & home : homes )
     {
         auto myHome = std::dynamic_pointer_cast<Home>(home);
+        
         for ( auto & bird : myHome->getMyBirds())
         {
             std::string enemy = control.findBestPairFor(home , bird);
@@ -43,7 +44,8 @@ void Scenario1::printOutput(Controler &control , std::vector<std::shared_ptr<Cit
             {
                 std::cout << city->getCityName() << " ";
             }
-            std::cout << "\nTotal Damage: " << totalDamage << "\n";
         }
     }
+    std::cout << "\n-----------------------------\n";
+    std::cout << "\nTotal Damage: " << totalDamage << "\n";
 }
