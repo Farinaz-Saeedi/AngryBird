@@ -110,7 +110,6 @@ std::shared_ptr<Scenario> Controler::readScenario(int scen)
 void Controler::run()
 {
     readCities();
-    // findBestPairs();
 
     std::ifstream input("../src/Scenario.txt");
     if (!input.is_open())
@@ -120,7 +119,7 @@ void Controler::run()
     input >> numberOfScen;
     std::shared_ptr<Scenario> whichScen = readScenario(numberOfScen);
     std::cout << numberOfScen;
-    whichScen->printOutput(*this);
+    whichScen->printOutput(*this , homes);
 }
 std::string Controler::findBestPairFor(std::shared_ptr<City> & start , Bird & bird)
 {
@@ -294,7 +293,7 @@ void Controler::shootDownBird(Enemy &enemy, Home &home) // call after A*
         }
     }
 }
-ld Controler::totoalDamage(std::vector<std::string> &path, Bird &bird)
+ld Controler::totoalDamage(std::vector<std::shared_ptr<City>> &path, Bird &bird)
 {
     ld damage = 0.0;
 
@@ -304,9 +303,9 @@ ld Controler::totoalDamage(std::vector<std::string> &path, Bird &bird)
         enemyCityNames.insert(goalCity->getCityName());
     }
 
-    for (auto &cityName : path)
+    for (auto &city : path)
     {
-        if (enemyCityNames.count(cityName))
+        if (enemyCityNames.count(city->getCityName()))
         {
             damage += bird.getDemolition();
         }

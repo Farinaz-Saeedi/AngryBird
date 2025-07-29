@@ -48,7 +48,7 @@ class Controler
         bool canDestroy(Bird & bird , ld distance);
         bool isDetected(Bird & bird);
         void shootDownBird(Enemy & enemy , Home & home);
-        ld totoalDamage(std::vector<std::string> & path , Bird & bird);
+        ld totoalDamage(std::vector<std::shared_ptr<City>> & path , Bird & bird);
         std::vector<Bird> getBirds();
         std::vector<std::shared_ptr<City>> getPath();
         int countSpiesOnPath(std::vector<std::shared_ptr<City>> & path);
@@ -56,7 +56,7 @@ class Controler
 
     private:
         std::vector<Bird> birds;
-        std::vector<Home> homes;
+        std::vector<std::shared_ptr<City>> homes;
         std::vector<std::shared_ptr<City>> cities;
         std::vector<std::shared_ptr<City>> goalCities;
         std::vector<std::shared_ptr<City>> startCities;
