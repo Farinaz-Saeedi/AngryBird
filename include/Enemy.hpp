@@ -16,8 +16,8 @@ class Enemy : public City {
         int getDefenseLevel();
         void pushReachBird(Bird bird);
         std::vector<Bird> getReachBirds();
-        void setIsFull(bool isFull);
-        bool getIsFull();
+        void setIsReady(bool isFull);
+        bool getIsReady();
 
     private:
         int defenseLevel;

@@ -324,7 +324,7 @@ int Controler::countSpiesOnPath(std::vector<std::shared_ptr<City>> & path)
     }
     return numberOfspies;
 }
-void Controler::newSpies(Controler &control)
+void Controler::newSpies()
 {
     ll spyCount;
     std::cout << "\nHow many new spy cities? ";
@@ -348,4 +348,12 @@ void Controler::newSpies(Controler &control)
             it->second->setIsSpy(true);
         }
     }
+}
+void Controler::enemyReady()
+{
+    for(auto &enemy : goalCities)
+    {
+        auto temp = std::dynamic_pointer_cast<Enemy>(enemy);
+        temp->setIsReady(true);   
+    }   
 }

@@ -52,7 +52,8 @@ class Controler
         std::vector<Bird> getBirds();
         std::vector<std::shared_ptr<City>> getPath();
         int countSpiesOnPath(std::vector<std::shared_ptr<City>> & path);
-        void newSpies(Controler &control);
+        void newSpies();
+        void enemyReady();
 
 
     private:
