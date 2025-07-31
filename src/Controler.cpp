@@ -46,7 +46,10 @@ void Controler::readCities()
             }
             else if (situation == "Enemy")
             {
-                auto city = std::make_shared<Enemy>(str, x, y, spy);
+                int level;
+                input >> level;
+                
+                auto city = std::make_shared<Enemy>(str, x, y, spy, level);
                 city->setStatus(E);
                 cities.push_back(city);
                 goalCities.push_back(city);
@@ -282,7 +285,7 @@ void Controler::shootDownBird(Enemy &enemy, Home &home) // call after A*
     }
 
     int range = std::min((int)detectedBirds.size(), enemy.getDefenseLevel());
-    for (int i = 0; i < range; i++)
+    for (int i = 0; i < range && enemy.getIsReady(); i++)
     {
         const std::string &name = detectedBirds[i].getName();
         if (birdMap.count(name))

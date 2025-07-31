@@ -65,8 +65,9 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
             if (birds.empty())
                 continue;
 
-            for (auto &bird : birds)
+            for (int j = 0; birds.size(); j++)
             {
+                Bird & bird = birds[j];
                 std::string enemy = control.findBestPairFor(home, bird);
                 if (enemy.empty())
                     continue;
@@ -85,13 +86,14 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
                 }
                 std::cout << "\n";
 
-                birds.erase(birds.begin() + i);
+                birds.erase(birds.begin() + j);
             }
         }
         std::cout << "\n-----------------------------\n";
         std::cout << "\nTotal Damage (Neight "<< i <<" ): " << totalDamage << "\n";
 
         control.newSpies();
+        control.enemyReady();
     }
 
     
