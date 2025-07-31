@@ -25,3 +25,11 @@ std::vector<Bird> Enemy::getReachBirds()
 {
     return reachBirds;
 }
+void Enemy::setIsFull(bool isFull)
+{
+    this->isFull = isFull;
+}
+bool Enemy::getIsFull()
+{
+    return isFull;
+}
