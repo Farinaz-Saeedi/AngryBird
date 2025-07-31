@@ -46,7 +46,10 @@ void Controler::readCities()
             }
             else if (situation == "Enemy")
             {
-                auto city = std::make_shared<Enemy>(str, x, y, spy);
+                int level;
+                input >> level;
+                
+                auto city = std::make_shared<Enemy>(str, x, y, spy, level);
                 city->setStatus(E);
                 cities.push_back(city);
                 goalCities.push_back(city);
@@ -283,7 +286,7 @@ void Controler::shootDownBird(Enemy &enemy, Home &home) // call after A*
     }
 
     int range = std::min((int)detectedBirds.size(), enemy.getDefenseLevel());
-    for (int i = 0; i < range; i++)
+    for (int i = 0; i < range && enemy.getIsReady(); i++)
     {
         const std::string &name = detectedBirds[i].getName();
         if (birdMap.count(name))
@@ -324,4 +327,37 @@ int Controler::countSpiesOnPath(std::vector<std::shared_ptr<City>> & path)
             numberOfspies++;
     }
     return numberOfspies;
+}
+void Controler::newSpies()
+{
+    ll spyCount;
+    std::cout << "\nHow many new spy cities? ";
+    std::cin >> spyCount;
+
+    std::unordered_map<std::string, std::shared_ptr<City>> cityMap;
+    for (auto& city : cities)
+    {
+        cityMap[city->getCityName()] = city;
+    }
+
+    std::cout << "\nEnter city names with new spies:\n";
+    for (int i = 0; i < spyCount; i++)
+    {
+        std::string cityName;
+        std::cin >> cityName;
+
+        auto it = cityMap.find(cityName);
+        if (it != cityMap.end())
+        {
+            it->second->setIsSpy(true);
+        }
+    }
+}
+void Controler::enemyReady()
+{
+    for(auto &enemy : goalCities)
+    {
+        auto temp = std::dynamic_pointer_cast<Enemy>(enemy);
+        temp->setIsReady(true);   
+    }   
 }
