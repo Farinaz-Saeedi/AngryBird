@@ -57,6 +57,7 @@ void Scenario2::printOutput(Controler &control, std::vector<std::shared_ptr<City
         {
             std::string enemy = control.findBestPairFor(home, bird);
             auto path = control.aStar(home->getCityName(), enemy, bird);
+            control.shootDownBird(enemy, myHome);
             totalDamage += control.totoalDamage(path, bird);
 
             std::cout << "-----------------------------\n";

@@ -1,10 +1,10 @@
 10
-city1 100 100 Enemy 1
+city1 100 100 Enemy 1 2
 city2 520 130 Normal 0
 city3 950 150 Normal 0
 city4 1350 200 Normal 0 
 city5 1800 250 Home 1 3
-city6 125 600 Enemy 1
+city6 125 600 Enemy 1 2
 city7 600 700 Normal 0
 city8 1020 680 Normal 1
 city9 1460 720 Home 1 3

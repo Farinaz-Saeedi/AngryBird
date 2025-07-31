@@ -26,20 +26,22 @@ void Controler::readCities()
     if (!input.is_open())
         std::cerr << " Unable to open Cities file ! \n";
 
+    std::cout << "in read city\n";
     ll count;
     ld x, y;
     std::string str, situation;
     bool spy;
-
+    
     while (!input.eof())
     {
         input >> count;
         for (int i = 0; i < count; ++i)
         {
             input >> str >> x >> y >> situation >> spy;
-
+            
             if (situation == "Normal")
             {
+                std::cout << "in normal city\n";
                 auto city = std::make_shared<City>(str, x, y, spy);
                 city->setStatus(N);
                 cities.push_back(city);
@@ -48,6 +50,7 @@ void Controler::readCities()
             {
                 int level;
                 input >> level;
+                std::cout << "in enemy city\n";
                 
                 auto city = std::make_shared<Enemy>(str, x, y, spy, level);
                 city->setStatus(E);
@@ -58,6 +61,7 @@ void Controler::readCities()
             {
                 int capacity;
                 input >> capacity;
+                std::cout << "in home city\n";
 
                 auto city = std::make_shared<Home>(str, x, y, spy, capacity);
                 city->setStatus(H);
@@ -255,43 +259,59 @@ bool Controler::isDetected(Bird &bird)
 {
     int numberOfSpy = countSpiesOnPath(chosenPath);
 
+    std::cout << "number of spy: " << numberOfSpy << '\n';
+
     if (numberOfSpy >= bird.getDegree())
     {
         return true;
     }
     return false;
 }
-void Controler::shootDownBird(Enemy &enemy, Home &home) // call after A*
+void Controler::shootDownBird(std::string enemyName, std::shared_ptr<Home> &home) // call after A*
 {
-    std::vector<Bird> detectedBirds;
+    std::shared_ptr<Enemy> enemy;
+    for (int i = 0; i < goalCities.size(); i++)
+    {
+        if (goalCities[i]->getCityName() == enemyName)
+            enemy = std::dynamic_pointer_cast<Enemy>(goalCities[i]);
+    }
 
-    for (auto &it : enemy.getReachBirds())
+    std::cout << "in shoot\n";
+    std::vector<Bird> detectedBirds;
+    
+    for (auto &it : enemy->getReachBirds())
     {
         if (isDetected(it))
         {
+            std::cout << "in if dec\n";
             detectedBirds.push_back(it);
         }
     }
-
+    
     std::sort(detectedBirds.begin(), detectedBirds.end(), [](Bird &a, Bird &b)
-              { return a.getDemolition() > b.getDemolition(); });
-
-
-    auto &myBirds = home.getMyBirds();
+    { return a.getDemolition() > b.getDemolition(); });
+    
+    
+    auto &myBirds = home->getMyBirds();
     std::unordered_map<std::string, std::vector<Bird>::iterator> birdMap;
-
+    
     for (auto it = myBirds.begin(); it != myBirds.end(); it++)
     {
         birdMap[it->getName()] = it;
     }
 
-    int range = std::min((int)detectedBirds.size(), enemy.getDefenseLevel());
-    for (int i = 0; i < range && enemy.getIsReady(); i++)
+    std::cout << detectedBirds.size() << " " << enemy->getDefenseLevel() << '\n';
+    
+    int range = std::min((int)detectedBirds.size(), enemy->getDefenseLevel());
+    std::cout << range << " : range\n";
+    for (int i = 0; i < range && enemy->getIsReady(); i++)
     {
         const std::string &name = detectedBirds[i].getName();
         if (birdMap.count(name))
         {
-            home.del(birdMap[name]);
+            std::cout << home->getMyBirds().size() << "before\n";
+            home->del(birdMap[name]);
+            std::cout << home->getMyBirds().size() << "after\n";
         }
     }
 }
