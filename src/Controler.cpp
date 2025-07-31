@@ -324,3 +324,28 @@ int Controler::countSpiesOnPath(std::vector<std::shared_ptr<City>> & path)
     }
     return numberOfspies;
 }
+void Controler::newSpies(Controler &control)
+{
+    ll spyCount;
+    std::cout << "\nHow many new spy cities? ";
+    std::cin >> spyCount;
+
+    std::unordered_map<std::string, std::shared_ptr<City>> cityMap;
+    for (auto& city : cities)
+    {
+        cityMap[city->getCityName()] = city;
+    }
+
+    std::cout << "\nEnter city names with new spies:\n";
+    for (int i = 0; i < spyCount; i++)
+    {
+        std::string cityName;
+        std::cin >> cityName;
+
+        auto it = cityMap.find(cityName);
+        if (it != cityMap.end())
+        {
+            it->second->setIsSpy(true);
+        }
+    }
+}

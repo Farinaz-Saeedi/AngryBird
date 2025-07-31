@@ -9,7 +9,7 @@ void Scenario5::setNumberOfNights(int numberOfNights)
     this->numberOfNights = numberOfNights;
 }
 
-void Scenario5::readInputs(std::vector<Bird> & birds , std::vector<std::shared_ptr<City>> & homes)
+void Scenario5::readInputs(std::vector<Bird> &birds, std::vector<std::shared_ptr<City>> &homes)
 {
     std::ifstream input("../src/Scenario5.txt");
     if (!input.is_open())
@@ -47,4 +47,52 @@ void Scenario5::readInputs(std::vector<Bird> & birds , std::vector<std::shared_p
 
     input.close();
 }
-void Scenario5::printOutput(Controler & control , std::vector<std::shared_ptr<City>> &homes) {}
+void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City>> &homes)
+{
+    // for (int i = 1; i <= getNumberOfNights(); i++)
+    // {
+    //     std::cout << "\nNight " << i << " begins...\n";
+
+    //     ld totalDamage = 0.0;
+
+    //     for (auto &home : homes)
+    //     {
+    //         auto myHome = std::dynamic_pointer_cast<Home>(home);
+    //         if (!myHome)
+    //             continue;
+
+    //         auto &birds = myHome->getMyBirds();
+    //         if (birds.empty())
+    //             continue;
+
+    //         for (auto &bird : birds)
+    //         {
+    //             std::string enemy = control.findBestPairFor(home, bird);
+    //             if (enemy.empty())
+    //                 continue;
+                
+    //             auto path = control.aStar(home->getCityName(), enemy, bird);
+    //             if (path.empty())
+    //                 continue;
+                
+    //             totalDamage += control.totoalDamage(path, bird);
+
+    //             std::cout << "-----------------------------\n";
+    //             std::cout << "\nBird : " << bird.getName() << "\nPath: ";
+    //             for (auto &city : path)
+    //             {
+    //                 std::cout << city->getCityName() << " ";
+    //             }
+    //             std::cout << "\n";
+
+    //             birds.erase(birds.begin() + i);
+    //         }
+    //     }
+    //     std::cout << "\n-----------------------------\n";
+    //     std::cout << "\nTotal Damage (Neight "<< i <<" ): " << totalDamage << "\n";
+
+        // newSpies(control)
+    }
+
+    
+//}
