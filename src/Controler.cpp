@@ -119,7 +119,6 @@ void Controler::run()
     int numberOfScen;
     input >> numberOfScen;
     std::shared_ptr<Scenario> whichScen = readScenario(numberOfScen);
-    std::cout << "scen" << whichScen << '\n';
     whichScen->printOutput(*this , startCities);
 }
 std::string Controler::findBestPairFor(std::shared_ptr<City> & start , Bird & bird)
@@ -238,6 +237,7 @@ std::vector<std::shared_ptr<City>> Controler::aStar(std::string start, std::stri
         auto it = std::find(birds.begin(), birds.end(), myBird);
         if (it != birds.end())
         {
+            std::cout << myBird.getName() << " is exoloded in the path! \n"; 
             birds.erase(it);
         }
     }
@@ -253,10 +253,7 @@ bool Controler::canDestroy(Bird &bird, ld distance)
 }
 bool Controler::isDetected(Bird &bird)
 {
-    std::cout << "*********fun\n\n";
-    int numberOfSpy = countSpiesOnPath(chosenPath);
-
-    std::cout << "number of spy: " << numberOfSpy << '\n';
+    int numberOfSpy = countSpiesOnPath(bird.getThePath());
 
     if (numberOfSpy >= bird.getDegree())
     {
@@ -279,7 +276,6 @@ void Controler::shootDownBird(std::string enemyName) // call after A*
     {
         if (isDetected(it))
         {
-            std::cout << "meowwwww*_*\n";
             detectedBirds.push_back(it);
         }
     }
@@ -293,14 +289,11 @@ void Controler::shootDownBird(std::string enemyName) // call after A*
     {
         birdMap[it->getName()] = it;
     }
-
-    std::cout <<"birds " << detectedBirds.size() << " level " << enemy->getDefenseLevel() << '\n';
     
     int range = std::min((int)detectedBirds.size(), enemy->getDefenseLevel());
-    std::cout << range << " : range\n";
-    for (int i = 0; i < range && enemy->getIsReady(); i++)
+    for (int i = 0; i < range ; i++)
     {
-        std::cout << detectedBirds[i].getName() << " is del *** \n";
+        std::cout << detectedBirds[i].getName() << " is destroyed by the enemies \n";
         delBird(detectedBirds[i]);
     }
 }
@@ -327,10 +320,10 @@ std::vector<std::shared_ptr<City>> Controler::getPath()
 {
     return chosenPath;
 }
-int Controler::countSpiesOnPath(std::vector<std::shared_ptr<City>> & path)
+int Controler::countSpiesOnPath(std::vector<std::shared_ptr<City>> path)
 {
     int numberOfspies = 0;
-    for ( auto city : path )
+    for ( auto & city : path )
     {
         if (city->getIsSpy())
             numberOfspies++;
@@ -370,7 +363,7 @@ void Controler::enemyReady()
         temp->setIsReady(true);   
     }   
 }
-void Controler::setReachBird(std::string &enemyName, Bird &bird)
+void Controler::setReachBird(std::string &enemyName, Bird &bird, std::vector<std::shared_ptr<City>> & path)
 {
     std::shared_ptr<Enemy> enemy ;
     for (int i = 0; i < goalCities.size(); i++)
@@ -379,6 +372,7 @@ void Controler::setReachBird(std::string &enemyName, Bird &bird)
             enemy = std::dynamic_pointer_cast<Enemy>(goalCities[i]);
     }
     enemy->pushReachBird(bird);
+    enemy->setBirdPath(path);
 }
 void Controler::attack()
 {

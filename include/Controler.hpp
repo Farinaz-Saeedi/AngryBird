@@ -51,10 +51,10 @@ class Controler
         ld totoalDamage(std::vector<std::shared_ptr<City>> & path , Bird & bird);
         std::vector<Bird> getBirds();
         std::vector<std::shared_ptr<City>> getPath();
-        int countSpiesOnPath(std::vector<std::shared_ptr<City>> & path);
+        int countSpiesOnPath(std::vector<std::shared_ptr<City>> path);
         void newSpies();
         void enemyReady();
-        void setReachBird(std::string &enemyName, Bird &bird);
+        void setReachBird(std::string &enemyName, Bird &bird , std::vector<std::shared_ptr<City>> & path);
         void attack();
         void delBird(Bird & bird);
 

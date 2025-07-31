@@ -4,7 +4,7 @@
 #include "City.hpp"
 #include "Bird.hpp"
 
-#include <vector>
+#include <bits/stdc++.h>
 
 class Enemy : public City {
 
@@ -18,6 +18,7 @@ class Enemy : public City {
         std::vector<Bird> getReachBirds();
         void setIsReady(bool isReady);
         bool getIsReady();
+        void setBirdPath(std::vector<std::shared_ptr<City>> & path);
 
     private:
         int defenseLevel;

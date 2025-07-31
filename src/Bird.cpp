@@ -1,4 +1,4 @@
-#include <iostream>
+#include <bits/stdc++.h>
 
 #include "Bird.hpp"
 
@@ -96,4 +96,12 @@ void Bird::setName(std::string name)
 void Bird::setHomePlace(std::string homePlace)
 {
     this->homePlace = homePlace;
+}
+void Bird::setThePath(std::vector<std::shared_ptr<City>> &path)
+{
+    thePath = path;
+}
+std::vector<std::shared_ptr<City>> Bird::getThePath()
+{
+    return thePath;
 }

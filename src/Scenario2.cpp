@@ -9,8 +9,6 @@ void Scenario2::readInputs(std::vector<Bird> &birds, std::vector<std::shared_ptr
     ll count;
     std::string name, city;
 
-    std::cout << "in read 2\n";
-
     while (!input.eof())
     {
         input >> count;
@@ -55,9 +53,9 @@ void Scenario2::printOutput(Controler &control, std::vector<std::shared_ptr<City
         {
             std::string enemy = control.findBestPairFor(home, bird);
             auto path = control.aStar(home->getCityName(), enemy, bird);
-            control.setReachBird(enemy, bird);
+            control.setReachBird(enemy, bird, path);
             
-            std::cout << "-----------------------------\n";
+            std::cout << "\n---------------------------------------\n";
             std::cout << "\nBird : " << bird.getName() << "\nPath: ";
             for (auto &city : path)
             {
@@ -66,6 +64,8 @@ void Scenario2::printOutput(Controler &control, std::vector<std::shared_ptr<City
             std::cout << "\n";
         }
     }
+
+    std::cout << "\n---------------------------------------\n";
 
     control.attack();
 
@@ -76,6 +76,7 @@ void Scenario2::printOutput(Controler &control, std::vector<std::shared_ptr<City
     }
 
 
-    std::cout << "\n-----------------------------\n";
+    std::cout << "---------------------------------------";
     std::cout << "\nTotal Damage: " << totalDamage << "\n";
+    std::cout << "---------------------------------------\n";
 }

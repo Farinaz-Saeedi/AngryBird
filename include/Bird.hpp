@@ -1,7 +1,8 @@
 #ifndef BIRD_H
 #define BIRD_H
 
-#include <string>
+#include <bits/stdc++.h>
+#include "City.hpp"
 
 #define ll long long
 
@@ -32,6 +33,8 @@ class Bird
         void setName(std::string name);
         void setType(Type type);
         void setHomePlace(std::string homeName);
+        void setThePath(std::vector<std::shared_ptr<City>> &path);
+        std::vector<std::shared_ptr<City>> getThePath();
 
     private:
         ll distance;
@@ -41,6 +44,7 @@ class Bird
         std::string name;
         std::string homePlace;
         Type type;
+        std::vector<std::shared_ptr<City>> thePath;
 
 };
 
