@@ -257,6 +257,7 @@ bool Controler::canDestroy(Bird &bird, ld distance)
 }
 bool Controler::isDetected(Bird &bird)
 {
+    std::cout << "*********fun\n\n";
     int numberOfSpy = countSpiesOnPath(chosenPath);
 
     std::cout << "number of spy: " << numberOfSpy << '\n';
@@ -279,8 +280,10 @@ void Controler::shootDownBird(std::string enemyName, std::shared_ptr<Home> &home
     std::cout << "in shoot\n";
     std::vector<Bird> detectedBirds;
     
+    std::cout <<"*************" <<enemy->getReachBirds().size()<< "*************\n\n";
     for (auto &it : enemy->getReachBirds())
     {
+        std::cout << "first oneeeeeeeeeeee\n\n";
         if (isDetected(it))
         {
             std::cout << "in if dec\n";
@@ -300,7 +303,7 @@ void Controler::shootDownBird(std::string enemyName, std::shared_ptr<Home> &home
         birdMap[it->getName()] = it;
     }
 
-    std::cout << detectedBirds.size() << " " << enemy->getDefenseLevel() << '\n';
+    std::cout <<"birds " <<detectedBirds.size() << " level " << enemy->getDefenseLevel() << '\n';
     
     int range = std::min((int)detectedBirds.size(), enemy->getDefenseLevel());
     std::cout << range << " : range\n";
