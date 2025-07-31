@@ -26,7 +26,6 @@ void Controler::readCities()
     if (!input.is_open())
         std::cerr << " Unable to open Cities file ! \n";
 
-    std::cout << "in read city\n";
     ll count;
     ld x, y;
     std::string str, situation;
@@ -41,7 +40,6 @@ void Controler::readCities()
             
             if (situation == "Normal")
             {
-                std::cout << "in normal city\n";
                 auto city = std::make_shared<City>(str, x, y, spy);
                 city->setStatus(N);
                 cities.push_back(city);
@@ -50,7 +48,6 @@ void Controler::readCities()
             {
                 int level;
                 input >> level;
-                std::cout << "in enemy city\n";
                 
                 auto city = std::make_shared<Enemy>(str, x, y, spy, level);
                 city->setStatus(E);
@@ -61,7 +58,6 @@ void Controler::readCities()
             {
                 int capacity;
                 input >> capacity;
-                std::cout << "in home city\n";
 
                 auto city = std::make_shared<Home>(str, x, y, spy, capacity);
                 city->setStatus(H);
@@ -268,7 +264,7 @@ bool Controler::isDetected(Bird &bird)
     }
     return false;
 }
-void Controler::shootDownBird(std::string enemyName, std::shared_ptr<Home> &home) // call after A*
+void Controler::shootDownBird(std::string enemyName) // call after A*
 {
     std::shared_ptr<Enemy> enemy;
     for (int i = 0; i < goalCities.size(); i++)
@@ -277,16 +273,13 @@ void Controler::shootDownBird(std::string enemyName, std::shared_ptr<Home> &home
             enemy = std::dynamic_pointer_cast<Enemy>(goalCities[i]);
     }
 
-    std::cout << "in shoot\n";
     std::vector<Bird> detectedBirds;
     
-    std::cout <<"*************" <<enemy->getReachBirds().size()<< "*************\n\n";
     for (auto &it : enemy->getReachBirds())
     {
-        std::cout << "first oneeeeeeeeeeee\n\n";
         if (isDetected(it))
         {
-            std::cout << "in if dec\n";
+            std::cout << "meowwwww*_*\n";
             detectedBirds.push_back(it);
         }
     }
@@ -294,28 +287,21 @@ void Controler::shootDownBird(std::string enemyName, std::shared_ptr<Home> &home
     std::sort(detectedBirds.begin(), detectedBirds.end(), [](Bird &a, Bird &b)
     { return a.getDemolition() > b.getDemolition(); });
     
-    
-    auto &myBirds = home->getMyBirds();
     std::unordered_map<std::string, std::vector<Bird>::iterator> birdMap;
     
-    for (auto it = myBirds.begin(); it != myBirds.end(); it++)
+    for (auto it = detectedBirds.begin(); it != detectedBirds.end(); it++)
     {
         birdMap[it->getName()] = it;
     }
 
-    std::cout <<"birds " <<detectedBirds.size() << " level " << enemy->getDefenseLevel() << '\n';
+    std::cout <<"birds " << detectedBirds.size() << " level " << enemy->getDefenseLevel() << '\n';
     
     int range = std::min((int)detectedBirds.size(), enemy->getDefenseLevel());
     std::cout << range << " : range\n";
     for (int i = 0; i < range && enemy->getIsReady(); i++)
     {
-        const std::string &name = detectedBirds[i].getName();
-        if (birdMap.count(name))
-        {
-            std::cout << home->getMyBirds().size() << "before\n";
-            home->del(birdMap[name]);
-            std::cout << home->getMyBirds().size() << "after\n";
-        }
+        std::cout << detectedBirds[i].getName() << " is del *** \n";
+        delBird(detectedBirds[i]);
     }
 }
 ld Controler::totoalDamage(std::vector<std::shared_ptr<City>> &path, Bird &bird)
@@ -383,4 +369,28 @@ void Controler::enemyReady()
         auto temp = std::dynamic_pointer_cast<Enemy>(enemy);
         temp->setIsReady(true);   
     }   
+}
+void Controler::setReachBird(std::string &enemyName, Bird &bird)
+{
+    std::shared_ptr<Enemy> enemy ;
+    for (int i = 0; i < goalCities.size(); i++)
+    {
+        if (goalCities[i]->getCityName() == enemyName)
+            enemy = std::dynamic_pointer_cast<Enemy>(goalCities[i]);
+    }
+    enemy->pushReachBird(bird);
+}
+void Controler::attack()
+{
+    for (auto & goal : goalCities)
+    {
+        shootDownBird(goal->getCityName());
+    }
+}
+void Controler::delBird(Bird & bird)
+{
+    auto it = std::find(birds.begin(), birds.end(), bird);
+    if (it != birds.end()) {
+        birds.erase(it);
+    }
 }
