@@ -1,5 +1,5 @@
 10
-city1 100 100 Enemy 0
+city1 100 100 Enemy 1
 city2 520 130 Normal 0
 city3 950 150 Normal 0
 city4 1350 200 Normal 0 

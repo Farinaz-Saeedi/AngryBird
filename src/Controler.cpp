@@ -116,6 +116,7 @@ void Controler::run()
     int numberOfScen;
     input >> numberOfScen;
     std::shared_ptr<Scenario> whichScen = readScenario(numberOfScen);
+    std::cout << "scen" << whichScen << '\n';
     whichScen->printOutput(*this , startCities);
 }
 std::string Controler::findBestPairFor(std::shared_ptr<City> & start , Bird & bird)

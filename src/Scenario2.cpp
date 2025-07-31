@@ -9,6 +9,8 @@ void Scenario2::readInputs(std::vector<Bird> &birds, std::vector<std::shared_ptr
     ll count;
     std::string name, city;
 
+    std::cout << "in read 2\n";
+
     while (!input.eof())
     {
         input >> count;
@@ -39,9 +41,10 @@ void Scenario2::readInputs(std::vector<Bird> &birds, std::vector<std::shared_ptr
 void Scenario2::printOutput(Controler &control, std::vector<std::shared_ptr<City>> &homes)
 {
     ld totalDamage = 0.0;
-
+    std::cout << "in scen-2\n";
     for (auto &home : homes)
     {
+        std::cout << "in for 2\n";
         auto myHome = std::dynamic_pointer_cast<Home>(home);
         if (!myHome)
             continue;
