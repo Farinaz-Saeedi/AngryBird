@@ -93,7 +93,6 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
         std::cout << "\nTotal Damage (Neight "<< i <<" ): " << totalDamage << "\n";
 
         control.newSpies();
-        control.enemyReady();
     }
 
     

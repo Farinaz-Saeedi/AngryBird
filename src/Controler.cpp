@@ -355,14 +355,6 @@ void Controler::newSpies()
         }
     }
 }
-void Controler::enemyReady()
-{
-    for(auto &enemy : goalCities)
-    {
-        auto temp = std::dynamic_pointer_cast<Enemy>(enemy);
-        temp->setIsReady(true);   
-    }   
-}
 void Controler::setReachBird(std::string &enemyName, Bird &bird, std::vector<std::shared_ptr<City>> & path)
 {
     std::shared_ptr<Enemy> enemy ;

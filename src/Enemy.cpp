@@ -10,7 +10,6 @@ Enemy::Enemy(std::string name, ld x, ld y, bool is, int level)
     setY(y);
     setIsSpy(is);
     setDefenseLevel(level);
-    setIsReady(false);
 }
 void Enemy::setDefenseLevel(int defenseLevel)
 {
@@ -27,14 +26,6 @@ void Enemy::pushReachBird(Bird bird)
 std::vector<Bird> Enemy::getReachBirds()
 {
     return reachBirds;
-}
-void Enemy::setIsReady(bool isReady)
-{
-    this->isReady = isReady;
-}
-bool Enemy::getIsReady()
-{
-    return isReady;
 }
 void Enemy::setBirdPath(std::vector<std::shared_ptr<City>> & path)
 {

@@ -16,14 +16,12 @@ class Enemy : public City {
         int getDefenseLevel();
         void pushReachBird(Bird bird);
         std::vector<Bird> getReachBirds();
-        void setIsReady(bool isReady);
-        bool getIsReady();
         void setBirdPath(std::vector<std::shared_ptr<City>> & path);
 
     private:
         int defenseLevel;
         std::vector<Bird> reachBirds;
-        bool isReady;
+       
 
 
 };
