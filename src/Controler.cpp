@@ -128,16 +128,46 @@ std::string Controler::findBestPairFor(std::shared_ptr<City> & start , Bird & bi
 
     for (auto & goal : goalCities) {
         auto path = aStar(start->getCityName(), goal->getCityName(), bird); 
-        int spies = countSpiesOnPath(path);
+        if (!path.empty())
+        {
+            int spies = countSpiesOnPath(path);
 
-        if (spies < minSpies) { 
-            minSpies = spies;
-            bestGoal = goal;
-        }
+            if (spies < minSpies)
+            { 
+                minSpies = spies;
+                bestGoal = goal;
+            } 
+        } 
     }
-
     return bestGoal->getCityName();
 }
+// std::pair<std::string, std::vector<std::shared_ptr<City>>> Controler::findBestPairFor(std::shared_ptr<City> & start , Bird & bird)
+// {
+//     int minSpies = INT_MAX;
+//     std::shared_ptr<City> bestGoal = nullptr;
+//     std::vector<std::shared_ptr<City>> path;
+
+//     for (auto & goal : goalCities) {
+//         path = aStar(start->getCityName(), goal->getCityName(), bird); 
+//         if (!path.empty())
+//         {
+//             int spies = countSpiesOnPath(path);
+
+//             if (spies < minSpies)
+//             { 
+//                 minSpies = spies;
+//                 bestGoal = goal;
+//                 //bestPath = path;
+//             } 
+//         } 
+//     }
+
+//     if (bestGoal == nullptr)
+//         return {"", {}};
+
+//     return {bestGoal->getCityName(), path};
+// }
+
 ld Controler::heuristic(City &a, City &b)
 {
     return sqrt(pow((a.getX() - b.getX()), 2) + pow((a.getY() - b.getY()), 2));
@@ -234,11 +264,14 @@ std::vector<std::shared_ptr<City>> Controler::aStar(std::string start, std::stri
     std::reverse(path.begin(), path.end());
     if (!canDestroy(myBird, totalDistance))
     {
+        std::cout << "\n\nTOTAL DISTANCE: " << totalDistance << " | RANGE: " << myBird.getDistance() << "\n";
+       //return {};
         auto it = std::find(birds.begin(), birds.end(), myBird);
         if (it != birds.end())
         {
-            std::cout << myBird.getName() << " is exoloded in the path! \n"; 
+            std::cout << myBird.getName() << " is exoloded in the path! \n" ; 
             birds.erase(it);
+            std::cout << "size:  "<< birds.size() << "\n";
         }
     }
     return path;
@@ -261,7 +294,7 @@ bool Controler::isDetected(Bird &bird)
     }
     return false;
 }
-void Controler::shootDownBird(std::string enemyName) // call after A*
+void Controler::shootDownBird(std::string enemyName) 
 {
     std::shared_ptr<Enemy> enemy;
     for (int i = 0; i < goalCities.size(); i++)
@@ -293,8 +326,10 @@ void Controler::shootDownBird(std::string enemyName) // call after A*
     int range = std::min((int)detectedBirds.size(), enemy->getDefenseLevel());
     for (int i = 0; i < range ; i++)
     {
+        std::cout << detectedBirds.size() << " befor************\n";
         std::cout << detectedBirds[i].getName() << " is destroyed by the enemies \n";
         delBird(detectedBirds[i]);
+        std::cout << detectedBirds.size() << " after************\n";
     }
 }
 ld Controler::totoalDamage(std::vector<std::shared_ptr<City>> &path, Bird &bird)
@@ -361,10 +396,16 @@ void Controler::setReachBird(std::string &enemyName, Bird &bird, std::vector<std
     for (int i = 0; i < goalCities.size(); i++)
     {
         if (goalCities[i]->getCityName() == enemyName)
+        {
             enemy = std::dynamic_pointer_cast<Enemy>(goalCities[i]);
+            break;
+        }
     }
-    enemy->pushReachBird(bird);
-    enemy->setBirdPath(path);
+    if (enemy)
+    {
+        enemy->pushReachBird(bird);
+        enemy->setBirdPath(path); 
+    }
 }
 void Controler::attack()
 {

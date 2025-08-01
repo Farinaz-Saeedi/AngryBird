@@ -42,6 +42,7 @@ class Controler
         std::shared_ptr<Scenario> readScenario( int scen ); // read each scenario
         void run();
         std::string findBestPairFor(std::shared_ptr<City> & start , Bird & bird);
+        //std::pair<std::string, std::vector<std::shared_ptr<City>>>findBestPairFor(std::shared_ptr<City> & start , Bird & bird);
         ld heuristic(City & a , City & b);
         std::vector<std::shared_ptr<City>> aStar(std::string start , std::string goal, Bird myBird);
         bool canBirdReach(Bird & bird , ld distance);
