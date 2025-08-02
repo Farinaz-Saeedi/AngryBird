@@ -290,39 +290,31 @@ void Controler::shootDownBird(std::string enemyName)
             enemy = std::dynamic_pointer_cast<Enemy>(goalCities[i]);
     }
 
-    std::vector<Bird*> detectedBirds;
+    std::vector<Bird> detectedBirds;
     
     for (auto &it : enemy->getReachBirds())
     {
         if (isDetected(it))
         {
-            detectedBirds.push_back(&it);
+            detectedBirds.push_back(it);
         }
     }
     
-    std::sort(detectedBirds.begin(), detectedBirds.end(), [](Bird* a, Bird* b)
-    { return a->getDemolition() > b->getDemolition(); });
+    std::sort(detectedBirds.begin(), detectedBirds.end(), [](Bird a, Bird b)
+    { return a.getDemolition() > b.getDemolition(); });
     
     std::unordered_map<std::string, std::vector<Bird>::iterator> birdMap;
-    std::unordered_map<std::string, Bird*> birdMap;
-
     
     for (auto it = detectedBirds.begin(); it != detectedBirds.end(); it++)
     {
         birdMap[it->getName()] = it;
     }
-    // for (auto *birdPtr : detectedBirds)
-    // {   
-    //     birdMap[birdPtr->getName()] = birdPtr;
-    // }
     
     int range = std::min((int)detectedBirds.size(), enemy->getDefenseLevel());
     for (int i = 0; i < range ; i++)
     {
-        std::cout << detectedBirds.size() << " befor************\n";
-        std::cout << detectedBirds[i]->getName() << " is destroyed by the enemies \n";
-        delBird(*detectedBirds[i]);
-        std::cout << detectedBirds.size() << " after************\n";
+        std::cout << detectedBirds[i].getName() << " is destroyed by the enemies in [" << enemyName << "] \n";
+        delBird(detectedBirds[i]);
     }
 }
 ld Controler::totoalDamage(std::vector<std::shared_ptr<City>> &path, Bird &bird)
@@ -409,17 +401,19 @@ void Controler::attack()
 }
 void Controler::delBird(Bird & bird)
 {
-    std::cout << "Trying to delete bird: " << bird.getName() << "\n";
+    // std::cout << "Trying to delete bird: " << bird.getName() << "\n";
     auto it = std::find(birds.begin(), birds.end(), bird);
     if (it != birds.end()) {
         birds.erase(it);
-    }else
-    {
-        std::cout << "not found============================\n";//pointer!!!!!!!!!!!!!!
-    }   
+    }
+    // else
+    // {
+    //     std::cout << "not found============================\n";//pointer!!!!!!!!!!!!!!
+    // }   
 }
 void Controler::deadBird(Bird & myBird , ll & totalDistance, int code)
 {
+
     auto it = std::find(birds.begin(), birds.end(), myBird);
     if (it != birds.end())
     {
@@ -427,9 +421,8 @@ void Controler::deadBird(Bird & myBird , ll & totalDistance, int code)
         switch (code)
         {
             case 0:
-                std::cout << "\n\nTOTAL DISTANCE: " << totalDistance << " | RANGE: " << myBird.getDistance() << "\n";
+                std::cout << "\nTOTAL DISTANCE: " << totalDistance << " | RANGE: " << myBird.getDistance() << "\n";
                 std::cout << myBird.getName() << " is dead in the path! \n" ; 
-                std::cout << "size:  "<< birds.size() << "\n";
                 break;
             case 2:
                 std::cout << myBird.getName() << " did NOT find any path! \n";
