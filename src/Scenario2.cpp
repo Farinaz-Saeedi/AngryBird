@@ -52,21 +52,24 @@ void Scenario2::printOutput(Controler &control, std::vector<std::shared_ptr<City
 
         for (auto &bird : birds)
         {
-             std::string enemy = control.findBestPairFor(home, bird);
-             auto path = control.aStar(home->getCityName(), enemy, bird);
+            std::string enemy = control.findBestPairFor(home, bird);
+            std::vector<std::shared_ptr<City>> path;
+            ll distance;
+            int canDestroy = control.aStar(home->getCityName(), enemy, bird, path, distance);
             //auto [enemy, path] = control.findBestPairFor(home, bird);
-
-            if (enemy.empty() || path.empty())
-                continue;
+            std::cout << '\n' << home->getCityName() << " : \n";
+            control.deadBird(bird, distance, canDestroy);
+            // if (enemy.empty() || path.empty())
+            //     continue;
 
             control.setReachBird(enemy, bird, path);
 
-            std::cout << "\n---------------------------------------\n";
             std::cout << "\nBird : " << bird.getName() << "\nPath: ";
             for (auto &city : path)
             {
                 std::cout << city->getCityName() << " ";
             }
+            std::cout << "\n---------------------------------------\n";
             std::cout << "\n";
         }
     }

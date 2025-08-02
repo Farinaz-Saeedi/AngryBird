@@ -44,7 +44,7 @@ class Controler
         std::string findBestPairFor(std::shared_ptr<City> & start , Bird & bird);
         //std::pair<std::string, std::vector<std::shared_ptr<City>>>findBestPairFor(std::shared_ptr<City> & start , Bird & bird);
         ld heuristic(City & a , City & b);
-        std::vector<std::shared_ptr<City>> aStar(std::string start , std::string goal, Bird myBird);
+        int aStar(std::string start , std::string goal, Bird myBird, std::vector<std::shared_ptr<City>> & path, ll & totalDistance);
         bool canBirdReach(Bird & bird , ld distance);
         bool canDestroy(Bird & bird , ld distance);
         bool isDetected(Bird & bird);
@@ -57,6 +57,7 @@ class Controler
         void setReachBird(std::string &enemyName, Bird &bird , std::vector<std::shared_ptr<City>> & path);
         void attack();
         void delBird(Bird & bird);
+        void deadBird(Bird & bird, ll & totalDistanc, int code);
 
 
     private:
