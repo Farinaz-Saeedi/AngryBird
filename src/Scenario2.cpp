@@ -58,16 +58,16 @@ void Scenario2::printOutput(Controler &control, std::vector<std::shared_ptr<City
             int canDestroy = control.aStar(home->getCityName(), enemy, bird, path, distance);
 
             std::cout << "Bird : " << bird.getName() << "\nPath: ";
+            for (auto &city : path)
+            {
+                std::cout << city->getCityName() << " ";
+            }
 
             if (!canDestroy)
                 control.deadBird(bird, distance, canDestroy);
             else
             {
                 control.setReachBird(enemy, bird, path);
-                for (auto &city : path)
-                {
-                    std::cout << city->getCityName() << " ";
-                }
             }
             std::cout << "\n---------------------------------------\n";
             std::cout << "\n";

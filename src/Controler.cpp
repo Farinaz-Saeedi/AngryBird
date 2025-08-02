@@ -118,6 +118,7 @@ void Controler::run()
 
     int numberOfScen;
     input >> numberOfScen;
+    std::cout << numberOfScen;
     std::shared_ptr<Scenario> whichScen = readScenario(numberOfScen);
     whichScen->printOutput(*this , startCities);
 }
@@ -143,33 +144,6 @@ std::string Controler::findBestPairFor(std::shared_ptr<City> & start , Bird & bi
     }
     return bestGoal->getCityName();
 }
-// std::pair<std::string, std::vector<std::shared_ptr<City>>> Controler::findBestPairFor(std::shared_ptr<City> & start , Bird & bird)
-// {
-//     int minSpies = INT_MAX;
-//     std::shared_ptr<City> bestGoal = nullptr;
-//     std::vector<std::shared_ptr<City>> path;
-
-//     for (auto & goal : goalCities) {
-//         path = aStar(start->getCityName(), goal->getCityName(), bird); 
-//         if (!path.empty())
-//         {
-//             int spies = countSpiesOnPath(path);
-
-//             if (spies < minSpies)
-//             { 
-//                 minSpies = spies;
-//                 bestGoal = goal;
-//                 //bestPath = path;
-//             } 
-//         } 
-//     }
-
-//     if (bestGoal == nullptr)
-//         return {"", {}};
-
-//     return {bestGoal->getCityName(), path};
-// }
-
 ld Controler::heuristic(City &a, City &b)
 {
     return sqrt(pow((a.getX() - b.getX()), 2) + pow((a.getY() - b.getY()), 2));
@@ -401,15 +375,10 @@ void Controler::attack()
 }
 void Controler::delBird(Bird & bird)
 {
-    // std::cout << "Trying to delete bird: " << bird.getName() << "\n";
     auto it = std::find(birds.begin(), birds.end(), bird);
     if (it != birds.end()) {
         birds.erase(it);
     }
-    // else
-    // {
-    //     std::cout << "not found============================\n";//pointer!!!!!!!!!!!!!!
-    // }   
 }
 void Controler::deadBird(Bird & myBird , ll & totalDistance, int code)
 {

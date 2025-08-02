@@ -1,8 +1,9 @@
-7
-Venomtail city5
-Venomtail city9
-Skyrage city5
-Skyrage city9
-Ironbeak city5
-Ironbeak city9
-Ironbeak city10
+8
+Venomtail city2
+Venomtail city3
+Venomtail city4
+Skyrage city4
+Skyrage city4
+Ironbeak city3
+Ironbeak city2
+Ironbeak city2
