@@ -122,43 +122,49 @@ void Controler::run()
     std::shared_ptr<Scenario> whichScen = readScenario(numberOfScen);
     whichScen->printOutput(*this , startCities);
 }
-std::string Controler::findBestPairFor(std::shared_ptr<City> & start , Bird & bird)
+std::pair<std::string, bool> Controler::findBestPairFor(std::shared_ptr<City> & start , Bird & bird, std::vector<std::shared_ptr<City>> & path, ll & distance)
 {
     int minSpies = INT_MAX;
     std::shared_ptr<City> bestGoal = nullptr;
+    // std::vector<std::pair<std::string , std::vector<std::shared_ptr<City>>>> goals;
+    std::vector<std::shared_ptr<City>> bestPath;
+    bool temp;
 
-    for (auto & goal : goalCities) {
-        std::vector<std::shared_ptr<City>> path; 
-        ll dis;
-        int temp = aStar(start->getCityName(), goal->getCityName(), bird, path, dis); 
+    for (auto & goal : goalCities) 
+    {
+        temp = aStar(start->getCityName(), goal->getCityName(), bird, path, distance); 
         std::cout << "\n\n******* " << temp << "******\n\n"; 
         std::cout << start->getCityName() << " - ";
         if (!path.empty())
         {
-             std::cout << "\nif\n"; //!!!!!!!!!!
             int spies = countSpiesOnPath(path);
 
             if (spies < minSpies)
             { 
                 minSpies = spies;
                 bestGoal = goal;
+                bestPath = path;
             } 
         } 
     }
-    return bestGoal->getCityName();
+    path = bestPath;
+    return {bestGoal->getCityName(), temp};
 }
 ld Controler::heuristic(City &a, City &b)
 {
     return sqrt(pow((a.getX() - b.getX()), 2) + pow((a.getY() - b.getY()), 2));
 }
-int Controler::aStar(std::string start, std::string goal, Bird myBird, std::vector<std::shared_ptr<City>> & path, ll & totalDistance)
+bool Controler::aStar(std::string start, std::string goal, Bird myBird, std::vector<std::shared_ptr<City>> & path, ll & totalDistance)
 {
     ll n = cities.size();
+
+    // std::cout << n << "NNNNNNNNNNNNNN";
     
     std::unordered_map<std::string, int> nameToIndex;
     for (int i = 0; i < n; i++)
     {
         nameToIndex[cities[i]->getCityName()] = i;
+        // std::cout << cities[i]->getCityName() << " <-> " << i << '\n';
     }
     
     int startIdx = nameToIndex[start];
@@ -177,7 +183,7 @@ int Controler::aStar(std::string start, std::string goal, Bird myBird, std::vect
     auto startNode = std::make_shared<Node>();
     startNode->cityName = start;
     startNode->gCost = 0.0;
-    startNode->fCost = heuristic(*cities[startIdx], *cities[goalIdx]) + hPenalty;
+    startNode->fCost = heuristic(*cities[startIdx], *cities[goalIdx]);
 
     openList.push(startNode);
     std::cout << "goalIdx : " << goalIdx << "\n";
@@ -203,27 +209,31 @@ int Controler::aStar(std::string start, std::string goal, Bird myBird, std::vect
                 int prev = cameFrom[curr];
                 if (prev != -1)
                 {
-                    hPenalty = cities[curr]->getIsSpy() ? myBird.getOutOfControl() : 0.0;
-                    totalDistance += heuristic(*cities[prev], *cities[curr]) + hPenalty;
+                    totalDistance += heuristic(*cities[prev], *cities[curr]);
                 }
                 curr = prev;
             }
             std::reverse(path.begin(), path.end());
 
             if (!canDestroy(myBird, totalDistance))
-                return 0;
+                return false;
             
-            return 1;
+            return true;
         }
 
         for (int v = 0; v < n; ++v)
         {
+            // std::cout << "checking v : " << v << '\n';
             if (v == u) continue;
 
             ld dist = heuristic(*cities[u], *cities[v]);
 
             if (!canBirdReach(myBird, dist))
+            {
+        //         std::cout << "Check canBirdReach from " << cities[u]->getCityName()
+        //   << " to " << cities[v]->getCityName() << ": dist = " << dist << "\n";    
                 continue;
+            }
 
             ld penalty = cities[v]->getIsSpy() ? myBird.getOutOfControl() : 0.0;
             ld tempG = g[u] + dist + penalty;
@@ -239,10 +249,11 @@ int Controler::aStar(std::string start, std::string goal, Bird myBird, std::vect
                 neighborNode->fCost = tempG + heuristic(*cities[v], *cities[goalIdx]);
 
                 openList.push(neighborNode);
+                std::cout << "pushed: " << neighborNode->cityName << " to open list\n" ;
             }
         }
     }
-    return 2;
+    return false;
 }
 bool Controler::canBirdReach(Bird &bird, ld distance)
 {
@@ -387,22 +398,14 @@ void Controler::delBird(Bird & bird)
         birds.erase(it);
     }
 }
-void Controler::deadBird(Bird & myBird , ll & totalDistance, int code)
+void Controler::deadBird(Bird & myBird , ll & totalDistance)
 {
 
     auto it = std::find(birds.begin(), birds.end(), myBird);
     if (it != birds.end())
     {
         birds.erase(it);
-        switch (code)
-        {
-            case 0:
-                std::cout << "\nTOTAL DISTANCE: " << totalDistance << " | RANGE: " << myBird.getDistance() << "\n";
-                std::cout << myBird.getName() << " is dead in the path! \n" ; 
-                break;
-            case 2:
-                std::cout << myBird.getName() << " did NOT find any path! \n";
-                break;
-        }
+        std::cout << "\nTOTAL DISTANCE: " << totalDistance << " | RANGE: " << myBird.getDistance() << "\n";
+        std::cout << myBird.getName() << " is dead in the path! \n" ;  
     }
 }

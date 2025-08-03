@@ -53,23 +53,24 @@ void Scenario2::printOutput(Controler &control, std::vector<std::shared_ptr<City
 
         for (auto &bird : birds)
         {
-            std::string enemy = control.findBestPairFor(home, bird);
-            std::cout << "\nline2\n";
-            std::vector<std::shared_ptr<City>> path;
+            // std::string enemy; 
+            // bool canDestroy; 
             ll distance;
-            int canDestroy = control.aStar(home->getCityName(), enemy, bird, path, distance);
+            std::vector<std::shared_ptr<City>> path;
+            auto [enemy, canDestroy] = control.findBestPairFor(home, bird, path, distance);
+            std::cout << "\nline2\n";
 
             std::cout << "Bird : " << bird.getName() << "\nPath: ";
-            for (auto &city : path)
-            {
-                std::cout << city->getCityName() << " ";
-            }
-
-            if (!canDestroy)
-                control.deadBird(bird, distance, canDestroy);
+            
+            if (canDestroy != 1)
+            control.deadBird(bird, distance);
             else
             {
                 control.setReachBird(enemy, bird, path);
+                for (auto &city : path)
+                {
+                    std::cout << city->getCityName() << " ";
+                }
             }
             std::cout << "\n---------------------------------------\n";
             std::cout << "\n";

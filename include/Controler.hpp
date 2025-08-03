@@ -41,10 +41,10 @@ class Controler
         void setNumberOfCities(ll numberOfCities);
         std::shared_ptr<Scenario> readScenario( int scen ); // read each scenario
         void run();
-        std::string findBestPairFor(std::shared_ptr<City> & start , Bird & bird);
-        //std::pair<std::string, std::vector<std::shared_ptr<City>>>findBestPairFor(std::shared_ptr<City> & start , Bird & bird);
+        std::pair<std::string, bool> findBestPairFor(std::shared_ptr<City> & start , Bird & bird, std::vector<std::shared_ptr<City>> & path, ll & distance);
+        // std::pair<std::string, std::vector<std::shared_ptr<City>>>findBestPairFor(std::shared_ptr<City> & start , Bird & bird);
         ld heuristic(City & a , City & b);
-        int aStar(std::string start , std::string goal, Bird myBird, std::vector<std::shared_ptr<City>> & path, ll & totalDistance);
+        bool aStar(std::string start , std::string goal, Bird myBird, std::vector<std::shared_ptr<City>> & path, ll & totalDistance);
         bool canBirdReach(Bird & bird , ld distance);
         bool canDestroy(Bird & bird , ld distance);
         bool isDetected(Bird & bird);
@@ -57,7 +57,7 @@ class Controler
         void setReachBird(std::string &enemyName, Bird &bird , std::vector<std::shared_ptr<City>> & path);
         void attack();
         void delBird(Bird & bird);
-        void deadBird(Bird & bird, ll & totalDistanc, int code);
+        void deadBird(Bird & bird, ll & totalDistanc);
 
 
     private:
