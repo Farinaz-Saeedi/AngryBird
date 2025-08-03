@@ -126,15 +126,12 @@ std::pair<std::string, bool> Controler::findBestPairFor(std::shared_ptr<City> & 
 {
     int minSpies = INT_MAX;
     std::shared_ptr<City> bestGoal = nullptr;
-    // std::vector<std::pair<std::string , std::vector<std::shared_ptr<City>>>> goals;
     std::vector<std::shared_ptr<City>> bestPath;
     bool temp;
 
     for (auto & goal : goalCities) 
     {
         temp = aStar(start->getCityName(), goal->getCityName(), bird, path, distance); 
-        std::cout << "\n\n******* " << temp << "******\n\n"; 
-        std::cout << start->getCityName() << " - ";
         if (!path.empty())
         {
             int spies = countSpiesOnPath(path);
@@ -147,7 +144,11 @@ std::pair<std::string, bool> Controler::findBestPairFor(std::shared_ptr<City> & 
             } 
         } 
     }
+
     path = bestPath;
+    if (bestGoal == nullptr)
+        return {"", false};
+
     return {bestGoal->getCityName(), temp};
 }
 ld Controler::heuristic(City &a, City &b)
@@ -157,16 +158,21 @@ ld Controler::heuristic(City &a, City &b)
 bool Controler::aStar(std::string start, std::string goal, Bird myBird, std::vector<std::shared_ptr<City>> & path, ll & totalDistance)
 {
     ll n = cities.size();
-
-    // std::cout << n << "NNNNNNNNNNNNNN";
     
     std::unordered_map<std::string, int> nameToIndex;
     for (int i = 0; i < n; i++)
     {
         nameToIndex[cities[i]->getCityName()] = i;
-        // std::cout << cities[i]->getCityName() << " <-> " << i << '\n';
     }
     
+    if (start == goal)
+    {
+        path.clear();
+        path.push_back(cities[nameToIndex[start]]);
+        totalDistance = 0;
+        return true;
+    }
+
     int startIdx = nameToIndex[start];
     int goalIdx = nameToIndex[goal];
     ld hPenalty = cities[goalIdx]->getIsSpy() ? myBird.getOutOfControl() : 0.0;
@@ -186,19 +192,15 @@ bool Controler::aStar(std::string start, std::string goal, Bird myBird, std::vec
     startNode->fCost = heuristic(*cities[startIdx], *cities[goalIdx]);
 
     openList.push(startNode);
-    std::cout << "goalIdx : " << goalIdx << "\n";
 
     while (!openList.empty())
     {
-        std::cout << "while " << "\n";
         auto current = openList.top();
         openList.pop();
 
         int u = nameToIndex[current->cityName];
-        std::cout <<"u: " << u << "  ";
         if (u == goalIdx)
         {
-            std::cout << "  A* ";
             path.clear();
             int curr = goalIdx;
             totalDistance = 0.0;
@@ -223,17 +225,13 @@ bool Controler::aStar(std::string start, std::string goal, Bird myBird, std::vec
 
         for (int v = 0; v < n; ++v)
         {
-            // std::cout << "checking v : " << v << '\n';
             if (v == u) continue;
 
             ld dist = heuristic(*cities[u], *cities[v]);
 
             if (!canBirdReach(myBird, dist))
-            {
-        //         std::cout << "Check canBirdReach from " << cities[u]->getCityName()
-        //   << " to " << cities[v]->getCityName() << ": dist = " << dist << "\n";    
                 continue;
-            }
+            
 
             ld penalty = cities[v]->getIsSpy() ? myBird.getOutOfControl() : 0.0;
             ld tempG = g[u] + dist + penalty;
@@ -249,12 +247,13 @@ bool Controler::aStar(std::string start, std::string goal, Bird myBird, std::vec
                 neighborNode->fCost = tempG + heuristic(*cities[v], *cities[goalIdx]);
 
                 openList.push(neighborNode);
-                std::cout << "pushed: " << neighborNode->cityName << " to open list\n" ;
             }
         }
     }
     return false;
 }
+
+
 bool Controler::canBirdReach(Bird &bird, ld distance)
 {
     return bird.getOutOfControl() > distance;
