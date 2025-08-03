@@ -42,6 +42,7 @@ void Scenario2::printOutput(Controler &control, std::vector<std::shared_ptr<City
     ld totalDamage = 0.0;
     for (auto &home : homes)
     {
+        std::cout << "  for   ";
         auto myHome = std::dynamic_pointer_cast<Home>(home);
         if (!myHome)
         continue;
@@ -53,6 +54,7 @@ void Scenario2::printOutput(Controler &control, std::vector<std::shared_ptr<City
         for (auto &bird : birds)
         {
             std::string enemy = control.findBestPairFor(home, bird);
+            std::cout << "\nline2\n";
             std::vector<std::shared_ptr<City>> path;
             ll distance;
             int canDestroy = control.aStar(home->getCityName(), enemy, bird, path, distance);

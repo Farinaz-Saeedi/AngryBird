@@ -66,7 +66,7 @@ void Controler::readCities()
             }
         }
     }
-    input.close();
+    input.close(); 
 }
 void Controler::setNumberOfCities(ll numberOfCities)
 {
@@ -128,11 +128,14 @@ std::string Controler::findBestPairFor(std::shared_ptr<City> & start , Bird & bi
     std::shared_ptr<City> bestGoal = nullptr;
 
     for (auto & goal : goalCities) {
-        std::vector<std::shared_ptr<City>> path;
+        std::vector<std::shared_ptr<City>> path; 
         ll dis;
-        aStar(start->getCityName(), goal->getCityName(), bird, path, dis); 
+        int temp = aStar(start->getCityName(), goal->getCityName(), bird, path, dis); 
+        std::cout << "\n\n******* " << temp << "******\n\n"; 
+        std::cout << start->getCityName() << " - ";
         if (!path.empty())
         {
+             std::cout << "\nif\n"; //!!!!!!!!!!
             int spies = countSpiesOnPath(path);
 
             if (spies < minSpies)
@@ -177,15 +180,19 @@ int Controler::aStar(std::string start, std::string goal, Bird myBird, std::vect
     startNode->fCost = heuristic(*cities[startIdx], *cities[goalIdx]) + hPenalty;
 
     openList.push(startNode);
+    std::cout << "goalIdx : " << goalIdx << "\n";
 
     while (!openList.empty())
     {
+        std::cout << "while " << "\n";
         auto current = openList.top();
         openList.pop();
 
         int u = nameToIndex[current->cityName];
+        std::cout <<"u: " << u << "  ";
         if (u == goalIdx)
         {
+            std::cout << "  A* ";
             path.clear();
             int curr = goalIdx;
             totalDistance = 0.0;

@@ -7,6 +7,5 @@ city5 500 -200 Normal 1
 city6 400 -100 Normal 1 
 city7 200 -50 Normal 0
 city8 100 200 Normal 0
-city9 100 -400 Enemy 1 1
 city10 -400 -300 Enemy 0 2
 city11 -200 -400 Normal 0
