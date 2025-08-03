@@ -259,6 +259,11 @@ bool Controler::canBirdReach(Bird &bird, ld distance)
 }
 bool Controler::canDestroy(Bird &bird, ld distance)
 {
+    if (bird.getDistance() >= 10000)
+    {
+        return true;
+    }
+    
     return bird.getDistance() >= distance;
 }
 bool Controler::isDetected(Bird &bird)
