@@ -1,5 +1,8 @@
-4
-Blaze cityA
-Venomtail cityB
-Viper cityA
-Stonewing cityB
+7
+Venomtail city2
+Skyrage city3
+Ironbeak city3
+Stonewing city1
+Fury city1 
+Blaze city1
+Viper city2
