@@ -118,7 +118,6 @@ void Controler::run()
 
     int numberOfScen;
     input >> numberOfScen;
-    std::cout << numberOfScen;
     std::shared_ptr<Scenario> whichScen = readScenario(numberOfScen);
     whichScen->printOutput(*this , startCities);
 }

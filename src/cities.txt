@@ -1,4 +1,4 @@
-10
+11
 city0 600 0 Normal 0 
 city1 0 800 Home 0 3
 city2 200 600 Home 1 2
@@ -7,5 +7,6 @@ city4 500 -200 Normal 1
 city5 400 -100 Normal 1 
 city6 200 -50 Normal 0
 city7 100 200 Normal 0
-city9 -400 -300 Enemy 0 2
-city10 -200 -400 Normal 0
+city8 -400 100 Enemy 1 2
+city9 -400 -300 Enemy 1 2
+city10 -200 0 Normal 0
