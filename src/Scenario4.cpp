@@ -48,7 +48,8 @@ void Scenario4::printOutput(Controler &control, std::vector<std::shared_ptr<City
         auto &birds = myHome->getMyBirds();
         if (birds.empty())
             continue;
-
+            
+        std::cout << "\n";
         for (auto &bird : birds)
         {
             ll distance = 0;
