@@ -50,6 +50,7 @@ void Scenario5::readInputs(std::vector<Bird> &birds, std::vector<std::shared_ptr
 std::vector<std::vector<Bird>> Scenario5::distributeBirds(Controler &control)
 {
     std::vector<Bird> allBirds = control.getBirds();
+    
 
     std::sort(allBirds.begin(), allBirds.end(), [](Bird &a, Bird &b)
               { return a.getDemolition() > b.getDemolition(); });
@@ -75,58 +76,59 @@ std::vector<std::vector<Bird>> Scenario5::distributeBirds(Controler &control)
 
 void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City>> &homes)
 {
-    // for (int i = 1; i <= getNumberOfNights(); i++)
-    // {
-    //     std::cout << "\nNight " << i << " begins...\n";
+    auto birdsByNight = distributeBirds(control);
+    for (int i = 0; i < getNumberOfNights(); i++)
+    {
+        std::cout << "\nNight " << i + 1 << " begins...\n";
 
-    //     ld totalDamage = 0.0;
-    //     for (auto &home : homes)
-    //     {
-    //         auto myHome = std::dynamic_pointer_cast<Home>(home);
-    //         if (!myHome)
-    //             continue;
+        ld totalDamage = 0.0;
+        for (auto &home : homes)
+        {
+            auto myHome = std::dynamic_pointer_cast<Home>(home);
+            if (!myHome)
+                continue;
 
-    //         auto &birds = myHome->getMyBirds();
-    //         if (birds.empty())
-    //             continue;
+            auto &birds = myHome->getMyBirds();
+            if (birds.empty())
+                continue;
 
-    //         for (auto &bird : birds)
-    //         {
-    //             ll distance = 0;
-    //             std::vector<std::shared_ptr<City>> path;
-    //             auto [enemy, canDestroy] = control.findBestPairFor(home, bird, path, distance);
+            for (auto &bird : birds) //birdsByNight[i]
+            {
+                ll distance = 0;
+                std::vector<std::shared_ptr<City>> path;
+                auto [enemy, canDestroy] = control.findBestPairFor(home, bird, path, distance);
 
-    //             std::cout << "Bird : " << bird.getName() << "\nPath: ";
+                std::cout << "Bird : " << bird.getName() << "\nPath: ";
 
-    //             if (canDestroy != 1)
-    //                 control.deadBird(bird, distance);
-    //             else
-    //             {
-    //                 control.setReachBird(enemy, bird, path);
-    //                 for (auto &city : path)
-    //                 {
-    //                     std::cout << city->getCityName() << " ";
-    //                 }
-    //             }
-    //             std::cout << "\n---------------------------------------\n";
-    //             std::cout << "\n";
-    //         }
-    //     }
+                if (canDestroy != 1)
+                    control.deadBird(bird, distance);
+                else
+                {
+                    control.setReachBird(enemy, bird, path);
+                    for (auto &city : path)
+                    {
+                        std::cout << city->getCityName() << " ";
+                    }
+                }
+                std::cout << "\n---------------------------------------\n";
+                std::cout << "\n";
+            }
+        }
 
-    //     std::cout << "\n---------------------------------------\n";
+        std::cout << "\n---------------------------------------\n";
 
-    //     control.attack();
+        control.attack();
 
-    //     auto birds = control.getBirds();
-    //     for (auto &bird : birds)
-    //     {
-    //         totalDamage += bird.getDemolition();
-    //     }
+        auto birds = control.getBirds();
+        for (auto &bird : birds)
+        {
+            totalDamage += bird.getDemolition();
+        }
 
-    //     std::cout << "---------------------------------------";
-    //     std::cout << "\nTotal Damage (Neight " << i << " ): " << totalDamage << "\n";
+        std::cout << "---------------------------------------";
+        std::cout << "\nTotal Damage (Neight " << i << " ): " << totalDamage << "\n";
 
-    //     std::cout << "---------------------------------------\n";
-    //     control.newSpies();
-    // }
+        std::cout << "---------------------------------------\n";
+        control.newSpies();
+    }
 }
