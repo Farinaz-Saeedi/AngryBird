@@ -22,7 +22,8 @@ class Scenario3 : public Scenario
         void printOutput(Controler & control , std::vector<std::shared_ptr<City>> &homes) override;
         void setSlingshot(int number);
         int getSlingshot();
-        std::vector<AssignmentOption> assignOptions(Controler & controler , std::vector<std::shared_ptr<City>> & homes);
+        std::vector<AssignmentOption> assignOptions(Controler & controler , std::vector<std::shared_ptr<City>> & homes);   
+        std::vector<int> hungarianMaximize(const std::vector<std::vector<double>> & profitMatrix);
 
 
 
