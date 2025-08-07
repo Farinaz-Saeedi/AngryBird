@@ -1,6 +1,8 @@
 #include "Scenario3.hpp"
 
 
+AssignmentOption::
+
 void Scenario3::readInputs(std::vector<Bird> & birds , std::vector<std::shared_ptr<City>> & homes)
 {
     std::ifstream input("../src/Scenario3.txt");
@@ -56,4 +58,36 @@ void Scenario3::printOutput(Controler & control , std::vector<std::shared_ptr<Ci
 //     }
 
 //     std::cout << "Total Damage: " << totalDamage << "\n";
+}
+std::vector<AssignmentOption> Scenario3::assignOptions(Controler & controler , std::vector<std::shared_ptr<City>> & homes) 
+{
+    std::vector<AssignmentOption> options;
+
+    std::vector<Bird> birds = controler.getBirds();
+    std::vector<std::shared_ptr<City>> path;
+    ll distance;
+
+    for (int b = 0 ; b < birds.size() ; ++b) 
+    {
+        Bird bird = birds[b];
+
+        for (auto & home : homes) 
+        {
+            auto myHome = std::dynamic_pointer_cast<Home>(home);
+            if (myHome->getCapacity() == 0) continue;
+
+            for (auto & target : controler.getEnemies()) 
+            {
+                controler.aStar(myHome->getCityName(), target->getCityName(), bird, path, distance);
+
+                if (!path.empty() && !controler.isDetected())
+                {
+                    ll dmg = bird.getDemolition();  
+                    options.push_back({bird, home, target, path, dmg});
+                }
+            }
+        }
+    }
+
+    return options;
 }

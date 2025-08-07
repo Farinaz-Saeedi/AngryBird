@@ -251,8 +251,6 @@ bool Controler::aStar(std::string start, std::string goal, Bird myBird, std::vec
     }
     return false;
 }
-
-
 bool Controler::canBirdReach(Bird &bird, ld distance)
 {
     return bird.getOutOfControl() > distance;
@@ -411,4 +409,8 @@ void Controler::deadBird(Bird & myBird , ll & totalDistance)
         std::cout << "\nTOTAL DISTANCE: " << totalDistance << " | RANGE: " << myBird.getDistance() << "\n";
         std::cout << myBird.getName() << " is dead in the path! \n" ;  
     }
+}
+std::vector<std::shared_ptr<City>> Controler::getEnemies()
+{
+    return goalCities;
 }

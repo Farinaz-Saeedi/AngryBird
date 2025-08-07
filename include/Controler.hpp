@@ -42,7 +42,6 @@ class Controler
         std::shared_ptr<Scenario> readScenario( int scen ); // read each scenario
         void run();
         std::pair<std::string, bool> findBestPairFor(std::shared_ptr<City> & start , Bird & bird, std::vector<std::shared_ptr<City>> & path, ll & distance);
-        // std::pair<std::string, std::vector<std::shared_ptr<City>>>findBestPairFor(std::shared_ptr<City> & start , Bird & bird);
         ld heuristic(City & a , City & b);
         bool aStar(std::string start , std::string goal, Bird myBird, std::vector<std::shared_ptr<City>> & path, ll & totalDistance);
         bool canBirdReach(Bird & bird , ld distance);
@@ -58,11 +57,13 @@ class Controler
         void attack();
         void delBird(Bird & bird);
         void deadBird(Bird & bird, ll & totalDistanc);
+        std::vector<std::shared_ptr<City>> getEnemies();
+
 
 
     private:
         std::vector<Bird> birds;
-        std::vector<std::shared_ptr<City>> homes;
+        // std::vector<std::shared_ptr<City>> homes;
         std::vector<std::shared_ptr<City>> cities;
         std::vector<std::shared_ptr<City>> goalCities;
         std::vector<std::shared_ptr<City>> startCities;
