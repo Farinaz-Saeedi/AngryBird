@@ -18,6 +18,7 @@ class Home : public City {
         void push(Bird &bird);
         std::vector<Bird> &getMyBirds();
         void del(std::vector<Bird>::iterator it);
+        void reduceCapacity();
 
     private:
         int capacity;

@@ -37,3 +37,7 @@ void Home::del(std::vector<Bird>::iterator it)
 {
     myBirds.erase(it);
 }
+void Home::reduceCapacity()
+{
+    capacity--;
+}
