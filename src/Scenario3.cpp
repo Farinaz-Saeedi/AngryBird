@@ -44,11 +44,9 @@ void Scenario3::printOutput(Controler & control , std::vector<std::shared_ptr<Ci
     for (int i = 0; i < matches.size(); ++i) 
     {
         int idx = matches[i];
-        if (idx == -1 || idx >= finalOptions.size()) continue;
+        if (idx == -1 || idx >= options.size()) continue;
 
-        std::cout << "opt idx: " << idx << " ________\n";
-
-        const auto & opt = finalOptions[idx];
+        const auto & opt = options[idx];
         std::cout << "Bird: " << birds[opt.birdIdx].getName() << " | " << "Home: " << opt.home->getCityName() << " | \n";
         std::cout << "Target: " << opt.target->getCityName() << '\n';
         std::cout << "Path: ";
@@ -57,8 +55,8 @@ void Scenario3::printOutput(Controler & control , std::vector<std::shared_ptr<Ci
             std::cout << city->getCityName() << " ";
         std::cout << "\n-----------------------------\n";
 
-        auto myHome = std::dynamic_pointer_cast<Home>(opt.home);
-        myHome->reduceCapacity();
+        // auto myHome = std::dynamic_pointer_cast<Home>(opt.home);
+        // myHome->reduceCapacity();
     }
 
 }
@@ -68,6 +66,9 @@ std::vector<Option> Scenario3::assignOptions(Controler & control , std::vector<s
     std::vector<std::shared_ptr<City>> path;
     ll distance;
 
+    std::sort(birds.begin() , birds.end() , [](Bird & a, Bird & b)
+              { return a.getDemolition() > b.getDemolition(); });
+
     for (int b = 0 ; b < birds.size() ; ++b) 
     {
         Bird bird = birds[b];
@@ -75,7 +76,7 @@ std::vector<Option> Scenario3::assignOptions(Controler & control , std::vector<s
         for (auto & home : homes) 
         {
             auto myHome = std::dynamic_pointer_cast<Home>(home);
-            if (myHome->getCapacity() == 0) continue;
+            if (myHome->getCapacity() <= 0) continue;
 
             for (auto & target : control.getEnemies()) 
             {
@@ -84,8 +85,12 @@ std::vector<Option> Scenario3::assignOptions(Controler & control , std::vector<s
 
                 if (!path.empty() && !control.isDetected(bird))
                 {
+                    // std::cout << myHome->getCityName() << " TO " << target->getCityName() << '\n';
                     ll dmg = bird.getDemolition();  
                     options.push_back({b, home, target, path, cost});
+                    // std::cout << "cap: " << myHome->getCapacity() << " -> ";
+                    myHome->reduceCapacity();
+                    // std::cout << "cap: " << myHome->getCapacity() << '\n';
                 }
             }
         }
@@ -100,7 +105,7 @@ std::vector<int> Scenario3::hungarianMin(const std::vector<std::vector<ll>> & pr
     int n = profitMatrix.size();
     int m = profitMatrix[0].size();
     int size = std::max(n , m);
-
+    
     std::vector<std::vector<ll>> cost(size, std::vector<ll>(size , INF));
     for (int i = 0 ; i < n ; ++i)
         for (int j = 0 ; j < m ; ++j)
@@ -109,7 +114,8 @@ std::vector<int> Scenario3::hungarianMin(const std::vector<std::vector<ll>> & pr
     std::vector<ll> u(size + 1), v(size + 1);
     std::vector<int> p(size + 1), way(size + 1);
 
-    for (int i = 1 ; i <= size ; ++i) {
+    for (int i = 1 ; i <= size ; ++i) 
+    {
         p[0] = i ;
         int j0 = 0;
         std::vector<ll> minv(size + 1 , INF);
@@ -123,7 +129,7 @@ std::vector<int> Scenario3::hungarianMin(const std::vector<std::vector<ll>> & pr
             {
                 if (!used[j]) 
                 {
-                    ll cur = profitMatrix[i0 - 1][j - 1] - u[i0] - v[j];
+                    ll cur = cost[i0 - 1][j - 1] - u[i0] - v[j];
                     if (cur < minv[j]) {
                         minv[j] = cur;
                         way[j] = j0;
@@ -163,30 +169,17 @@ std::vector<int> Scenario3::hungarianMin(const std::vector<std::vector<ll>> & pr
 }
 std::vector<std::vector<ll>> Scenario3::buildProfitMatrix(Controler & control)
 {
-    std::vector<Option> myOptions;
-
-    for (const auto & opt : options)
-    {
-        auto myHome = std::dynamic_pointer_cast<Home>(opt.home);
-        int cap = myHome->getCapacity();
-
-        for (int i = 0; i < cap; ++i)
-            myOptions.push_back(opt);
-    }
-
     int n = control.getBirds().size();
-    int m = myOptions.size();
+    int m = options.size();
 
     std::vector<std::vector<ll>> profit(n, std::vector<ll>(m, 1e9));
 
     for (int j = 0; j < m; ++j) 
     {
-        const auto & option = myOptions[j];
-        std::cout << option.home->getCityName() << " -> " << option.target->getCityName() << " -- " << option.birdIdx << " cost : " << option.cost << '\n';
+        const auto & option = options[j];
+        // std::cout << option.home->getCityName() << " -> " << option.target->getCityName() << " -- " << option.birdIdx << " cost : " << option.cost << '\n';
         profit[option.birdIdx][j] = option.cost;
     }
-
-    finalOptions = myOptions;
 
     return profit;
 }

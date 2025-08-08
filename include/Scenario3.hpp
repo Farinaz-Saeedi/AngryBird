@@ -33,6 +33,7 @@ class Scenario3 : public Scenario
         int numberOfSlingshot;
         std::vector<Option> options;
         std::vector<Option> finalOptions;
+         std::vector<std::shared_ptr<Home>> myHomes;
 };
 
 
