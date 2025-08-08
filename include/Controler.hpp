@@ -22,8 +22,8 @@
 
 struct Node {
     std::string cityName;
-    double gCost; 
-    double fCost; 
+    ld gCost; 
+    ld fCost; 
 
     bool operator>(const Node & other) const 
     {
@@ -43,7 +43,7 @@ class Controler
         void run();
         std::pair<std::string, bool> findBestPairFor(std::shared_ptr<City> & start , Bird & bird, std::vector<std::shared_ptr<City>> & path, ll & distance);
         ld heuristic(City & a , City & b);
-        bool aStar(std::string start , std::string goal, Bird myBird, std::vector<std::shared_ptr<City>> & path, ll & totalDistance);
+        bool aStar(std::string start , std::string goal, Bird myBird, std::vector<std::shared_ptr<City>> & path, ll & totalDistance, ld & cost);
         bool canBirdReach(Bird & bird , ld distance);
         bool canDestroy(Bird & bird , ld distance);
         bool isDetected(Bird & bird);

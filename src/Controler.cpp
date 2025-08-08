@@ -130,12 +130,13 @@ std::pair<std::string, bool> Controler::findBestPairFor(std::shared_ptr<City> & 
 
     for (auto & goal : goalCities) 
     {
-        temp = aStar(start->getCityName(), goal->getCityName(), bird, path, distance); 
+        ld temp;
+        temp = aStar(start->getCityName(), goal->getCityName(), bird, path, distance, temp); 
         if (!path.empty())
         {
             int spies = countSpiesOnPath(path);
 
-            if (spies < minSpies)
+            if (spies < minSpies) 
             { 
                 minSpies = spies;
                 bestGoal = goal;
@@ -154,7 +155,7 @@ ld Controler::heuristic(City &a, City &b)
 {
     return sqrt(pow((a.getX() - b.getX()), 2) + pow((a.getY() - b.getY()), 2));
 }
-bool Controler::aStar(std::string start, std::string goal, Bird myBird, std::vector<std::shared_ptr<City>> & path, ll & totalDistance)
+bool Controler::aStar(std::string start, std::string goal, Bird myBird, std::vector<std::shared_ptr<City>> & path, ll & totalDistance, ld & cost)
 {
     ll n = cities.size();
     
@@ -200,6 +201,8 @@ bool Controler::aStar(std::string start, std::string goal, Bird myBird, std::vec
         int u = nameToIndex[current->cityName];
         if (u == goalIdx)
         {
+            cost = g[goalIdx];
+
             path.clear();
             int curr = goalIdx;
             totalDistance = 0.0;

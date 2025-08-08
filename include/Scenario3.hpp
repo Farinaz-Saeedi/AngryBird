@@ -4,15 +4,15 @@
 #include "Scenario.hpp"
 #include "Controler.hpp"
 
-struct AssignmentOption {
+struct Option {
     int birdIdx;
     std::shared_ptr<City> home;
     std::shared_ptr<City> target;
     std::vector<std::shared_ptr<City>> path;
-    ll damage;
+    ld cost;
 
-    AssignmentOption(int b , std::shared_ptr<City> h , std::shared_ptr<City> t , std::vector<std::shared_ptr<City>> p , ll d)
-    : birdIdx(b), home(h), target(t), path(p), damage(d) {}
+    Option(int b , std::shared_ptr<City> h , std::shared_ptr<City> t , std::vector<std::shared_ptr<City>> p , ld c)
+    : birdIdx(b), home(h), target(t), path(p), cost(c) {}
 };
 
 class Scenario3 : public Scenario
@@ -22,8 +22,8 @@ class Scenario3 : public Scenario
         void printOutput(Controler & control , std::vector<std::shared_ptr<City>> &homes) override;
         void setSlingshot(int number);
         int getSlingshot();
-        std::vector<AssignmentOption> assignOptions(Controler & controler , std::vector<std::shared_ptr<City>> & homes);   
-        std::vector<int> hungarianMaximize(const std::vector<std::vector<ll>> & profitMatrix);
+        std::vector<Option> assignOptions(Controler & controler , std::vector<std::shared_ptr<City>> & homes);   
+        std::vector<int> hungarianMin(const std::vector<std::vector<ll>> & profitMatrix);
         std::vector<std::vector<ll>> buildProfitMatrix(Controler & controler);
 
 
@@ -31,8 +31,8 @@ class Scenario3 : public Scenario
 
     private:
         int numberOfSlingshot;
-        std::vector<AssignmentOption> options;
-
+        std::vector<Option> options;
+        std::vector<Option> finalOptions;
 };
 
 
