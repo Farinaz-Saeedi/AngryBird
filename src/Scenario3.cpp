@@ -10,19 +10,19 @@ void Scenario3::readInputs(std::vector<Bird> & birds , std::vector<std::shared_p
     ll count, number;
     std::string name;
 
-    while (!input.eof())
+    while (input >> count)
     {
         // input >> count;
         // setSlingshot(count);
         
-        input >> count;
-        for (int i = 0; i < count; i++)
+        // input >> count;
+        for (int i = 0; i < count; ++i)
         {
-            input >> name;
-            input >> number;
-            for (int i = 0; i < number; i++)
+            input >> name >> number;
+            for (int j = 0; j < number; ++j)
             {
                 readBird(name, birds);
+                std::cout << name << '\n';
             }
         }
     }
