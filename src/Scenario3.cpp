@@ -12,8 +12,8 @@ void Scenario3::readInputs(std::vector<Bird> & birds , std::vector<std::shared_p
 
     while (!input.eof())
     {
-        input >> count;
-        setSlingshot(count);
+        // input >> count;
+        // setSlingshot(count);
         
         input >> count;
         for (int i = 0; i < count; i++)
@@ -39,20 +39,24 @@ int Scenario3::getSlingshot()
 }
 void Scenario3::printOutput(Controler & control , std::vector<std::shared_ptr<City>> &homes)
 {
+    int count = 0 ;
     assignOptions(control, homes);
     auto profitMatrix = buildProfitMatrix(control);
     auto matches = hungarianMaximize(profitMatrix);
     auto birds = control.getBirds();
 
-    for (auto & opt : options)
+    for (int i = 0 ; i < matches.size() ; ++i)
     {
+        int idx = matches[i];
+        if (idx == -1) continue;
+        const auto & opt = options[idx];
         std::cout << "Bird: " << birds[opt.birdIdx].getName() << " | " << "Home: " << opt.home->getCityName() << " | \n";
         std::cout << "Target: " << opt.target->getCityName() << '\n';
         std::cout << "Path: \n";
         auto path = opt.path;
         for ( auto city : path )
             std::cout << city->getCityName() << " ";
-        std::cout << '\n';
+        std::cout << "\n-----------------------------\n";
 
         auto myHome = std::dynamic_pointer_cast<Home>(opt.home);
         myHome->reduceCapacity();

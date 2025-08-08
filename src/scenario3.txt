@@ -1,8 +1,5 @@
-number of slingshots
-
-number of birds' kind
-birdName - number
--------
--------
--------
-birdName - number
+6
+Stonewing 2
+Fury 1
+Blaze 1
+Viper 2
