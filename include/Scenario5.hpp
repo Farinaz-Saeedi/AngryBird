@@ -27,6 +27,7 @@ public:
     void printOutput(Controler &control, std::vector<std::shared_ptr<City>> &homes) override;
     void setNumberOfNights(int numberOfNights);
     int getNumberOfNights();
+    std::vector<int> hungarianMaximize(const std::vector<std::vector<ll>> &profit);
 
 private:
     int numberOfNights;
