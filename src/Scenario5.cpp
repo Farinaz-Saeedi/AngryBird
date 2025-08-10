@@ -22,6 +22,7 @@ void Scenario5::readInputs(std::vector<Bird> &birds, std::vector<std::shared_ptr
     {
         input >> nights;
         setNumberOfNights(nights);
+        //std::cout << "while";
 
         input >> count;
         for (int i = 0; i < count; i++)
@@ -43,7 +44,7 @@ void Scenario5::readInputs(std::vector<Bird> &birds, std::vector<std::shared_ptr
             }
         }
     }
-
+    //std::cout << "end read********";
     input.close();
 }
 // void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City>> &homes)
@@ -201,7 +202,7 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
 
     for (int night = 1; night <= numberOfNights; ++night)
     {
-        std::cout << "\nNight " << night << " begins...\n";
+        std::cout << "\nNight " << night << " begins...\n\n";
 
         double detectionProb = getSpyDetectionProbability(night);
 
@@ -263,10 +264,10 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
                 continue;
 
             auto &opt = options[i];
-            std::cout << "Launch Bird " << opt.bird.getName()
+            std::cout << "\nLaunch Bird " << opt.bird.getName()
                       << " from " << opt.home->getCityName()
                       << " to " << opt.target->getCityName()
-                      << " | Expected Damage: " << (opt.damage * opt.successProb) << "\n";
+                      << " | Expected Damage: " << (opt.damage * opt.successProb) << "\n\n";
 
             std::cout << "Path: ";
             for (auto &city : opt.path)
