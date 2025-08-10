@@ -6,7 +6,7 @@
 
 struct OptionScenario5
 {
-    Bird &bird;
+    int birdIdx;
     std::shared_ptr<City> home;
     std::shared_ptr<City> target;
     std::vector<std::shared_ptr<City>> path;
@@ -14,10 +14,10 @@ struct OptionScenario5
     ll damage;
     double successProb;
 
-    OptionScenario5(Bird b, std::shared_ptr<City> h, std::shared_ptr<City> t,
+    OptionScenario5(int b, std::shared_ptr<City> h, std::shared_ptr<City> t,
            std::vector<std::shared_ptr<City>> p, long double c,
            long long dmg, double prob)
-        : bird(b), home(h), target(t), path(p), cost(c), damage(dmg), successProb(prob) {}
+        : birdIdx(b), home(h), target(t), path(p), cost(c), damage(dmg), successProb(prob) {}
 };
 
 class Scenario5 : public Scenario

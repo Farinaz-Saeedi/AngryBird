@@ -58,6 +58,7 @@ class Controler
         void delBird(Bird & bird);
         void deadBird(Bird & bird, ll & totalDistanc);
         std::vector<std::shared_ptr<City>> getEnemies();
+        int getBirdIdx(Bird & bird);
 
 
 

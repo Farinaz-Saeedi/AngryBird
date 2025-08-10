@@ -417,3 +417,16 @@ std::vector<std::shared_ptr<City>> Controler::getEnemies()
 {
     return goalCities;
 }
+int Controler::getBirdIdx(Bird & bird)
+{
+     auto it = std::find(birds.begin(), birds.end(), bird);
+
+    if (it != birds.end())
+    {
+        int index = std::distance(birds.begin(), it);
+        return index;
+    } else 
+    {
+        return -1;
+    }
+}

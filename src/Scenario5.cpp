@@ -22,7 +22,7 @@ void Scenario5::readInputs(std::vector<Bird> &birds, std::vector<std::shared_ptr
     {
         input >> nights;
         setNumberOfNights(nights);
-        //std::cout << "while";
+        // std::cout << "while";
 
         input >> count;
         for (int i = 0; i < count; i++)
@@ -44,7 +44,7 @@ void Scenario5::readInputs(std::vector<Bird> &birds, std::vector<std::shared_ptr
             }
         }
     }
-    //std::cout << "end read********";
+    // std::cout << "end read********";
     input.close();
 }
 // void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City>> &homes)
@@ -204,6 +204,8 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
     {
         std::cout << "\nNight " << night << " begins...\n\n";
 
+        options.clear();
+
         double detectionProb = getSpyDetectionProbability(night);
 
         for (auto &home : homes)
@@ -219,9 +221,9 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
             if (birds.empty())
                 continue;
 
-            for (auto &bird:birds)
+            for (int b = 0; b < birds.size(); b++)
             {
-              
+                Bird &bird = bird;
                 if (bird.getDemolition() <= 0)
                     continue;
 
@@ -234,7 +236,7 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
                     if (!path.empty())
                     {
                         ll dmg = bird.getDemolition();
-                        options.push_back({bird, home, target, path, cost, dmg, 1.0 - detectionProb});
+                        options.push_back({b, home, target, path, cost, dmg, 1.0 - detectionProb});
                     }
                 }
             }
@@ -264,7 +266,7 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
                 continue;
 
             auto &opt = options[i];
-            std::cout << "\nLaunch Bird " << opt.bird.getName()
+            std::cout << "\nLaunch Bird " << opt.birdIdx
                       << " from " << opt.home->getCityName()
                       << " to " << opt.target->getCityName()
                       << " | Expected Damage: " << (opt.damage * opt.successProb) << "\n\n";
@@ -289,10 +291,12 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
 
                     birds.erase(remove_if(birds.begin(), birds.end(),
                                           [&](Bird &b)
-                                          { return &b == &opt.bird; }),
+                                          { return control.getBirdIdx(b) == opt.birdIdx; }),
                                 birds.end());
 
                     myHome->reduceCapacity();
+
+                    std::cout << "size: " << birds.size() << "***********************\n\n";
                     break;
                 }
             }
