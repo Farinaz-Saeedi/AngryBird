@@ -47,36 +47,8 @@ void Scenario5::readInputs(std::vector<Bird> &birds, std::vector<std::shared_ptr
     input.close();
 }
 
-std::vector<std::vector<Bird>> Scenario5::distributeBirds(Controler &control)
-{
-    std::vector<Bird> allBirds = control.getBirds();
-    
-
-    std::sort(allBirds.begin(), allBirds.end(), [](Bird &a, Bird &b)
-              { return a.getDemolition() > b.getDemolition(); });
-
-    int n = allBirds.size();
-    int nights = getNumberOfNights();
-
-    int base = n / nights;
-    int extra = n % nights;
-
-    std::vector<std::vector<Bird>> birdsByNight(nights);
-    int index = 0;
-
-    for (int i = 0; i < nights; ++i)
-    {
-        int count = base + (i == 0 ? extra : 0); 
-        birdsByNight[i].insert(birdsByNight[i].end(), allBirds.begin() + index, allBirds.begin() + index + count);
-        index += count;
-    }
-
-    return birdsByNight;
-}
-
 void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City>> &homes)
 {
-    auto birdsByNight = distributeBirds(control);
     for (int i = 0; i < getNumberOfNights(); i++)
     {
         std::cout << "\nNight " << i + 1 << " begins...\n";
@@ -92,7 +64,7 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
             if (birds.empty())
                 continue;
 
-            for (auto &bird : birds) //birdsByNight[i]
+            for (auto &bird : birds) 
             {
                 ll distance = 0;
                 std::vector<std::shared_ptr<City>> path;
