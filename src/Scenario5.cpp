@@ -22,7 +22,6 @@ void Scenario5::readInputs(std::vector<Bird> &birds, std::vector<std::shared_ptr
     {
         input >> nights;
         setNumberOfNights(nights);
-        // std::cout << "while";
 
         input >> count;
         for (int i = 0; i < count; i++)
@@ -44,56 +43,8 @@ void Scenario5::readInputs(std::vector<Bird> &birds, std::vector<std::shared_ptr
             }
         }
     }
-    // std::cout << "end read********";
     input.close();
 }
-// void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City>> &homes)
-// {
-//     for (int i = 0; i < getNumberOfNights(); i++)
-//     {
-//         std::cout << "\nNight " << i + 1 << " begins...\n";
-//         ld totalDamage = 0.0;
-//         for (auto &home : homes)
-//         {
-//             auto myHome = std::dynamic_pointer_cast<Home>(home);
-//             if (!myHome)
-//                 continue;
-//             auto &birds = myHome->getMyBirds();
-//             if (birds.empty())
-//                 continue;
-//             for (auto &bird : birds)
-//             {
-//                 ll distance = 0;
-//                 std::vector<std::shared_ptr<City>> path;
-//                 auto [enemy, canDestroy] = control.findBestPairFor(home, bird, path, distance);
-//                 std::cout << "Bird : " << bird.getName() << "\nPath: ";
-//                 if (canDestroy != 1)
-//                     control.deadBird(bird, distance);
-//                 else
-//                 {
-//                     control.setReachBird(enemy, bird, path);
-//                     for (auto &city : path)
-//                     {
-//                         std::cout << city->getCityName() << " ";
-//                     }
-//                 }
-//                 std::cout << "\n---------------------------------------\n";
-//                 std::cout << "\n";
-//             }
-//         }
-//         std::cout << "\n---------------------------------------\n";
-//         control.attack();
-//         auto birds = control.getBirds();
-//         for (auto &bird : birds)
-//         {
-//             totalDamage += bird.getDemolition();
-//         }
-//         std::cout << "---------------------------------------";
-//         std::cout << "\nTotal Damage (Neight " << i << " ): " << totalDamage << "\n";
-//         std::cout << "---------------------------------------\n";
-//         control.newSpies();
-//     }
-// }
 std::vector<int> Scenario5::hungarianMaximize(const std::vector<std::vector<ll>> &profit)
 {
     int n = (int)profit.size();
@@ -223,7 +174,7 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
 
             for (int b = 0; b < birds.size(); b++)
             {
-                Bird &bird = bird;
+                Bird &bird = birds[b];
                 if (bird.getDemolition() <= 0)
                     continue;
 
@@ -287,14 +238,16 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
                     auto myHome = std::dynamic_pointer_cast<Home>(home);
                     if (!myHome)
                         continue;
+
                     auto &birds = myHome->getMyBirds();
 
-                    birds.erase(remove_if(birds.begin(), birds.end(),
-                                          [&](Bird &b)
-                                          { return control.getBirdIdx(b) == opt.birdIdx; }),
-                                birds.end());
-
-                    myHome->reduceCapacity();
+                    int idx = opt.birdIdx;
+                    if (idx >= 0 && idx < (int)birds.size())
+                    {
+                        std::cout << "\nLaunch Bird " << birds[idx].getName() << " ...\n";
+                        birds.erase(birds.begin() + idx);
+                        myHome->reduceCapacity();
+                    }
 
                     std::cout << "size: " << birds.size() << "***********************\n\n";
                     break;
