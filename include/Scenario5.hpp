@@ -6,7 +6,7 @@
 
 struct Option
 {
-    int birdIdx;
+    Bird &bird;
     std::shared_ptr<City> home;
     std::shared_ptr<City> target;
     std::vector<std::shared_ptr<City>> path;
@@ -14,10 +14,10 @@ struct Option
     ll damage;
     double successProb;
 
-    Option(int b, std::shared_ptr<City> h, std::shared_ptr<City> t,
+    Option(Bird b, std::shared_ptr<City> h, std::shared_ptr<City> t,
            std::vector<std::shared_ptr<City>> p, long double c,
            long long dmg, double prob)
-        : birdIdx(b), home(h), target(t), path(p), cost(c), damage(dmg), successProb(prob) {}
+        : bird(b), home(h), target(t), path(p), cost(c), damage(dmg), successProb(prob) {}
 };
 
 class Scenario5 : public Scenario
@@ -28,9 +28,12 @@ public:
     void setNumberOfNights(int numberOfNights);
     int getNumberOfNights();
     std::vector<int> hungarianMaximize(const std::vector<std::vector<ll>> &profit);
+    double getSpyDetectionProbability(int night);
 
 private:
     int numberOfNights;
+    std::vector<Option> options;
+    std::vector<std::shared_ptr<City>> path;
 };
 
 #endif
