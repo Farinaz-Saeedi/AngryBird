@@ -12,7 +12,6 @@ set(PROJECT_SOURCES
     Scenario7.cpp
     Home.cpp
     Enemy.cpp
-    Normal.cpp
     main.cpp
 )
 
