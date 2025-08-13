@@ -48,6 +48,7 @@ void Scenario5::readInputs(std::vector<Bird> &birds, std::vector<std::shared_ptr
 void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City>> &homes)
 {
     ll totalDamage = 0;
+    std::vector<Bird> birds = control.getBirds();
 
     for (int night = 1; night <= numberOfNights; ++night)
     {
@@ -84,22 +85,32 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
             }
         }
 
-        std::sort(options.begin(), options.end() , [](OptionScenario5 a , OptionScenario5 b)
+        std::sort(options.begin(), options.end() , [](OptionScenario5 &a , OptionScenario5 &b)
         {
             if ( a.spyNum != b.spyNum)
                 return a.spyNum < b.spyNum;
             return a.damage > b.damage;
         });
 
-        std::unordered_set<int> usedBirds;
-        std::vector<Bird> birds = control.getBirds();
+        std::cout << options.size() << '\n';
 
         for ( auto &opt : options)
         {
-            if (!control.isDetected(birds[opt.birdIdx])) continue;
-            if (!usedBirds.count(opt.birdIdx)) continue;
+            if (control.isDetected(birds[opt.birdIdx])) continue;
 
-            usedBirds.insert(opt.birdIdx);
+            int idx = opt.birdIdx;
+            if (idx >= 0 && idx < birds.size())
+            {
+                birds.erase(birds.begin() + idx);
+            }
+            std::cout << "---------------------------------------\n"
+                      << "Bird: " << birds[opt.birdIdx].getName()  
+                      << "\nFrom: " << opt.home->getCityName() << " | To: " << opt.target->getCityName() << "\nPath: ";
+            for (auto &city : path)
+            {
+                std::cout << city->getCityName() << " ";
+            }
+            std::cout << "\n---------------------------------------";
             break;
         }
 
