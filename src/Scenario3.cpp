@@ -1,12 +1,11 @@
 #include "Scenario3.hpp"
 
-
-void Scenario3::readInputs(std::vector<Bird> & birds , std::vector<std::shared_ptr<City>> & homes)
+void Scenario3::readInputs(std::vector<Bird> &birds, std::vector<std::shared_ptr<City>> &homes)
 {
     std::ifstream input("../src/Scenario3.txt");
     if (!input.is_open())
-    std::cerr << " Unable to open Scen-3 file ! \n";
-    
+        std::cerr << " Unable to open Scen-3 file ! \n";
+
     ll count, number;
     std::string name;
 
@@ -22,7 +21,7 @@ void Scenario3::readInputs(std::vector<Bird> & birds , std::vector<std::shared_p
             }
         }
     }
-    
+
     input.close();
 }
 void Scenario3::setSlingshot(int number)
@@ -33,52 +32,65 @@ int Scenario3::getSlingshot()
 {
     return numberOfSlingshot;
 }
-void Scenario3::printOutput(Controler & control , std::vector<std::shared_ptr<City>> &homes)
+void Scenario3::printOutput(Controler &control, std::vector<std::shared_ptr<City>> &homes)
 {
-    int count = 0 ;
+    int count = 0;
+    ll totalDamage = 0;
     assignOptions(control, homes);
     auto profitMatrix = buildProfitMatrix(control);
     auto matches = hungarianMin(profitMatrix);
     auto birds = control.getBirds();
 
-    for (int i = 0; i < matches.size(); ++i) 
+    for (int i = 0; i < matches.size(); ++i)
     {
         int idx = matches[i];
-        if (idx == -1 || idx >= options.size()) continue;
+        if (idx == -1 || idx >= options.size())
+            continue;
 
-        const auto & opt = options[idx];
+        const auto &opt = options[idx];
         std::cout << "Bird: " << birds[opt.birdIdx].getName() << " | " << "Home: " << opt.home->getCityName() << " | \n";
         std::cout << "Target: " << opt.target->getCityName() << '\n';
         std::cout << "Path: ";
         auto path = opt.path;
-        for ( auto city : path )
+        for (auto city : path)
             std::cout << city->getCityName() << " ";
-        std::cout << "\n-----------------------------\n";
 
         // auto myHome = std::dynamic_pointer_cast<Home>(opt.home);
         // myHome->reduceCapacity();
     }
 
+    control.attack();
+
+    birds = control.getBirds();
+    for (auto &bird : birds)
+    {
+        totalDamage += bird.getDemolition();
+    }
+
+    std::cout << "\n---------------------------------------";
+    std::cout << "\nTotal Damage: " << totalDamage << "\n";
+    std::cout << "---------------------------------------\n";
 }
-std::vector<Option> Scenario3::assignOptions(Controler & control , std::vector<std::shared_ptr<City>> & homes) 
+std::vector<Option> Scenario3::assignOptions(Controler &control, std::vector<std::shared_ptr<City>> &homes)
 {
     std::vector<Bird> birds = control.getBirds();
     std::vector<std::shared_ptr<City>> path;
     ll distance;
 
-    std::sort(birds.begin() , birds.end() , [](Bird & a, Bird & b)
+    std::sort(birds.begin(), birds.end(), [](Bird &a, Bird &b)
               { return a.getDemolition() > b.getDemolition(); });
 
-    for (int b = 0 ; b < birds.size() ; ++b) 
+    for (int b = 0; b < birds.size(); ++b)
     {
         Bird bird = birds[b];
 
-        for (auto & home : homes) 
+        for (auto &home : homes)
         {
             auto myHome = std::dynamic_pointer_cast<Home>(home);
-            if (myHome->getCapacity() <= 0) continue;
+            if (myHome->getCapacity() <= 0)
+                continue;
 
-            for (auto & target : control.getEnemies()) 
+            for (auto &target : control.getEnemies())
             {
                 ld cost;
                 control.aStar(myHome->getCityName(), target->getCityName(), bird, path, distance, cost);
@@ -86,7 +98,7 @@ std::vector<Option> Scenario3::assignOptions(Controler & control , std::vector<s
                 if (!path.empty() && !control.isDetected(bird))
                 {
                     // std::cout << myHome->getCityName() << " TO " << target->getCityName() << '\n';
-                    ll dmg = bird.getDemolition();  
+                    ll dmg = bird.getDemolition();
                     options.push_back({b, home, target, path, cost});
                     // std::cout << "cap: " << myHome->getCapacity() << " -> ";
                     myHome->reduceCapacity();
@@ -98,61 +110,67 @@ std::vector<Option> Scenario3::assignOptions(Controler & control , std::vector<s
 
     return options;
 }
-std::vector<int> Scenario3::hungarianMin(const std::vector<std::vector<ll>> & profitMatrix) 
+std::vector<int> Scenario3::hungarianMin(const std::vector<std::vector<ll>> &profitMatrix)
 {
-    const ll INF = std::numeric_limits<ll>::max();;
+    const ll INF = std::numeric_limits<ll>::max();
+    ;
 
     int n = profitMatrix.size();
     int m = profitMatrix[0].size();
-    int size = std::max(n , m);
-    
-    std::vector<std::vector<ll>> cost(size, std::vector<ll>(size , INF));
-    for (int i = 0 ; i < n ; ++i)
-        for (int j = 0 ; j < m ; ++j)
+    int size = std::max(n, m);
+
+    std::vector<std::vector<ll>> cost(size, std::vector<ll>(size, INF));
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < m; ++j)
             cost[i][j] = profitMatrix[i][j];
 
     std::vector<ll> u(size + 1), v(size + 1);
     std::vector<int> p(size + 1), way(size + 1);
 
-    for (int i = 1 ; i <= size ; ++i) 
+    for (int i = 1; i <= size; ++i)
     {
-        p[0] = i ;
+        p[0] = i;
         int j0 = 0;
-        std::vector<ll> minv(size + 1 , INF);
-        std::vector<bool> used(size + 1 , false);
-        do 
+        std::vector<ll> minv(size + 1, INF);
+        std::vector<bool> used(size + 1, false);
+        do
         {
             used[j0] = true;
-            int i0 = p[j0] , j1 = 0 ; 
+            int i0 = p[j0], j1 = 0;
             ll delta = INF;
-            for (int j = 1 ; j <= size ; ++j) 
+            for (int j = 1; j <= size; ++j)
             {
-                if (!used[j]) 
+                if (!used[j])
                 {
                     ll cur = cost[i0 - 1][j - 1] - u[i0] - v[j];
-                    if (cur < minv[j]) {
+                    if (cur < minv[j])
+                    {
                         minv[j] = cur;
                         way[j] = j0;
                     }
-                    if (minv[j] < delta) {
+                    if (minv[j] < delta)
+                    {
                         delta = minv[j];
                         j1 = j;
                     }
                 }
             }
-            for (int j = 0 ; j <= size ; ++j) 
+            for (int j = 0; j <= size; ++j)
             {
-                if (used[j]) {
+                if (used[j])
+                {
                     u[p[j]] += delta;
                     v[j] -= delta;
-                } else {
+                }
+                else
+                {
                     minv[j] -= delta;
                 }
             }
             j0 = j1;
         } while (p[j0] != 0);
 
-        do 
+        do
         {
             int j1 = way[j0];
             p[j0] = p[j1];
@@ -161,22 +179,22 @@ std::vector<int> Scenario3::hungarianMin(const std::vector<std::vector<ll>> & pr
     }
 
     std::vector<int> result(n, -1);
-    for (int j = 1 ; j <= size ; ++j)
+    for (int j = 1; j <= size; ++j)
         if (p[j] <= n && j <= m)
             result[p[j] - 1] = j - 1;
 
     return result;
 }
-std::vector<std::vector<ll>> Scenario3::buildProfitMatrix(Controler & control)
+std::vector<std::vector<ll>> Scenario3::buildProfitMatrix(Controler &control)
 {
     int n = control.getBirds().size();
     int m = options.size();
 
     std::vector<std::vector<ll>> profit(n, std::vector<ll>(m, 1e9));
 
-    for (int j = 0; j < m; ++j) 
+    for (int j = 0; j < m; ++j)
     {
-        const auto & option = options[j];
+        const auto &option = options[j];
         // std::cout << option.home->getCityName() << " -> " << option.target->getCityName() << " -- " << option.birdIdx << " cost : " << option.cost << '\n';
         profit[option.birdIdx][j] = option.cost;
     }
