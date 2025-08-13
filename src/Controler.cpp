@@ -126,6 +126,7 @@ std::pair<std::string, bool> Controler::findBestPairFor(std::shared_ptr<City> & 
     int minSpies = INT_MAX;
     std::shared_ptr<City> bestGoal = nullptr;
     std::vector<std::shared_ptr<City>> bestPath;
+    ll bestDis;
     bool temp;
 
     for (auto & goal : goalCities) 
@@ -141,6 +142,7 @@ std::pair<std::string, bool> Controler::findBestPairFor(std::shared_ptr<City> & 
                 minSpies = spies;
                 bestGoal = goal;
                 bestPath = path;
+                bestDis = distance;
             } 
         } 
     }
@@ -367,6 +369,11 @@ void Controler::newSpies()
         auto it = cityMap.find(cityName);
         if (it != cityMap.end())
         {
+            if (it->second->getIsSpy())
+            {
+                std::cout << "This city has already a spy!";
+                continue;
+            }
             it->second->setIsSpy(true);
         }
     }

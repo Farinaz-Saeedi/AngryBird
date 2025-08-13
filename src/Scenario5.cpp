@@ -45,127 +45,20 @@ void Scenario5::readInputs(std::vector<Bird> &birds, std::vector<std::shared_ptr
     }
     input.close();
 }
-std::vector<int> Scenario5::hungarianMaximize(const std::vector<std::vector<ll>> &profit)
-{
-    int n = (int)profit.size();
-    int m = (int)profit[0].size();
-
-    ll maxProfit = std::numeric_limits<ll>::min();
-    for (const auto &row : profit)
-    {
-        for (auto val : row)
-        {
-            if (val > maxProfit)
-            {
-                maxProfit = val;
-            }
-        }
-    }
-
-    std::vector<std::vector<ll>> cost(n, std::vector<ll>(m));
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < m; j++)
-        {
-            cost[i][j] = maxProfit - profit[i][j];
-        }
-    }
-
-    std::vector<ll> u(n + 1), v(m + 1);
-    std::vector<int> p(m + 1), way(m + 1);
-
-    for (int i = 1; i <= n; i++)
-    {
-        p[0] = i;
-        int j0 = 0;
-        std::vector<ll> minv(m + 1, std::numeric_limits<ll>::max());
-        std::vector<bool> used(m + 1, false);
-        do
-        {
-            used[j0] = true;
-            int i0 = p[j0], j1 = 0;
-            ll delta = std::numeric_limits<ll>::max();
-            for (int j = 1; j <= m; j++)
-            {
-                if (!used[j])
-                {
-                    ll cur = cost[i0 - 1][j - 1] - u[i0] - v[j];
-                    if (cur < minv[j])
-                    {
-                        minv[j] = cur;
-                        way[j] = j0;
-                    }
-                    if (minv[j] < delta)
-                    {
-                        delta = minv[j];
-                        j1 = j;
-                    }
-                }
-            }
-            for (int j = 0; j <= m; j++)
-            {
-                if (used[j])
-                {
-                    u[p[j]] += delta;
-                    v[j] -= delta;
-                }
-                else
-                {
-                    minv[j] -= delta;
-                }
-            }
-            j0 = j1;
-        } while (p[j0] != 0);
-
-        do
-        {
-            int j1 = way[j0];
-            p[j0] = p[j1];
-            j0 = j1;
-        } while (j0);
-    }
-
-    std::vector<int> ans(n, -1);
-    for (int j = 1; j <= m; j++)
-    {
-        if (p[j] != 0 && p[j] - 1 < n && j - 1 < m)
-        {
-            ans[p[j] - 1] = j - 1;
-        }
-    }
-    return ans;
-}
-double Scenario5::getSpyDetectionProbability(int night)
-{
-
-    double baseProb = 0.1;
-    double prob = baseProb * night;
-
-    if (prob > 1.0)
-        prob = 1.0;
-
-    return prob;
-}
-
 void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City>> &homes)
 {
     ll totalDamage = 0;
 
     for (int night = 1; night <= numberOfNights; ++night)
     {
-        std::cout << "\nNight " << night << " begins...\n\n";
+        std::cout << "\nNight " << night << " begins ...\n\n";
 
         options.clear();
-
-        double detectionProb = getSpyDetectionProbability(night);
 
         for (auto &home : homes)
         {
             auto myHome = std::dynamic_pointer_cast<Home>(home);
             if (!myHome)
-                continue;
-
-            if (myHome->getCapacity() <= 0)
                 continue;
 
             auto &birds = myHome->getMyBirds();
@@ -175,8 +68,6 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
             for (int b = 0; b < birds.size(); b++)
             {
                 Bird &bird = birds[b];
-                if (bird.getDemolition() <= 0)
-                    continue;
 
                 for (auto &target : control.getEnemies())
                 {
@@ -187,10 +78,29 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
                     if (!path.empty())
                     {
                         ll dmg = bird.getDemolition();
-                        options.push_back({b, home, target, path, cost, dmg, 1.0 - detectionProb});
+                        options.push_back({b, bird.getDegree(), home, target, path, cost, dmg});
                     }
                 }
             }
+        }
+
+        std::sort(options.begin(), options.end() , [](OptionScenario5 a , OptionScenario5 b)
+        {
+            if ( a.spyNum != b.spyNum)
+                return a.spyNum < b.spyNum;
+            return a.damage > b.damage;
+        });
+
+        std::unordered_set<int> usedBirds;
+        std::vector<Bird> birds = control.getBirds();
+
+        for ( auto &opt : options)
+        {
+            if (!control.isDetected(birds[opt.birdIdx])) continue;
+            if (!usedBirds.count(opt.birdIdx)) continue;
+
+            usedBirds.insert(opt.birdIdx);
+            break;
         }
 
         if (options.empty())
@@ -201,62 +111,8 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
             continue;
         }
 
-        int n = options.size();
-        std::vector<std::vector<long long>> profit(n, std::vector<ll>(n, LLONG_MIN));
-        for (int i = 0; i < n; ++i)
-        {
-            profit[i][i] = static_cast<long long>(options[i].damage * options[i].successProb * 1e6);
-        }
-
-        std::vector<int> match = hungarianMaximize(profit);
-
-        for (int i = 0; i < n; ++i)
-        {
-            int j = match[i];
-            if (j == -1)
-                continue;
-
-            auto &opt = options[i];
-            std::cout << "\nLaunch Bird " << opt.birdIdx
-                      << " from " << opt.home->getCityName()
-                      << " to " << opt.target->getCityName()
-                      << " | Expected Damage: " << (opt.damage * opt.successProb) << "\n\n";
-
-            std::cout << "Path: ";
-            for (auto &city : opt.path)
-            {
-                std::cout << city->getCityName() << " ";
-            }
-            std::cout << "\n";
-
-            totalDamage += opt.damage;
-
-            for (auto &home : homes)
-            {
-                if (home->getCityName() == opt.home->getCityName())
-                {
-                    auto myHome = std::dynamic_pointer_cast<Home>(home);
-                    if (!myHome)
-                        continue;
-
-                    auto &birds = myHome->getMyBirds();
-
-                    int idx = opt.birdIdx;
-                    if (idx >= 0 && idx < (int)birds.size())
-                    {
-                        std::cout << "\nLaunch Bird " << birds[idx].getName() << " ...\n";
-                        birds.erase(birds.begin() + idx);
-                        myHome->reduceCapacity();
-                    }
-
-                    std::cout << "size: " << birds.size() << "***********************\n\n";
-                    break;
-                }
-            }
-        }
-
         control.newSpies();
     }
 
-    std::cout << "=== Total Damage: " << totalDamage << " ===\n";
+    std::cout << "-- Total Damage: " << totalDamage << " --\n";
 }
