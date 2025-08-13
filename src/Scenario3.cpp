@@ -33,13 +33,13 @@ int Scenario3::getSlingshot()
 {
     return numberOfSlingshot;
 }
-void Scenario3::printOutput(Controler & control , std::vector<std::shared_ptr<City>> &homes)
+void Scenario3::printOutput(Controler & control , std::vector<std::shared_ptr<City>> &homes, std::vector<Bird> &birds)
 {
     int count = 0 ;
     assignOptions(control, homes);
     auto profitMatrix = buildProfitMatrix(control);
     auto matches = hungarianMin(profitMatrix);
-    auto birds = control.getBirds();
+    // auto birds = control.getBirds();
 
     for (int i = 0; i < matches.size(); ++i) 
     {

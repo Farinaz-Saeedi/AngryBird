@@ -24,7 +24,7 @@ class Scenario5 : public Scenario
 {
 public:
     void readInputs(std::vector<Bird> &birds, std::vector<std::shared_ptr<City>> &homes) override;
-    void printOutput(Controler &control, std::vector<std::shared_ptr<City>> &homes) override;
+    void printOutput(Controler &control, std::vector<std::shared_ptr<City>> &homes, std::vector<Bird> &birds) override;
     void setNumberOfNights(int numberOfNights);
     int getNumberOfNights();
     void getNewSpies(Controler &control);

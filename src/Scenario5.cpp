@@ -45,10 +45,10 @@ void Scenario5::readInputs(std::vector<Bird> &birds, std::vector<std::shared_ptr
     }
     input.close();
 }
-void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City>> &homes)
+void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City>> &homes, std::vector<Bird> &birds)
 {
     ll totalDamage = 0;
-    std::vector<Bird> birds = control.getBirds();
+    // std::vector<Bird> birds = control.getBirds();
 
     for (int night = 1; night <= numberOfNights; ++night)
     {
@@ -70,26 +70,33 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
             {
                 Bird &bird = birds[b];
 
-                for (auto &target : control.getEnemies())
+                ll distance;
+                ld cost;
+            
+                auto ans = control.findBestPairFor(home, bird, path, distance);
+                std::vector<std::shared_ptr<City>> enemies = control.getEnemies();
+                std::shared_ptr<City> target;
+                for (auto &enemy : enemies)
                 {
-                    ll distance;
-                    ld cost;
-                    control.aStar(myHome->getCityName(), target->getCityName(), bird, path, distance, cost);
-
-                    if (!path.empty())
+                    if (enemy->getCityName() == ans.first)
                     {
-                        ll dmg = bird.getDemolition();
-                        options.push_back({b, bird.getDegree(), home, target, path, cost, dmg});
+                        target = enemy;
                     }
                 }
+                if (!path.empty())
+                {
+                    ll dmg = bird.getDemolition();
+                    options.push_back({b, bird.getDegree(), home, target, path, cost, dmg});
+                }
+                
             }
         }
 
         std::sort(options.begin(), options.end() , [](OptionScenario5 &a , OptionScenario5 &b)
         {
-            if ( a.spyNum != b.spyNum)
-                return a.spyNum < b.spyNum;
-            return a.damage > b.damage;
+            if ( a.spyNum == b.spyNum)
+                return a.damage < b.damage;
+            return a.spyNum > b.spyNum;
         });
 
         std::cout << options.size() << '\n';
