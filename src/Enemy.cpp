@@ -31,3 +31,7 @@ void Enemy::setBirdPath(std::vector<std::shared_ptr<City>> & path)
 {
     reachBirds.back().setThePath(path);
 }
+void Enemy::reduceDefenseLvl()
+{
+    defenseLevel--;
+}
