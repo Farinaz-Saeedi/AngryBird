@@ -32,14 +32,14 @@ int Scenario3::getSlingshot()
 {
     return numberOfSlingshot;
 }
-void Scenario3::printOutput(Controler & control , std::vector<std::shared_ptr<City>> &homes, std::vector<Bird> &birds)
+void Scenario3::printOutput(Controler & control , std::vector<std::shared_ptr<City>> &homes)
 {
     int count = 0;
     ll totalDamage = 0;
     assignOptions(control, homes);
     auto profitMatrix = buildProfitMatrix(control);
     auto matches = hungarianMin(profitMatrix);
-    // auto birds = control.getBirds();
+    auto birds = control.getBirds();
 
     for (int i = 0; i < matches.size(); ++i)
     {
@@ -48,12 +48,13 @@ void Scenario3::printOutput(Controler & control , std::vector<std::shared_ptr<Ci
             continue;
 
         const auto &opt = options[idx];
-        std::cout << "Bird: " << birds[opt.birdIdx].getName() << " | " << "Home: " << opt.home->getCityName() << " | \n";
+        std::cout << "Bird: " << birds[opt.birdIdx].getName() << " | " << "Home: " << opt.home->getCityName() << " | ";
         std::cout << "Target: " << opt.target->getCityName() << '\n';
         std::cout << "Path: ";
         auto path = opt.path;
         for (auto city : path)
             std::cout << city->getCityName() << " ";
+        std::cout << "\n---------------------------------------\n";
 
         // auto myHome = std::dynamic_pointer_cast<Home>(opt.home);
         // myHome->reduceCapacity();
@@ -97,12 +98,9 @@ std::vector<Option> Scenario3::assignOptions(Controler &control, std::vector<std
 
                 if (!path.empty() && !control.isDetected(bird))
                 {
-                    // std::cout << myHome->getCityName() << " TO " << target->getCityName() << '\n';
                     ll dmg = bird.getDemolition();
                     options.push_back({b, home, target, path, cost});
-                    // std::cout << "cap: " << myHome->getCapacity() << " -> ";
                     myHome->reduceCapacity();
-                    // std::cout << "cap: " << myHome->getCapacity() << '\n';
                 }
             }
         }

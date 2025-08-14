@@ -59,4 +59,4 @@ void Scenario7::readInputs(std::vector<Bird> & birds , std::vector<std::shared_p
 
     input.close();
 }
-void Scenario7::printOutput(Controler & control , std::vector<std::shared_ptr<City>> &homes, std::vector<Bird> &birds) {}
+void Scenario7::printOutput(Controler & control , std::vector<std::shared_ptr<City>> &homes) {}

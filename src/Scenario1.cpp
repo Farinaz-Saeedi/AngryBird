@@ -25,7 +25,7 @@ void Scenario1::readInputs(std::vector<Bird> &birds, std::vector<std::shared_ptr
     input.close();
 }
 
-void Scenario1::printOutput(Controler &control, std::vector<std::shared_ptr<City>> &homes, std::vector<Bird> &tempBirds)
+void Scenario1::printOutput(Controler &control, std::vector<std::shared_ptr<City>> &homes)
 {
     ld totalDamage = 0.0;
     for (auto &home : homes)

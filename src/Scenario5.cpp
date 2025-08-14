@@ -45,10 +45,16 @@ void Scenario5::readInputs(std::vector<Bird> &birds, std::vector<std::shared_ptr
     }
     input.close();
 }
-void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City>> &homes, std::vector<Bird> &birds)
+void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City>> &homes)
 {
     ll totalDamage = 0;
-    // std::vector<Bird> birds = control.getBirds();
+    std::vector<Bird> birds = control.getBirds();
+
+    std::unordered_map<std::string, std::shared_ptr<City>> homeMap;
+    for (auto &home : homes)
+    {
+        homeMap[home->getCityName()] = home;
+    }
 
     for (int night = 1; night <= numberOfNights; ++night)
     {
@@ -56,42 +62,34 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
 
         options.clear();
 
-        for (auto &home : homes)
+        for (int b = 0 ; b < birds.size() ; ++b)
         {
+            auto home = homeMap[birds[b].getHomePlace()];
             auto myHome = std::dynamic_pointer_cast<Home>(home);
-            if (!myHome)
-                continue;
-
-            auto &birds = myHome->getMyBirds();
-            if (birds.empty())
-                continue;
-
-            for (int b = 0; b < birds.size(); b++)
-            {
-                Bird &bird = birds[b];
-
-                ll distance;
-                ld cost;
             
-                auto ans = control.findBestPairFor(home, bird, path, distance);
-                std::vector<std::shared_ptr<City>> enemies = control.getEnemies();
-                std::shared_ptr<City> target;
-                for (auto &enemy : enemies)
-                {
-                    if (enemy->getCityName() == ans.first)
-                    {
-                        target = enemy;
-                    }
-                }
-                if (!path.empty())
-                {
-                    ll dmg = bird.getDemolition();
-                    options.push_back({b, bird.getDegree(), home, target, path, cost, dmg});
-                }
-                
-            }
-        }
+            if (!myHome) continue;
 
+            ll distance;
+            ld cost;
+        
+            auto ans = control.findBestPairFor(home, birds[b], path, distance);
+            std::vector<std::shared_ptr<City>> enemies = control.getEnemies();
+            std::shared_ptr<City> target;
+            for (auto &enemy : enemies)
+            {
+                if (enemy->getCityName() == ans.first)
+                {
+                    target = enemy;
+                }
+            }
+            if (!path.empty())
+            {
+                ll dmg = birds[b].getDemolition();
+                options.push_back({b, birds[b].getDegree(), home, target, path, cost, dmg});
+            }
+            
+        }
+        
         std::sort(options.begin(), options.end() , [](OptionScenario5 &a , OptionScenario5 &b)
         {
             if ( a.spyNum == b.spyNum)
@@ -118,7 +116,7 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
                 std::cout << city->getCityName() << " ";
             }
             std::cout << "\n---------------------------------------";
-            break;
+            // break;
         }
 
         if (options.empty())
