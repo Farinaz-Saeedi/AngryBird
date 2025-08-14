@@ -13,11 +13,10 @@ struct OptionScenario5
     std::vector<std::shared_ptr<City>> path;
     ld cost;
     ll damage;
+    double survProb;
 
-    OptionScenario5(int b, int num, std::shared_ptr<City> h, std::shared_ptr<City> t,
-           std::vector<std::shared_ptr<City>> p, long double c,
-           long long dmg)
-        : birdIdx(b), spyNum(num), home(h), target(t), path(p), cost(c), damage(dmg) {}
+    OptionScenario5(int b, int num, std::shared_ptr<City> h, std::shared_ptr<City> t,std::vector<std::shared_ptr<City>> p, ld c, ll dmg, double prob)
+        : birdIdx(b), spyNum(num), home(h), target(t), path(p), cost(c), damage(dmg), survProb(prob) {}
 };
 
 class Scenario5 : public Scenario
@@ -27,12 +26,12 @@ public:
     void printOutput(Controler &control, std::vector<std::shared_ptr<City>> &homes) override;
     void setNumberOfNights(int numberOfNights);
     int getNumberOfNights();
-    void getNewSpies(Controler &control);
+    std::vector<double> predictSurvival();
+    std::vector<int> hungarianMax(const std::vector<std::vector<ll>> &profit);
 
 private:
     int numberOfNights;
     std::vector<OptionScenario5> options;
-    std::vector<std::shared_ptr<City>> path;
 };
 
 #endif
