@@ -53,6 +53,12 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
 
     std::unordered_map<std::string, std::shared_ptr<City>> homeMap;
     for (auto &home : homes) homeMap[home->getCityName()] = home;
+
+
+    std::unordered_map<std::string, std::shared_ptr<City>> enemyMap;
+    for (auto &enemy : enemies)
+        enemyMap[enemy->getCityName()] = enemy;
+
     
     for (int night = 1; night <= numberOfNights; ++night)
     {
@@ -69,24 +75,35 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
             if (!myHome) continue;
 
             ll distance = 0.0;
-            ld cost;
             std::vector<std::shared_ptr<City>> path;
 
             auto ans = control.findBestPairFor(itHome->second, birds[b], path, distance);
             std::shared_ptr<City> target;
-            for (auto &enemy : enemies)
-            {
-                if (enemy->getCityName() == ans.first)
-                {
-                    target = enemy;
-                }
-            }
+
+            // for (auto &enemy : enemies)
+            // {
+            //     if (enemy->getCityName() == ans.first)
+            //     {
+            //         target = enemy;
+            //     }
+            // }
+
+            auto itEnemy = enemyMap.find(ans.first);
+            if (itEnemy == enemyMap.end()) continue;
+            auto target = itEnemy->second;
 
             if (!target) continue; 
             if (path.empty()) continue;
             if (control.isDetected(birds[b])) continue;
 
-            options.push_back(OptionScenario5{ b, birds[b].getDegree(), itHome->second, target, path, cost, birds[b].getDemolition(), 0.0 });
+            options.push_back(OptionScenario5{ b, birds[b].getDegree(), itHome->second, target, path, birds[b].getDemolition(), 0.0 });
+        }
+
+        if (options.empty())
+        {
+            std::cout << "No launches possible this night.\n";
+            control.newSpies();
+            continue;
         }
         
         std::vector<double> survProbs = predictSurvival();
@@ -114,15 +131,22 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
                 for( auto & city : opt.path)
                     std::cout << city->getCityName() << " ";
                 std::cout << '\n';
+
+                birdsToRemove.push_back(opt.birdIdx);
                 
             }
         }
 
-        if (options.empty())
-        {
-            std::cout << "No launches possible this night.\n";
-            continue;
-        }
+        std::sort(birdsToRemove.rbegin(), birdsToRemove.rend());
+        for (int idx : birdsToRemove)
+            birds.erase(birds.begin() + idx);
+
+        // if (options.empty())
+        // {
+        //     std::cout << "No launches possible this night.\n";
+        //     continue;
+        // }
+
         std::cout << "-- Total Damage: " << totalDamage << " --\n";
         control.newSpies();
     }

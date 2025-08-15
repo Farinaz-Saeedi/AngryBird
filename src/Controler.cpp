@@ -10,7 +10,7 @@ ll Controler::getNumberOfCities()
 {
     return numberOfCities;
 }
-std::vector<Bird> Controler::getBirds()
+std::vector<Bird> &Controler::getBirds()
 {
     return birds;
 }

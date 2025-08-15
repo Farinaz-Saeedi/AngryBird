@@ -11,12 +11,11 @@ struct OptionScenario5
     std::shared_ptr<City> home;
     std::shared_ptr<City> target;
     std::vector<std::shared_ptr<City>> path;
-    ld cost;
     ll damage;
     double survProb;
 
-    OptionScenario5(int b, int num, std::shared_ptr<City> h, std::shared_ptr<City> t,std::vector<std::shared_ptr<City>> p, ld c, ll dmg, double prob)
-        : birdIdx(b), spyNum(num), home(h), target(t), path(p), cost(c), damage(dmg), survProb(prob) {}
+    OptionScenario5(int b, int num, std::shared_ptr<City> h, std::shared_ptr<City> t,std::vector<std::shared_ptr<City>> p, ll dmg, double prob)
+        : birdIdx(b), spyNum(num), home(h), target(t), path(p), damage(dmg), survProb(prob) {}
 };
 
 class Scenario5 : public Scenario
@@ -32,6 +31,7 @@ public:
 private:
     int numberOfNights;
     std::vector<OptionScenario5> options;
+    std::vector<int>birdsToRemove;
 };
 
 #endif

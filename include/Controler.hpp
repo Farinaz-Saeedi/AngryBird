@@ -49,7 +49,7 @@ class Controler
         bool isDetected(Bird & bird);
         void shootDownBird(std::string enemyName);
         ld totoalDamage(std::vector<std::shared_ptr<City>> & path , Bird & bird);
-        std::vector<Bird> getBirds();
+        std::vector<Bird> &getBirds();
         std::vector<std::shared_ptr<City>> getPath();
         int countSpiesOnPath(std::vector<std::shared_ptr<City>> path);
         void newSpies();
