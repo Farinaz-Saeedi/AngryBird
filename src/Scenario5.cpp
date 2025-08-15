@@ -92,19 +92,15 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
             if (path.empty())
                 continue;
             if (control.isDetected(birds[b]))
+            {
+                helpOptions.push_back({b, birds[b].getDegree(), itHome->second, target, path, birds[b].getDemolition(), 0.0});
                 continue;
+            }
 
             options.push_back(OptionScenario5{b, birds[b].getDegree(), itHome->second, target, path, birds[b].getDemolition(), 0.0});
         }
 
-        if (options.empty())
-        {
-
-            std::cout << "No launches possible this night.\n";
-            control.newSpies();
-            continue;
-        }
-
+      
         std::vector<double> survProbs = predictSurvival();
 
         for (int i = 0; i < options.size(); ++i)
@@ -122,7 +118,14 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
 
         std::vector<int> assignment = hungarianMax(profitMatrix);
 
+        if (options.empty())
+        {
+            std::cout << "No launches possible this night.\n";
+            control.newSpies();
+            continue;
+        }
 
+        
         for (int i = 0; i < assignment.size(); ++i)
         {
 

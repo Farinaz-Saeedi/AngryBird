@@ -31,6 +31,7 @@ public:
 private:
     int numberOfNights;
     std::vector<OptionScenario5> options;
+    std::vector<OptionScenario5> helpOptions;
     std::vector<int>birdsToRemove;
 };
 
