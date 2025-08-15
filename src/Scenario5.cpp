@@ -52,14 +52,13 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
     std::vector<std::shared_ptr<City>> enemies = control.getEnemies();
 
     std::unordered_map<std::string, std::shared_ptr<City>> homeMap;
-    for (auto &home : homes) homeMap[home->getCityName()] = home;
-
+    for (auto &home : homes)
+        homeMap[home->getCityName()] = home;
 
     std::unordered_map<std::string, std::shared_ptr<City>> enemyMap;
     for (auto &enemy : enemies)
         enemyMap[enemy->getCityName()] = enemy;
 
-    
     for (int night = 1; night <= numberOfNights; ++night)
     {
         std::cout << "\nNight " << night << " begins ...\n\n";
@@ -67,12 +66,15 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
         options.clear();
         options.reserve(birds.size());
 
-        for (int b = 0 ; b < birds.size() ; ++b)
+        for (int b = 0; b < birds.size(); ++b)
         {
+
             auto itHome = homeMap.find(birds[b].getHomePlace());
-            if (itHome == homeMap.end()) continue;
-            auto myHome = std::dynamic_pointer_cast<Home>(itHome->second);  
-            if (!myHome) continue;
+            if (itHome == homeMap.end())
+                continue;
+            auto myHome = std::dynamic_pointer_cast<Home>(itHome->second);
+            if (!myHome)
+                continue;
 
             ll distance = 0.0;
             std::vector<std::shared_ptr<City>> path;
@@ -80,60 +82,62 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
             auto ans = control.findBestPairFor(itHome->second, birds[b], path, distance);
             std::shared_ptr<City> target;
 
-            // for (auto &enemy : enemies)
-            // {
-            //     if (enemy->getCityName() == ans.first)
-            //     {
-            //         target = enemy;
-            //     }
-            // }
-
             auto itEnemy = enemyMap.find(ans.first);
-            if (itEnemy == enemyMap.end()) continue;
-            auto target = itEnemy->second;
+            if (itEnemy == enemyMap.end())
+                continue;
+            target = itEnemy->second;
 
-            if (!target) continue; 
-            if (path.empty()) continue;
-            if (control.isDetected(birds[b])) continue;
+            if (!target)
+                continue;
+            if (path.empty())
+                continue;
+            if (control.isDetected(birds[b]))
+                continue;
 
-            options.push_back(OptionScenario5{ b, birds[b].getDegree(), itHome->second, target, path, birds[b].getDemolition(), 0.0 });
+            options.push_back(OptionScenario5{b, birds[b].getDegree(), itHome->second, target, path, birds[b].getDemolition(), 0.0});
         }
 
         if (options.empty())
         {
+
             std::cout << "No launches possible this night.\n";
             control.newSpies();
             continue;
         }
-        
+
         std::vector<double> survProbs = predictSurvival();
 
-        for (int i = 0; i < options.size(); ++i) 
+        for (int i = 0; i < options.size(); ++i)
+        {
             options[i].survProb = survProbs[i];
+        }
 
         std::vector<std::vector<ll>> profitMatrix(options.size(), std::vector<ll>(enemies.size(), 0));
-        for (int i = 0; i < options.size(); ++i) 
+        for (int i = 0; i < options.size(); ++i)
         {
+
             int targetIdx = std::distance(enemies.begin(), std::find(enemies.begin(), enemies.end(), options[i].target));
             profitMatrix[i][targetIdx] = (long long)(options[i].damage * options[i].survProb);
         }
 
         std::vector<int> assignment = hungarianMax(profitMatrix);
 
-        for (int i = 0; i < assignment.size(); ++i) {
+
+        for (int i = 0; i < assignment.size(); ++i)
+        {
+
             int targetIdx = assignment[i];
-            if (targetIdx >= 0) 
+            if (targetIdx >= 0)
             {
-                OptionScenario5  & opt = options[i];
+                OptionScenario5 &opt = options[i];
                 totalDamage += opt.damage;
                 std::cout << "Bird " << birds[opt.birdIdx].getName() << " -> " << opt.target->getCityName();
                 std::cout << "\nPath: ";
-                for( auto & city : opt.path)
+                for (auto &city : opt.path)
                     std::cout << city->getCityName() << " ";
                 std::cout << '\n';
 
                 birdsToRemove.push_back(opt.birdIdx);
-                
             }
         }
 
@@ -141,12 +145,7 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
         for (int idx : birdsToRemove)
             birds.erase(birds.begin() + idx);
 
-        // if (options.empty())
-        // {
-        //     std::cout << "No launches possible this night.\n";
-        //     continue;
-        // }
-
+      
         std::cout << "-- Total Damage: " << totalDamage << " --\n";
         control.newSpies();
     }
@@ -156,20 +155,18 @@ std::vector<double> Scenario5::predictSurvival()
     std::vector<double> probs(options.size(), 1.0);
 
     std::unordered_map<std::shared_ptr<City>, std::vector<int>> cityToOptions;
-    for (int i = 0; i < (int)options.size(); ++i) 
+    for (int i = 0; i < (int)options.size(); ++i)
         cityToOptions[options[i].target].push_back(i);
-    
-    for (auto & pair : cityToOptions) 
+
+    for (auto &pair : cityToOptions)
     {
-        auto & optIdxs = pair.second;
+        auto &optIdxs = pair.second;
         std::sort(optIdxs.begin(), optIdxs.end(), [&](int a, int b)
-        {
-            return options[a].damage > options[b].damage;
-        });
+                  { return options[a].damage > options[b].damage; });
 
         auto enemy = std::dynamic_pointer_cast<Enemy>(pair.first);
         int level = enemy->getDefenseLevel();
-        for (int i = 0; i < optIdxs.size(); ++i) 
+        for (int i = 0; i < optIdxs.size(); ++i)
         {
             probs[optIdxs[i]] = (i < level) ? 0.1 : 1.0;
         }
@@ -177,56 +174,87 @@ std::vector<double> Scenario5::predictSurvival()
 
     return probs;
 }
-std::vector<int> Scenario5::hungarianMax(const std::vector<std::vector<ll>> &profit) 
+std::vector<int> Scenario5::hungarianMax(const std::vector<std::vector<ll>> &profit)
 {
     int n = profit.size();
+    if (n == 0)
+        return {};
     int m = profit[0].size();
+    if (m == 0)
+        return {};
 
-    ll maxVal = LLONG_MIN;
-    for (auto &row : profit) 
-        for (auto val : row) 
+    ll maxVal = 0;
+    for (auto &row : profit)
+        for (auto val : row)
             maxVal = std::max(maxVal, val);
 
     std::vector<std::vector<ll>> cost(n, std::vector<ll>(m));
-    for (int i = 0; i < n; ++i) 
-        for (int j = 0; j < m; ++j) 
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < m; ++j)
             cost[i][j] = maxVal - profit[i][j];
 
-    std::vector<ll> u(n+1), v(m+1), p(m+1), way(m+1);
+    if (n < m)
+    {
+        cost.resize(m, std::vector<ll>(m, maxVal));
+        n = m;
+    }
+    else if (m < n)
+    {
+        for (auto &row : cost)
+            row.resize(n, maxVal);
+        m = n;
+    }
 
-    for (int i = 1; i <= n; ++i) 
+    std::vector<ll> u(n + 1), v(m + 1), p(m + 1), way(m + 1);
+
+    for (int i = 1; i <= n; ++i)
     {
         p[0] = i;
         int j0 = 0;
-        std::vector<ll> minv(m+1, LLONG_MAX);
-        std::vector<bool> used(m+1, false);
-        do 
+        std::vector<ll> minv(m + 1, LLONG_MAX);
+        std::vector<bool> used(m + 1, false);
+
+        do
         {
             used[j0] = true;
-            int i0 = p[j0], j1;
+            int i0 = p[j0];
             ll delta = LLONG_MAX;
-            for (int j = 1; j <= m; ++j) 
+            int j1 = 0;
+
+            for (int j = 1; j <= m; ++j)
             {
-                if (!used[j]) {
-                    ll cur = cost[i0-1][j-1] - u[i0] - v[j];
-                    if (cur < minv[j]) 
-                    { 
-                        minv[j] = cur; way[j] = j0; 
-                    }
-                    if (minv[j] < delta) 
+                if (!used[j])
+                {
+                    ll cur = cost[i0 - 1][j - 1] - u[i0] - v[j];
+                    if (cur < minv[j])
                     {
-                        delta = minv[j]; j1 = j; 
+                        minv[j] = cur;
+                        way[j] = j0;
+                    }
+                    if (minv[j] < delta)
+                    {
+                        delta = minv[j];
+                        j1 = j;
                     }
                 }
             }
-            for (int j = 0; j <= m; ++j) 
+
+            for (int j = 0; j <= m; ++j)
             {
-                if (used[j]) { u[p[j]] += delta; v[j] -= delta; }
-                else minv[j] -= delta;
+                if (used[j])
+                {
+                    u[p[j]] += delta;
+                    v[j] -= delta;
+                }
+                else
+                {
+                    minv[j] -= delta;
+                }
             }
             j0 = j1;
         } while (p[j0] != 0);
-        do 
+
+        do
         {
             int j1 = way[j0];
             p[j0] = p[j1];
@@ -235,8 +263,9 @@ std::vector<int> Scenario5::hungarianMax(const std::vector<std::vector<ll>> &pro
     }
 
     std::vector<int> result(n, -1);
-    for (int j = 1; j <= m; ++j) 
-        if (p[j] > 0) 
-            result[p[j]-1] = j-1;
+    for (int j = 1; j <= m; ++j)
+        if (p[j] > 0)
+            result[p[j] - 1] = j - 1;
+
     return result;
 }
