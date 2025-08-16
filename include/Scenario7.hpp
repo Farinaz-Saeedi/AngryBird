@@ -5,6 +5,7 @@
 
 #include "Scenario.hpp"
 #include "Controler.hpp"
+#include "Enemy.hpp"
 
 #define ld long double
 

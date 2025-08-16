@@ -17,7 +17,7 @@ class Enemy : public City {
         void pushReachBird(Bird bird);
         std::vector<Bird> getReachBirds();
         void setBirdPath(std::vector<std::shared_ptr<City>> & path);
-        void reduceDefenseLvl();
+        void clearReachBirds();
 
     private:
         int defenseLevel;
