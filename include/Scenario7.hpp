@@ -8,7 +8,7 @@
 
 #define ld long double
 
-struct OptionScenario7
+struct OptionScen7
 {
     Bird *bird;
     std::shared_ptr<City> home;
@@ -32,7 +32,7 @@ private:
     int numberOfNights;
     ld damage;
     std::vector<std::pair<std::string, ld>> lst;
-    std::vector<OptionScenario7> options;
+    std::vector<OptionScen7> options;
 };
 
 #endif

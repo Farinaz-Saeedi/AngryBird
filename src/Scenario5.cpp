@@ -59,7 +59,7 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
     for (auto &enemy : enemies)
         enemyMap[enemy->getCityName()] = enemy;
 
-    for (int night = 1; night <= numberOfNights; ++night)
+    for (int night = 1; night <= getNumberOfNights(); ++night)
     {
         std::cout << "\nNight " << night << " begins ...\n\n";
 
@@ -97,7 +97,7 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
                 continue;
             }
 
-            options.push_back(OptionScenario5{b, birds[b].getDegree(), itHome->second, target, path, birds[b].getDemolition(), 0.0});
+            options.push_back(OptionScen5{b, birds[b].getDegree(), itHome->second, target, path, birds[b].getDemolition(), 0.0});
         }
 
       
@@ -132,7 +132,7 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
             int targetIdx = assignment[i];
             if (targetIdx >= 0)
             {
-                OptionScenario5 &opt = options[i];
+                OptionScen5 &opt = options[i];
                 totalDamage += opt.damage;
                 std::cout << "Bird " << birds[opt.birdIdx].getName() << " -> " << opt.target->getCityName();
                 std::cout << "\nPath: ";

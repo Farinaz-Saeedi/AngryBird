@@ -108,7 +108,7 @@ void Scenario7::printOutput(Controler &control, std::vector<std::shared_ptr<City
             continue;
         }
 
-        std::sort(options.begin(), options.end(), [&, lambda](OptionScenario7 &a, OptionScenario7 &b)
+        std::sort(options.begin(), options.end(), [&, lambda](OptionScen7 &a, OptionScen7 &b)
                   {
             ld valA = a.expectedDamage * (1.0 - 1.0 / a.radarLevel) - lambda * a.cost;
             ld valB = b.expectedDamage * (1.0 - 1.0 / b.radarLevel) - lambda * b.cost;

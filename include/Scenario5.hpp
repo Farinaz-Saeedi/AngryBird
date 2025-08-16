@@ -4,7 +4,7 @@
 #include "Scenario.hpp"
 #include "Controler.hpp"
 
-struct OptionScenario5
+struct OptionScen5
 {
     int birdIdx;
     int spyNum;
@@ -14,7 +14,7 @@ struct OptionScenario5
     ll damage;
     double survProb;
 
-    OptionScenario5(int b, int num, std::shared_ptr<City> h, std::shared_ptr<City> t,std::vector<std::shared_ptr<City>> p, ll dmg, double prob)
+    OptionScen5(int b, int num, std::shared_ptr<City> h, std::shared_ptr<City> t,std::vector<std::shared_ptr<City>> p, ll dmg, double prob)
         : birdIdx(b), spyNum(num), home(h), target(t), path(p), damage(dmg), survProb(prob) {}
 };
 
@@ -30,8 +30,8 @@ public:
 
 private:
     int numberOfNights;
-    std::vector<OptionScenario5> options;
-    std::vector<OptionScenario5> helpOptions;
+    std::vector<OptionScen5> options;
+    std::vector<OptionScen5> helpOptions;
     std::vector<int>birdsToRemove;
 };
 
