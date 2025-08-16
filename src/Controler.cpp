@@ -67,12 +67,6 @@ void Controler::readCities()
         }
     }
     input.close(); 
-    
-    for (auto & city : cities)
-    {
-        nameToCity[city->getCityName()] = city;
-    }
-
 }
 void Controler::setNumberOfCities(ll numberOfCities)
 {
@@ -287,8 +281,14 @@ bool Controler::isDetected(Bird &bird)
 }
 void Controler::shootDownBird(std::string enemyName) 
 {
-    std::shared_ptr<City> city = nameToCity[enemyName];
-    auto enemy = std::dynamic_pointer_cast<Enemy>(city);
+    std::shared_ptr<Enemy> enemy;
+    for (auto & city : goalCities)
+    {
+        if (city->getCityName() == enemyName)
+        {
+            enemy = std::dynamic_pointer_cast<Enemy>(city);
+        }
+    }
     
     std::vector<Bird> detectedBirds;
     
@@ -351,7 +351,13 @@ int Controler::countSpiesOnPath(std::vector<std::shared_ptr<City>> path)
     return numberOfspies;
 }
 void Controler::newSpies(int targetNight)
-{
+{ 
+    std::unordered_map<std::string , std::shared_ptr<City>> nameToCity;
+    for (auto & city : cities)
+    {
+        nameToCity[city->getCityName()] = city;
+    }
+
     std::ifstream input("../src/SpiesInScen5.txt");
     if (!input.is_open())
         std::cerr << " Unable to open SpiesInScen5 file ! \n";
@@ -381,8 +387,12 @@ void Controler::newSpies(int targetNight)
 }
 void Controler::setReachBird(std::string enemyName, Bird &bird, std::vector<std::shared_ptr<City>> & path)
 {
-    std::shared_ptr<City> city ;
-    auto enemy = std::dynamic_pointer_cast<Enemy>(city);
+    std::shared_ptr<Enemy> enemy ;
+    for (auto & city : goalCities)
+    {
+        if (city->getCityName() == enemyName)
+        enemy = std::dynamic_pointer_cast<Enemy>(city);
+    }
             
     if (enemy)
     {

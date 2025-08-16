@@ -1,4 +1,4 @@
 2 city7
-3 city3 city2
+3 city3 city2 city10 city6
 4 city1 city9
-5 city6 city10 city0
+5 city0

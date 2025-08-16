@@ -50,7 +50,6 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
     ll totalDamage = 0;
     std::vector<Bird> birds = control.getBirds();
     std::vector<std::shared_ptr<City>> enemies = control.getEnemies();
-    std::vector<Bird> aliveBirds;
 
     std::unordered_map<std::string, std::shared_ptr<City>> homeMap;
     for (auto &home : homes)
@@ -91,20 +90,16 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
                 bool can = control.aStar(itHome->second->getCityName(), target->getCityName(), birds[b], path, distance, cost);
                 if (path.empty() || !can)
                     continue;
-
-                // std::cout << "--bird name: " << birds[b].getName() << '\n';
                 
-                OptionScen5 opt{b, birds[b].getDegree(), itHome->second, target, path, birds[b].getDemolition(), 0.0};
+                OptionScen5 opt{b, birds[b].getDegree(), itHome->second, target, path, birds[b].getDemolition(), distance, 0.0};
                 birds[b].setThePath(path);
                 allOptions.push_back(opt);
                 if (control.isDetected(birds[b]))
                 {
-                    std::cout << birds[b].getName() << "----\n";
                     enemyToSecondOptions[target->getCityName()].push_back(opt);
                     continue;
                 } else
                     firstOptions.push_back(opt);
-                    std::cout << birds[opt.birdIdx].getName() << " Bird\n";
             }
         }
 
@@ -120,11 +115,9 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
 
         if (!firstOptions.empty())
         {
-            std::cout << "planA\n";
             auto opt = firstOptions.back();
 
             control.setReachBird(opt.target->getCityName(), birds[opt.birdIdx], opt.path);
-            totalDamage += opt.damage;
             std::cout << "Bird " << birds[opt.birdIdx].getName() <<  " | " << opt.home->getCityName() << " -> " << opt.target->getCityName();
             std::cout << "\nPath: ";
             for (auto & city : opt.path)
@@ -149,7 +142,6 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
 
                 control.setReachBird(opts[i].target->getCityName(), birds[opts[i].birdIdx], opts[i].path);
 
-                // totalDamage += opts[i].damage;
                 std::cout << "Bird " << birds[opts[i].birdIdx].getName() << " | " << opts[i].home->getCityName()
                           << " -> " << opts[i].target->getCityName() << "\nPath: ";
                 for (auto & city : opts[i].path)
@@ -158,9 +150,6 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
 
                 usedBirds.insert(opts[i].birdIdx);
                 birdsToRemove.push_back(opts[i].birdIdx);
-                // aliveBirds.push_back(birds[opts[i].birdIdx]);
-            
-                std::cout << "planB\n";
             }
         }
         
@@ -171,8 +160,7 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
                 if (usedBirds.count(opt.birdIdx)) continue;
                 
                 control.setReachBird(opt.target->getCityName(), birds[opt.birdIdx], opt.path);
-
-                // totalDamage += opt.damage;
+                
                 std::cout << "Bird " << birds[opt.birdIdx].getName() << " | " << opt.home->getCityName()
                 << " -> " << opt.target->getCityName() << "\nPath: ";
                 for (auto & city : opt.path)
@@ -180,9 +168,6 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
                 std::cout << "\n--------------------------------\n";
                 usedBirds.insert(opt.birdIdx);
                 birdsToRemove.push_back(opt.birdIdx);
-                // aliveBirds.push_back(birds[opt.birdIdx]);
-
-                std::cout << "last\n";
             }
         }
 
@@ -191,105 +176,15 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
         std::sort(birdsToRemove.rbegin(), birdsToRemove.rend());
         for (int idx : birdsToRemove)
         {
-            std::cout << "erase: " << idx << '\n';
             birds.erase(birds.begin() + idx);
         }
-
-        std::cout << "-- Total Damage: " << totalDamage << " --\n";
     }
-}
-std::vector<int> Scenario5::hungarianMax(const std::vector<std::vector<ll>> &profit)
-{
-    int n = profit.size();
-    if (n == 0)
-        return {};
-    int m = profit[0].size();
-    if (m == 0)
-        return {};
 
-    ll maxVal = 0;
-    for (auto &row : profit)
-        for (auto val : row)
-            maxVal = std::max(maxVal, val);
-
-    std::vector<std::vector<ll>> cost(n, std::vector<ll>(m));
-    for (int i = 0; i < n; ++i)
-        for (int j = 0; j < m; ++j)
-            cost[i][j] = maxVal - profit[i][j];
-
-    if (n < m)
+    std::vector<Bird> aliveBirds = control.getBirds();
+    for (int i = 0 ; i < aliveBirds.size() ; ++i)
     {
-        cost.resize(m, std::vector<ll>(m, maxVal));
-        n = m;
+        totalDamage += aliveBirds[i].getDemolition();
     }
-    else if (m < n)
-    {
-        for (auto &row : cost)
-            row.resize(n, maxVal);
-        m = n;
-    }
-
-    std::vector<ll> u(n + 1), v(m + 1), p(m + 1), way(m + 1);
-
-    for (int i = 1; i <= n; ++i)
-    {
-        p[0] = i;
-        int j0 = 0;
-        std::vector<ll> minv(m + 1, LLONG_MAX);
-        std::vector<bool> used(m + 1, false);
-
-        do
-        {
-            used[j0] = true;
-            int i0 = p[j0];
-            ll delta = LLONG_MAX;
-            int j1 = 0;
-
-            for (int j = 1; j <= m; ++j)
-            {
-                if (!used[j])
-                {
-                    ll cur = cost[i0 - 1][j - 1] - u[i0] - v[j];
-                    if (cur < minv[j])
-                    {
-                        minv[j] = cur;
-                        way[j] = j0;
-                    }
-                    if (minv[j] < delta)
-                    {
-                        delta = minv[j];
-                        j1 = j;
-                    }
-                }
-            }
-
-            for (int j = 0; j <= m; ++j)
-            {
-                if (used[j])
-                {
-                    u[p[j]] += delta;
-                    v[j] -= delta;
-                }
-                else
-                {
-                    minv[j] -= delta;
-                }
-            }
-            j0 = j1;
-        } while (p[j0] != 0);
-
-        do
-        {
-            int j1 = way[j0];
-            p[j0] = p[j1];
-            j0 = j1;
-        } while (j0);
-    }
-
-    std::vector<int> result(n, -1);
-    for (int j = 1; j <= m; ++j)
-        if (p[j] > 0)
-            result[p[j] - 1] = j - 1;
-
-    return result;
+    
+    std::cout << "\n-- Total Damage: " << totalDamage << " --\n";
 }

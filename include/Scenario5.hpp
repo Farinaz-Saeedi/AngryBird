@@ -12,10 +12,11 @@ struct OptionScen5
     std::shared_ptr<City> target;
     std::vector<std::shared_ptr<City>> path;
     ll damage;
+    ll distance = 0.0;
     double survProb;
 
-    OptionScen5(int b, int num, std::shared_ptr<City> h, std::shared_ptr<City> t,std::vector<std::shared_ptr<City>> p, ll dmg, double prob)
-        : birdIdx(b), spyNum(num), home(h), target(t), path(p), damage(dmg), survProb(prob) {}
+    OptionScen5(int b, int num, std::shared_ptr<City> h, std::shared_ptr<City> t,std::vector<std::shared_ptr<City>> p, ll dmg, ll dis, double prob)
+        : birdIdx(b), spyNum(num), home(h), target(t), path(p), damage(dmg), distance(dis), survProb(prob) {}
 };
 
 class Scenario5 : public Scenario
