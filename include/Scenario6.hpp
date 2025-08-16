@@ -4,6 +4,20 @@
 #include "Scenario.hpp"
 #include "Controler.hpp"
 
+struct OptionScen6
+{
+    int birdIdx;
+    std::shared_ptr<City> home;
+    std::shared_ptr<City> target;
+    std::vector<std::shared_ptr<City>> path;
+    ll damage;
+    ll distance = 0.0;
+    double survProb;
+
+    OptionScen6(int b, std::shared_ptr<City> h, std::shared_ptr<City> t,std::vector<std::shared_ptr<City>> p, ll dmg, ll dis, double prob)
+        : birdIdx(b), home(h), target(t), path(p), damage(dmg), distance(dis), survProb(prob) {}
+};
+
 class Scenario6 : public Scenario
 {
     public:
@@ -12,7 +26,8 @@ class Scenario6 : public Scenario
        
 
     private:
-       
+        std::vector<OptionScen6> firstOptions;
+        std::vector<int> birdsToRemove;
 
 };
 
