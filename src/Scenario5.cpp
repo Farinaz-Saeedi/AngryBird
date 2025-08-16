@@ -64,6 +64,7 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
         std::cout << "\nNight " << night << " begins ...\n\n";
 
         firstOptions.clear();
+        allOptions.clear();
         firstOptions.reserve(birds.size());
 
         std::unordered_map<std::string, std::vector<OptionScenario5>> enemyToSecondOptions;
@@ -81,14 +82,6 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
             ll distance = 0.0;
             ld cost;
             std::vector<std::shared_ptr<City>> path;
-
-            // auto ans = control.findBestPairFor(itHome->second, birds[b], path, distance);
-            // std::shared_ptr<City> target;
-
-            // auto itEnemy = enemyMap.find(ans.first);
-            // if (itEnemy == enemyMap.end())
-            //     continue;
-            // target = itEnemy->second;
 
             for (auto &target : control.getEnemies())
             {
@@ -120,8 +113,6 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
         usedBirds.clear();
         birdsToRemove.clear();
 
-        std::cout << birds.size() << "size()\n";
-
         if (!firstOptions.empty())
         {
             std::cout << "planA\n";
@@ -132,7 +123,6 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
             for (auto &city : opt.path)
                 std::cout << city->getCityName() << " ";
             std::cout << '\n';
-            // birds.erase(birds.begin() + opt.birdIdx);
             birdsToRemove.push_back(opt.birdIdx);
         } 
         else 
@@ -156,7 +146,7 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
                 for (auto & city : opts[i].path)
                     std::cout << city->getCityName() << " ";
                 std::cout << "\n--------------------------------\n";
-                // birds.erase(birds.begin() + opts[i].birdIdx);
+
                 usedBirds.insert(opts[i].birdIdx);
                 birdsToRemove.push_back(opts[i].birdIdx);
             
