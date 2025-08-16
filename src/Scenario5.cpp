@@ -97,17 +97,16 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
                     continue;
 
                 std::cout << "--bird name: " << birds[b].getName() << '\n';
-
+                
                 OptionScenario5 opt{b, birds[b].getDegree(), itHome->second, target, path, birds[b].getDemolition(), 0.0};
+                allOptions.push_back(opt);
                 if (control.isDetected(birds[b]))
                 {
-                    allOptions.push_back(opt);
                     enemyToSecondOptions[target->getCityName()].push_back(opt);
                     continue;
                 }
     
                 firstOptions.push_back(opt);
-                allOptions.push_back(opt);
             }
         }
 
@@ -120,6 +119,8 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
         std::unordered_set<int> usedBirds;
         usedBirds.clear();
         birdsToRemove.clear();
+
+        std::cout << birds.size() << "size()\n";
 
         if (!firstOptions.empty())
         {
@@ -176,9 +177,10 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
                 std::cout << city->getCityName() << " ";
                 std::cout << "\n--------------------------------\n";
                 usedBirds.insert(opt.birdIdx);
+                birdsToRemove.push_back(opt.birdIdx);
+
                 std::cout << "last\n";
             }
-            birds.clear();
         }
 
         std::sort(birdsToRemove.rbegin(), birdsToRemove.rend());
@@ -190,7 +192,7 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
 
         std::cout << "-- Total Damage: " << totalDamage << " --\n";
         if (night <= 4)
-        control.newSpies();
+        control.newSpies(night + 1);
         
       
         // std::vector<double> survProbs = predictSurvival();

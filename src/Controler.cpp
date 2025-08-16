@@ -348,33 +348,33 @@ int Controler::countSpiesOnPath(std::vector<std::shared_ptr<City>> path)
     }
     return numberOfspies;
 }
-void Controler::newSpies()
+void Controler::newSpies(int targetNight)
 {
-    ll spyCount;
-    std::cout << "\nHow many new spy cities? ";
-    std::cin >> spyCount;
-
-    std::unordered_map<std::string, std::shared_ptr<City>> cityMap;
-    for (auto& city : cities)
+    std::unordered_map<std::string , std::shared_ptr<City>> nameToCity;
+    for (auto & city : cities)
     {
-        cityMap[city->getCityName()] = city;
+        nameToCity[city->getCityName()] = city;
     }
 
-    std::cout << "\nEnter city names with new spies:\n";
-    for (int i = 0; i < spyCount; i++)
-    {
-        std::string cityName;
-        std::cin >> cityName;
+    std::ifstream input("../src/SpiesInScen5.txt");
+    if (!input.is_open())
+        std::cerr << " Unable to open SpiesInScen5 file ! \n";
 
-        auto it = cityMap.find(cityName);
-        if (it != cityMap.end())
+    std::string line;
+    while(std::getline(input , line))
+    {
+        if (line.empty()) continue;
+
+        std::istringstream iss(line);
+        int night;
+        iss >> night;
+
+        if (night != targetNight) continue;
+
+        std::string cityName;
+        while(iss >> cityName)
         {
-            if (it->second->getIsSpy())
-            {
-                std::cout << "This city has already a spy!";
-                continue;
-            }
-            it->second->setIsSpy(true);
+            nameToCity[cityName]->setIsSpy(true);
         }
     }
 }

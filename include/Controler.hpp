@@ -52,7 +52,7 @@ class Controler
         std::vector<Bird> &getBirds();
         std::vector<std::shared_ptr<City>> getPath();
         int countSpiesOnPath(std::vector<std::shared_ptr<City>> path);
-        void newSpies();
+        void newSpies(int targetNight);
         void setReachBird(std::string &enemyName, Bird &bird , std::vector<std::shared_ptr<City>> & path);
         void attack();
         void delBird(Bird & bird);
@@ -64,7 +64,6 @@ class Controler
 
     private:
         std::vector<Bird> birds;
-        // std::vector<std::shared_ptr<City>> homes;
         std::vector<std::shared_ptr<City>> cities;
         std::vector<std::shared_ptr<City>> goalCities;
         std::vector<std::shared_ptr<City>> startCities;
