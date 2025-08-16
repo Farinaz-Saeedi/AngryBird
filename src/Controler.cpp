@@ -437,3 +437,18 @@ int Controler::getBirdIdx(Bird & bird)
         return -1;
     }
 }
+std::shared_ptr<Enemy> Controler::getWeakEnemy()
+{
+    int min = INT_MAX ;
+    std::shared_ptr<Enemy> weakest ;
+    for (auto & city : goalCities)
+    {
+        auto enemy = std::dynamic_pointer_cast<Enemy>(city);
+        if ( enemy->getDefenseLevel() < min )
+        {
+            min = enemy->getDefenseLevel();
+            weakest = enemy ;
+        }
+    }
+    return weakest ;
+}

@@ -30,9 +30,9 @@ public:
 
 private:
     int numberOfNights;
-    std::vector<OptionScenario5> options;
-    std::vector<OptionScenario5> helpOptions;
-    std::vector<int>birdsToRemove;
+    std::vector<OptionScenario5> firstOptions;
+    std::vector<OptionScenario5> allOptions;
+    std::vector<int> birdsToRemove;
 };
 
 #endif

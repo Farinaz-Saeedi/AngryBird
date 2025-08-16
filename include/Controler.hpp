@@ -59,7 +59,7 @@ class Controler
         void deadBird(Bird & bird, ll & totalDistanc);
         std::vector<std::shared_ptr<City>> getEnemies();
         int getBirdIdx(Bird & bird);
-
+        std::shared_ptr<Enemy> getWeakEnemy();
 
 
     private:
