@@ -12,10 +12,10 @@ struct OptionScenario7
 {
     Bird *bird;
     std::shared_ptr<City> home;
-    std::shared_ptr<City> target;
+    std::shared_ptr<Enemy> target;
     ld expectedDamage;
     ld cost;
-    ld radarLevel;
+    int radarLevel;
 };
 
 class Scenario7 : public Scenario
@@ -32,6 +32,7 @@ private:
     int numberOfNights;
     ld damage;
     std::vector<std::pair<std::string, ld>> lst;
+    std::vector<OptionScenario7> options;
 };
 
 #endif
