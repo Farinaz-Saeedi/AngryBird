@@ -59,7 +59,7 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
     for (auto &enemy : enemies)
         enemyMap[enemy->getCityName()] = enemy;
 
-    for (int night = 1; night <= numberOfNights; ++night)
+    for (int night = 1; night <= getNumberOfNights(); ++night)
     {
         std::cout << "\nNight " << night << " begins ...\n\n";
 
@@ -67,7 +67,7 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
         allOptions.clear();
         firstOptions.reserve(birds.size());
 
-        std::unordered_map<std::string, std::vector<OptionScenario5>> enemyToSecondOptions;
+        std::unordered_map<std::string, std::vector<OptionScen5>> enemyToSecondOptions;
 
         for (int b = 0; b < birds.size(); ++b)
         {
@@ -91,7 +91,7 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
 
                 std::cout << "--bird name: " << birds[b].getName() << '\n';
                 
-                OptionScenario5 opt{b, birds[b].getDegree(), itHome->second, target, path, birds[b].getDemolition(), 0.0};
+                OptionScen5 opt{b, birds[b].getDegree(), itHome->second, target, path, birds[b].getDemolition(), 0.0};
                 allOptions.push_back(opt);
                 if (control.isDetected(birds[b]))
                 {
@@ -103,7 +103,7 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
             }
         }
 
-        std::sort(firstOptions.begin() , firstOptions.end() , [](OptionScenario5 & a , OptionScenario5 & b)
+        std::sort(firstOptions.begin() , firstOptions.end() , [](OptionScen5 & a , OptionScen5 & b)
         {
             if ( a.spyNum != b.spyNum ) return a.spyNum > b.spyNum ;
             return a.damage < b.damage ;

@@ -72,7 +72,7 @@ void Scenario3::printOutput(Controler & control , std::vector<std::shared_ptr<Ci
     std::cout << "\nTotal Damage: " << totalDamage << "\n";
     std::cout << "---------------------------------------\n";
 }
-std::vector<Option> Scenario3::assignOptions(Controler &control, std::vector<std::shared_ptr<City>> &homes)
+std::vector<OptionScen3> Scenario3::assignOptions(Controler &control, std::vector<std::shared_ptr<City>> &homes)
 {
     std::vector<Bird> birds = control.getBirds();
     std::vector<std::shared_ptr<City>> path;

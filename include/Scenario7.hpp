@@ -8,11 +8,21 @@
 
 #define ld long double
 
+struct OptionScen7
+{
+    Bird *bird;
+    std::shared_ptr<City> home;
+    std::shared_ptr<Enemy> target;
+    ld expectedDamage;
+    ld cost;
+    int radarLevel;
+};
+
 class Scenario7 : public Scenario
 {
 public:
-    void readInputs(std::vector<Bird> & birds , std::vector<std::shared_ptr<City>> & homes) override;
-    void printOutput(Controler & control , std::vector<std::shared_ptr<City>> &homes) override;
+    void readInputs(std::vector<Bird> &birds, std::vector<std::shared_ptr<City>> &homes) override;
+    void printOutput(Controler &control, std::vector<std::shared_ptr<City>> &homes) override;
     void setNumberOfNights(int numberOfNights);
     int getNumberOfNights();
     ld getDamage();
@@ -22,6 +32,7 @@ private:
     int numberOfNights;
     ld damage;
     std::vector<std::pair<std::string, ld>> lst;
+    std::vector<OptionScen7> options;
 };
 
 #endif
