@@ -1,8 +1,11 @@
-7 - damage - number of birds 
-
-name - price - slingShot place 
-name - price - slingShot place
-------
-------
-------
-name - price - slingShot place 
+7 10000000000 10
+Venomtail 100 city1 
+Venomtail 100 city2 
+Skyrage 200 city2 
+Skyrage 200 city3 
+Ironbeak 300 city1 
+Ironbeak 300 city2 
+Ironbeak 300 city3 
+Titan 500 city1 
+Fury 600 city2
+Blaze 700 city3
