@@ -93,9 +93,10 @@ void Scenario7::printOutput(Controler &control, std::vector<std::shared_ptr<City
                 std::vector<std::shared_ptr<City>> path;
                 ll distance = 0;
                 ld cost = getBirdCost(bird.getName());
+                ld pathCost;
 
                 bool can = control.aStar(myHome->getCityName(), enemy->getCityName(),
-                                         bird, path, distance, cost);
+                                         bird, path, distance, pathCost);
                 if (!can || path.empty())
                     continue;
 
@@ -151,6 +152,12 @@ void Scenario7::printOutput(Controler &control, std::vector<std::shared_ptr<City
         std::cout << "Night damage: " << nightDamage
                   << " | Night cost: " << nightCost
                   << " | Total damage so far: " << totalDamage << "\n";
+
+        if (totalDamage >= getDamage())
+        {
+            std::cout << "Enemy surrendered...";
+            break;
+        }
 
         std::sort(birdsToRemove.rbegin(), birdsToRemove.rend());
         for (int idx : birdsToRemove)
