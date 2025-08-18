@@ -30,6 +30,8 @@ public:
     int getNumberOfNights();
     ld getDamage();
     void setDamage(ld damage);
+    std::vector<OptionScen7>knapsackMinCost(const std::vector<OptionScen7> &options, ld damageThreshold);
+    
 
 private:
     int numberOfNights;

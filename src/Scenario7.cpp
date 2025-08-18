@@ -61,114 +61,31 @@ void Scenario7::readInputs(std::vector<Bird> &birds, std::vector<std::shared_ptr
 }
 void Scenario7::printOutput(Controler &control, std::vector<std::shared_ptr<City>> &homes)
 {
-    ld totalDamage = 0;
-    ll totalCost = 0;
-    int consecutiveHighDamage = 0;
-    const ld lambda = 0.1;
+}
 
-    for (int night = 1; night <= getNumberOfNights(); night++)
+std::vector<OptionScen7> Scenario7::knapsackMinCost(const std::vector<OptionScen7> &options, ld damageThreshold)
+{
+    int n = options.size();
+    std::vector<OptionScen7> bestSelection;
+    ld bestCost = 1e18;
+    ld currentDamage = 0;
+
+    std::vector<OptionScen7> sortedOptions = options;
+    std::sort(sortedOptions.begin(), sortedOptions.end(), [](const OptionScen7 &a, const OptionScen7 &b)
+    { 
+        return (a.damage / a.cost) > (b.damage / b.cost); 
+    });
+
+    for (auto &opt : sortedOptions)
     {
-        std::cout << "\nNight " << night << " begins ...\n\n";
+        bestSelection.push_back(opt);
 
-        for (auto &home : homes)
-        {
-            auto myHome = std::dynamic_pointer_cast<Home>(home);
-            if (!myHome)
-                continue;
-
-            for (auto &bird : myHome->getMyBirds())
-            {
-                for (auto &enemy : control.getEnemies())
-                {
-                    auto myEnemy = std::dynamic_pointer_cast<Enemy>(enemy);
-                    ld dmg = bird.getDemolition();
-                    ld cost = 0;
-
-                    for (auto &it : lst)
-                    {
-                        if (it.first == bird.getName())
-                        {
-                            cost = it.second;
-                            break;
-                        }
-                    }
-
-                    int dgr = bird.getDegree();
-                    if (dmg > 0)
-                    {
-                        options.push_back({&bird, myHome, myEnemy, dmg, cost, dgr});
-                    }
-                }
-            }
-        }
-
-        if (options.empty())
-        {
-            std::cout << "No launches possible this night.\n";
-            continue;
-        }
-
-        std::sort(options.begin(), options.end(), [&, lambda](OptionScen7 &a, OptionScen7 &b)
-                  {
-            ld valA = a.expectedDamage * (1.0 - 1.0 / a.radarLevel) - lambda * a.cost;
-            ld valB = b.expectedDamage * (1.0 - 1.0 / b.radarLevel) - lambda * b.cost;
-
-            if(a.radarLevel != b.radarLevel) return a.radarLevel < b.radarLevel;
-            return valA > valB; });
-
-        ld nightDamage = 0;
-        ll nightCost = 0;
-        std::unordered_map<std::string, int> defenseCounter;
-
-        for (auto &opt : options)
-        {
-            std::string targetName = opt.target->getCityName();
-            int defense = opt.target->getDefenseLevel();
-            if (defenseCounter[targetName] >= defense)
-                break;
-
-            ld survivalProb = 1.0 - (defenseCounter[targetName] < defense ? 0.0 : 1.0 / opt.radarLevel);
-            survivalProb = std::clamp(survivalProb, (ld)0.0, (ld)1.0);
-
-            ld actualDamage = opt.expectedDamage * survivalProb;
-            nightDamage += actualDamage;
-            nightCost += opt.cost;
-
-            std::cout << "Launch " << opt.bird->getName()
-                      << " from " << opt.home->getCityName()
-                      << " to " << targetName
-                      << " | Damage: " << actualDamage
-                      << " | Cost: " << opt.cost
-                      << " | SurvivalProb: " << survivalProb << "\n";
-
-            auto tempHome = std::dynamic_pointer_cast<Home>(opt.home);
-            auto &birdsList = tempHome->getMyBirds();
-
-            birdsList.erase(std::remove_if(birdsList.begin(), birdsList.end(),
-                                           [&](Bird &b)
-                                           { return b.getName() == opt.bird->getName(); }),
-                            birdsList.end());
-
-            defenseCounter[targetName]++;
-        }
-
-        totalDamage += nightDamage;
-        totalCost += nightCost;
-
-        if (nightDamage >= damage)
-            consecutiveHighDamage++;
-        else
-            consecutiveHighDamage = 0;
-
-        if (consecutiveHighDamage >= 7)
-        {
-            std::cout << "\nEnemy surrendered after 7 nights with high damage!\n";
+        currentDamage += opt.damage;
+        if (currentDamage >= damageThreshold)
             break;
-        }
-        std::cout << "Night damage: " << nightDamage
-                  << " | Night cost: " << nightCost << "\n";
     }
 
-    std::cout << "\n=== Total Damage: " << totalDamage
-              << " | Total Cost: " << totalCost << " ===\n";
+    return bestSelection;
 }
+
+
