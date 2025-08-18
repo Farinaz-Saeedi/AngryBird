@@ -47,9 +47,6 @@ void Scenario1::printOutput(Controler &control, std::vector<std::shared_ptr<City
         auto itHome = homeMap.find(bird.getHomePlace());
         if (itHome == homeMap.end())
             continue;
-        auto myHome = std::dynamic_pointer_cast<Home>(itHome->second);
-        if (!myHome)
-            continue;
 
         ll distance = 0;
         std::vector<std::shared_ptr<City>> path;
