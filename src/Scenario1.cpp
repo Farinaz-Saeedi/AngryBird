@@ -8,6 +8,7 @@ void Scenario1::readInputs(std::vector<Bird> &birds, std::vector<std::shared_ptr
 
     std::string name;
     int count;
+    int index = 0;
 
     while (!input.eof())
     {
@@ -19,6 +20,8 @@ void Scenario1::readInputs(std::vector<Bird> &birds, std::vector<std::shared_ptr
                 Bird temp = readBird(name, birds);
                 auto home = std::dynamic_pointer_cast<Home>(homes[i]);
                 home->push(temp);
+                birds[index].setHomePlace(homes[i]->getCityName());
+                index++;
             }
         }
     }
@@ -28,45 +31,52 @@ void Scenario1::readInputs(std::vector<Bird> &birds, std::vector<std::shared_ptr
 void Scenario1::printOutput(Controler &control, std::vector<std::shared_ptr<City>> &homes)
 {
     ld totalDamage = 0.0;
+    std::vector<Bird> birds = control.getBirds();
+    std::vector<std::shared_ptr<City>> enemies = control.getEnemies();
+
+    std::unordered_map<std::string, std::shared_ptr<City>> homeMap;
     for (auto &home : homes)
+        homeMap[home->getCityName()] = home;
+
+    std::unordered_map<std::string, std::shared_ptr<City>> enemyMap;
+    for (auto &enemy : enemies)
+        enemyMap[enemy->getCityName()] = enemy;
+    
+    for (auto &bird : birds)
     {
-        auto myHome = std::dynamic_pointer_cast<Home>(home);
+        auto itHome = homeMap.find(bird.getHomePlace());
+        if (itHome == homeMap.end())
+            continue;
+        auto myHome = std::dynamic_pointer_cast<Home>(itHome->second);
         if (!myHome)
             continue;
 
-        auto &birds = myHome->getMyBirds();
-        if (birds.empty())
-            continue;
+        ll distance = 0;
+        std::vector<std::shared_ptr<City>> path;
+        auto [enemy, canDestroy] = control.findBestPairFor(itHome->second, bird, path, distance);
 
-        for (auto &bird : birds)
+        std::cout << "Bird : " << bird.getName() << "\nPath: ";
+        if (canDestroy != 1)
+            control.deadBird(bird, distance);
+        else
         {
-            ll distance = 0;
-            std::vector<std::shared_ptr<City>> path;
-            auto [enemy, canDestroy] = control.findBestPairFor(home, bird, path, distance);
-
-            std::cout << "Bird : " << bird.getName() << "\nPath: ";
-
-            if (canDestroy != 1)
-                control.deadBird(bird, distance);
-            else
+            control.setReachBird(enemy, bird, path);
+            for (auto &city : path)
             {
-                control.setReachBird(enemy, bird, path);
-                for (auto &city : path)
-                {
-                    std::cout << city->getCityName() << " ";
-                }
+                std::cout << city->getCityName() << " ";
             }
-            std::cout << "\n---------------------------------------\n";
-            std::cout << "\n";
         }
+        std::cout << "\n---------------------------------------\n";
+        std::cout << "\n";
+        
     }
 
     std::cout << "\n---------------------------------------\n";
 
     control.attack();
 
-    auto birds = control.getBirds();
-    for (auto &bird : birds)
+    auto aliveBirds = control.getBirds();
+    for (auto &bird : aliveBirds)
     {
         totalDamage += bird.getDemolition();
     }
