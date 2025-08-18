@@ -59,6 +59,7 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
     for (auto &enemy : enemies)
         enemyMap[enemy->getCityName()] = enemy;
 
+    bool nightPass = true;
     for (int night = 1; night <= getNumberOfNights(); ++night)
     {
         std::cout << "\nNight " << night << " begins ...\n\n";
@@ -139,6 +140,12 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
             for (int i = 0 ; i < capacity + 1 ; ++i)
             {
                 if (usedBirds.count(opts[i].birdIdx)) continue;
+                if ((opts.size()) < capacity + 1)
+                {
+                    nightPass = false;
+                    birds.clear();
+                    break;
+                }
 
                 control.setReachBird(opts[i].target->getCityName(), birds[opts[i].birdIdx], opts[i].path);
 
@@ -170,6 +177,8 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
                 birdsToRemove.push_back(opt.birdIdx);
             }
         }
+
+        if (!nightPass) std::cout << "No launches possible this night .\n";
 
         control.attack();
 

@@ -161,10 +161,11 @@ void Scenario6::printOutput(Controler & control , std::vector<std::shared_ptr<Ci
         {
             birds.erase(birds.begin() + idx);
         }
-
+        
+        if (nightPass) night++;   
+        else
+            std::cout << "No launches possible this night .";
         std::cout << "\n--------------------------------\n";
-
-        if (nightPass) night++;    
     }
 
     std::vector<Bird> aliveBirds = control.getBirds();
