@@ -37,8 +37,9 @@ void Scenario6::readInputs(std::vector<Bird> & birds , std::vector<std::shared_p
 void Scenario6::printOutput(Controler & control , std::vector<std::shared_ptr<City>> &homes) 
 {
     ll totalDamage = 0;
-    std::vector<Bird> birds = control.getBirds();
+    birds = control.getBirds();
     std::vector<std::shared_ptr<City>> enemies = control.getEnemies();
+    giveBirdsID();
 
     std::unordered_map<std::string, std::shared_ptr<City>> homeMap;
     for (auto &home : homes)
@@ -49,57 +50,53 @@ void Scenario6::printOutput(Controler & control , std::vector<std::shared_ptr<Ci
         enemyMap[enemy->getCityName()] = enemy;
         
             
-    firstOptions.clear();
-    firstOptions.reserve(birds.size());
-
-    std::unordered_map<std::string, std::vector<OptionScen6>> enemyToSecondOptions;
-    
-    for (int b = 0; b < birds.size(); ++b)
-    {
-        
-        auto itHome = homeMap.find(birds[b].getHomePlace());
-        if (itHome == homeMap.end())
-        continue;
-        auto myHome = std::dynamic_pointer_cast<Home>(itHome->second);
-        if (!myHome)
-        continue;
-        
-        ll distance = 0.0;
-        ld cost;
-        std::vector<std::shared_ptr<City>> path;
-        
-        for (auto &target : control.getEnemies())
-        {
-            bool can = control.aStar(itHome->second->getCityName(), target->getCityName(), birds[b], path, distance, cost);
-            if (path.empty() || !can)
-                continue;
-            
-            OptionScen6 opt{b, itHome->second, target, path, birds[b].getDemolition(), distance, 0.0};
-            birds[b].setThePath(path);
-            if (control.isDetected(birds[b]))
-            {
-                std::cout << target->getCityName() << " - " << birds[b].getName() << " in check AAAAA\n";
-                enemyToSecondOptions[target->getCityName()].push_back(opt);
-                continue;
-            } else
-            {
-                firstOptions.push_back(opt);
-                std::cout << target->getCityName() << " - " << birds[b].getName() << " in check BBBB\n";
-            }
-        }
-    }
-    
-    std::sort(firstOptions.begin() , firstOptions.end() , [](OptionScen6 & a , OptionScen6 & b)
-    {
-        return a.damage < b.damage ;
-    });
-
+    bool nightPass = true;
     int night = 1 ;
     while(!birds.empty())
     {
-    
+        std::cout << "Night " << night << " begins ...\n\n";
 
-        std::cout << "Night " << night << " begins ...\n";
+        firstOptions.clear();
+        firstOptions.reserve(birds.size());
+
+        std::unordered_map<std::string, std::vector<OptionScen6>> enemyToSecondOptions;
+        
+        for (auto & bird : birds)
+        {
+            auto itHome = homeMap.find(bird.getHomePlace());
+            if (itHome == homeMap.end())
+            continue;
+            auto myHome = std::dynamic_pointer_cast<Home>(itHome->second);
+            if (!myHome)
+            continue;
+
+            ll distance = 0.0;
+            ld cost;
+            std::vector<std::shared_ptr<City>> path;
+
+            for (auto &target : control.getEnemies())
+            {
+                bool can = control.aStar(itHome->second->getCityName(), target->getCityName(), bird, path, distance, cost);
+                if (path.empty() || !can)
+                    continue;
+
+                OptionScen6 opt{bird.getID(), itHome->second, target, path, bird.getDemolition(), distance, 0.0};
+                bird.setThePath(path);
+                if (control.isDetected(bird))
+                {
+                    enemyToSecondOptions[target->getCityName()].push_back(opt);
+                    continue;
+                } else
+                {
+                    firstOptions.push_back(opt);
+                }
+            }
+        }
+
+        std::sort(firstOptions.begin() , firstOptions.end() , [](OptionScen6 & a , OptionScen6 & b)
+        {
+            return a.damage < b.damage ;
+        });
 
         std::unordered_set<int> usedBirds;
         usedBirds.clear();
@@ -107,16 +104,18 @@ void Scenario6::printOutput(Controler & control , std::vector<std::shared_ptr<Ci
 
         if (!firstOptions.empty())
         {
-            std::cout << "AAAA\n";
             auto opt = firstOptions.back();
+            int idx = getBirdIndex(opt.birdId);
+            if (usedBirds.count(idx)) continue;
 
-            control.setReachBird(opt.target->getCityName(), birds[opt.birdIdx], opt.path);
-            std::cout << "Bird " << birds[opt.birdIdx].getName() <<  " | " << opt.home->getCityName() << " -> " << opt.target->getCityName();
+            control.setReachBird(opt.target->getCityName(), birds[idx], opt.path);
+            std::cout << "Bird " << birds[idx].getName() <<  " | " << opt.home->getCityName() << " -> " << opt.target->getCityName();
             std::cout << "\nPath: ";
             for (auto & city : opt.path)
                 std::cout << city->getCityName() << " ";
-            std::cout << '\n';
-            birdsToRemove.push_back(opt.birdIdx);
+            std::cout << "\n\n";
+            usedBirds.insert(idx);
+            birdsToRemove.push_back(idx);
         } 
         else 
         {
@@ -131,20 +130,28 @@ void Scenario6::printOutput(Controler & control , std::vector<std::shared_ptr<Ci
 
             for (int i = 0 ; i < capacity + 1 ; ++i)
             {
-                std::cout << "BBBB\n";
-                if (usedBirds.count(opts[i].birdIdx)) continue;
+                if ((opts.size()) < capacity + 1)
+                {
+                    nightPass = false;
+                    birds.clear();
+                    break;
+                }
+                           
+                int idx = getBirdIndex(opts[i].birdId);
+                if (usedBirds.count(idx)) continue;
 
-                control.setReachBird(opts[i].target->getCityName(), birds[opts[i].birdIdx], opts[i].path);
+                control.setReachBird(opts[i].target->getCityName(), birds[idx], opts[i].path);
 
-                std::cout << "Bird " << birds[opts[i].birdIdx].getName() << " | " << opts[i].home->getCityName()
+                std::cout << "Bird " << birds[idx].getName() << " | " << opts[i].home->getCityName()
                           << " -> " << opts[i].target->getCityName() << "\nPath: ";
                 for (auto & city : opts[i].path)
                     std::cout << city->getCityName() << " ";
                     
-                std::cout << '\n';
-                usedBirds.insert(opts[i].birdIdx);
-                birdsToRemove.push_back(opts[i].birdIdx);
-            }
+                std::cout << "\n\n";
+                usedBirds.insert(idx);
+                birdsToRemove.push_back(idx);
+
+            }  
         }
             
         control.attack();
@@ -157,7 +164,7 @@ void Scenario6::printOutput(Controler & control , std::vector<std::shared_ptr<Ci
 
         std::cout << "\n--------------------------------\n";
 
-        night++;    
+        if (nightPass) night++;    
     }
 
     std::vector<Bird> aliveBirds = control.getBirds();
@@ -168,4 +175,20 @@ void Scenario6::printOutput(Controler & control , std::vector<std::shared_ptr<Ci
     
     std::cout << "\n-- Total Damage: " << totalDamage << " --\n\n";
     std::cout << "[Number of attack nights] : " << night-1 << '\n';
+}
+void Scenario6::giveBirdsID()
+{
+    for (int i = 0 ; i < birds.size() ; ++i)
+    {
+        birds[i].setID(i);
+    }
+}
+int Scenario6::getBirdIndex(int id)
+{
+    for (int i = 0 ; i < birds.size() ; ++i)
+    {
+        if (birds[i].getID() == id)
+            return i;
+    }
+    return -1;
 }

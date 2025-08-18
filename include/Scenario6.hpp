@@ -6,7 +6,7 @@
 
 struct OptionScen6
 {
-    int birdIdx;
+    int birdId;
     std::shared_ptr<City> home;
     std::shared_ptr<City> target;
     std::vector<std::shared_ptr<City>> path;
@@ -15,7 +15,7 @@ struct OptionScen6
     double survProb;
 
     OptionScen6(int b, std::shared_ptr<City> h, std::shared_ptr<City> t,std::vector<std::shared_ptr<City>> p, ll dmg, ll dis, double prob)
-        : birdIdx(b), home(h), target(t), path(p), damage(dmg), distance(dis), survProb(prob) {}
+        : birdId(b), home(h), target(t), path(p), damage(dmg), distance(dis), survProb(prob) {}
 };
 
 class Scenario6 : public Scenario
@@ -23,11 +23,14 @@ class Scenario6 : public Scenario
     public:
         void readInputs(std::vector<Bird> & birds , std::vector<std::shared_ptr<City>> & homes) override;
         void printOutput(Controler & control , std::vector<std::shared_ptr<City>> &homes) override;
-       
+        void giveBirdsID();
+        int getBirdIndex(int id);
 
+       
     private:
         std::vector<OptionScen6> firstOptions;
         std::vector<int> birdsToRemove;
+        std::vector<Bird> birds;
 
 };
 
