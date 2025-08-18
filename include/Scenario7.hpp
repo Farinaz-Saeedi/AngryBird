@@ -6,6 +6,7 @@
 #include "Scenario.hpp"
 #include "Controler.hpp"
 #include "Enemy.hpp"
+#include "Bird.hpp"
 
 #define ld long double
 
@@ -15,7 +16,7 @@ struct OptionScen7
     std::shared_ptr<City> home;
     std::shared_ptr<City> target;
     std::vector<std::shared_ptr<City>> path;
-    ld damage;
+    ll damage;
     ld cost;
     ll distance;
     int radarLevel;
@@ -30,14 +31,18 @@ public:
     int getNumberOfNights();
     ld getDamage();
     void setDamage(ld damage);
-    std::vector<OptionScen7>knapsackMinCost(const std::vector<OptionScen7> &options, ld damageThreshold);
-    
+    void giveBirdsID();
+    int getBirdIndex(int id);
+
+    std::vector<OptionScen7> knapsackMinCost(const std::vector<OptionScen7> &options, ld targetDamage, int maxBirds);
 
 private:
     int numberOfNights;
     ld damage;
     std::vector<std::pair<std::string, ld>> lst;
     std::vector<OptionScen7> options;
+    ld getBirdCost(const std::string &birdName);
+    std::vector<Bird> birds;
 };
 
 #endif
