@@ -56,6 +56,10 @@ int Bird::getDegree()
 {
     return degree;
 }
+int Bird::getID()
+{
+    return ID;
+}
 std::string Bird::getName()
 {
     return name;
@@ -101,7 +105,12 @@ void Bird::setThePath(std::vector<std::shared_ptr<City>> &path)
 {
     thePath = path;
 }
+void Bird::setID(int id)
+{
+    ID = id;
+}
 std::vector<std::shared_ptr<City>> Bird::getThePath()
 {
     return thePath;
 }
+

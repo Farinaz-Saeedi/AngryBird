@@ -23,6 +23,7 @@ class Bird
         ll getOutOfControl();
         ll getDemolition();
         int getDegree();
+        int getID();
         std::string getName();
         std::string getHomePlace();
         Type getType();
@@ -34,6 +35,7 @@ class Bird
         void setType(Type type);
         void setHomePlace(std::string homeName);
         void setThePath(std::vector<std::shared_ptr<City>> &path);
+        void setID(int id);
         std::vector<std::shared_ptr<City>> getThePath();
 
     private:
@@ -45,6 +47,7 @@ class Bird
         std::string homePlace;
         Type type;
         std::vector<std::shared_ptr<City>> thePath;
+        int ID;
 
 };
 
