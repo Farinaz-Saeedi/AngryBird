@@ -1,7 +1,11 @@
-number of birds 
-name - slingShot place
-name - slingShot place 
-------
-------
-------
-name - slingShot place 
+10
+Venomtail city1 
+Venomtail city2 
+Skyrage city2 
+Skyrage city3 
+Ironbeak city1 
+Ironbeak city2 
+Ironbeak city3 
+Titan city1 
+Fury city2
+Blaze city3 
