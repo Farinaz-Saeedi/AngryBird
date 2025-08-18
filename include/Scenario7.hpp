@@ -11,11 +11,13 @@
 
 struct OptionScen7
 {
-    Bird *bird;
+    int birdId;
     std::shared_ptr<City> home;
-    std::shared_ptr<Enemy> target;
-    ld expectedDamage;
+    std::shared_ptr<City> target;
+    std::vector<std::shared_ptr<City>> path;
+    ld damage;
     ld cost;
+    ll distance;
     int radarLevel;
 };
 
