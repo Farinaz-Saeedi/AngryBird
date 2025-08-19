@@ -124,6 +124,7 @@ void Controler::run()
 std::pair<std::string, bool> Controler::findBestPairFor(std::shared_ptr<City> & start , Bird & bird, std::vector<std::shared_ptr<City>> & path, ll & distance)
 {
     int minSpies = INT_MAX;
+    ld minCost = LDBL_MAX;
     std::shared_ptr<City> bestGoal = nullptr;
     std::vector<std::shared_ptr<City>> bestPath;
     ll bestDis;
@@ -137,17 +138,21 @@ std::pair<std::string, bool> Controler::findBestPairFor(std::shared_ptr<City> & 
         {
             int spies = countSpiesOnPath(path);
 
-            if (spies < minSpies) 
-            { 
-                minSpies = spies;
-                bestGoal = goal;
-                bestPath = path;
-                bestDis = distance;
+            if (spies <= minSpies) 
+            {
+                if (cost < minCost) 
+                {
+                    minSpies = spies;
+                    bestGoal = goal;
+                    bestPath = path;
+                    bestDis = distance;
+                }
             } 
         } 
     }
 
     path = bestPath;
+    distance = bestDis;
     if (bestGoal == nullptr)
         return {"", false};
 
@@ -236,9 +241,17 @@ bool Controler::aStar(std::string start, std::string goal, Bird myBird, std::vec
             if (!canBirdReach(myBird, dist))
                 continue;
             
+            ld spyPenalty = cities[v]->getIsSpy() ? myBird.getOutOfControl() : 0.0;
 
-            ld penalty = cities[v]->getIsSpy() ? myBird.getOutOfControl() : 0.0;
-            ld tempG = g[u] + dist + penalty;
+            int defenseLvl = 0;
+            if (cities[v]->getStatus() == E)
+            {
+                auto theEnemy = std::dynamic_pointer_cast<Enemy>(cities[v]);
+                defenseLvl = theEnemy->getDefenseLevel();
+            }
+            ld defensePenalty = std::pow(defenseLvl * 10, 2);
+
+            ld tempG = g[u] + dist + spyPenalty + defensePenalty;
 
             if (tempG < g[v])
             {
@@ -379,11 +392,6 @@ void Controler::newSpies(int targetNight)
             nameToCity[cityName]->setIsSpy(true);
         }
     }
-
-    // for (auto city : cities)
-    // {
-    //     std::cout << "spy: " << city->getIsSpy() << '\n';
-    // }
 }
 void Controler::setReachBird(std::string enemyName, Bird &bird, std::vector<std::shared_ptr<City>> & path)
 {
