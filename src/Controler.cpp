@@ -306,19 +306,21 @@ void Controler::newSpies(int targetNight)
         }
     }
 }
-void Controler::setReachBird(std::string enemyName, Bird & bird, std::vector<std::shared_ptr<City>> & path)
+void Controler::setReachBird(std::string enemyName, Bird &bird, std::vector<std::shared_ptr<City>> & path)
 {
-    std::shared_ptr<Enemy> enemy;
+    std::unordered_map<std::string, std::shared_ptr<Enemy>> enemyMap;
     for (auto & city : goalCities)
     {
-        if (city->getCityName() == enemyName)
-            enemy = std::dynamic_pointer_cast<Enemy>(city);
+        auto enemy = std::dynamic_pointer_cast<Enemy>(city);
+        if (enemy)
+            enemyMap[enemy->getCityName()] = enemy;
     }
-            
-    if (enemy)
+
+    auto it = enemyMap.find(enemyName);
+    if (it != enemyMap.end())
     {
-        enemy->pushReachBird(bird);
-        enemy->setBirdPath(path); 
+        it->second->pushReachBird(bird);
+        it->second->setBirdPath(path);
     }
 }
 void Controler::attack()
