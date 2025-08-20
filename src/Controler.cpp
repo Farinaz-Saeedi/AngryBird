@@ -370,18 +370,19 @@ std::vector<std::shared_ptr<City>> Controler::getEnemies()
 }
 std::shared_ptr<Enemy> Controler::getWeakEnemy()
 {
-    int min = INT_MAX ;
-    std::shared_ptr<Enemy> weakest ;
+    std::shared_ptr<Enemy> weakest = nullptr;
     for (auto & city : goalCities)
     {
         auto enemy = std::dynamic_pointer_cast<Enemy>(city);
-        if ( enemy->getDefenseLevel() < min )
+        if (!enemy) continue;
+
+        if (!weakest || enemy->getDefenseLevel() < weakest->getDefenseLevel())
         {
-            min = enemy->getDefenseLevel();
-            weakest = enemy ;
+            weakest = enemy;
         }
     }
-    return weakest ;
+
+    return weakest;
 }
 std::shared_ptr<Scenario> Controler::readScenario(int scen)
 {

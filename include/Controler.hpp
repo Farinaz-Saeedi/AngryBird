@@ -55,7 +55,7 @@ class Controler
         bool isDetected(Bird & bird); // check if the bird is detected by spies along its path
         int countSpiesOnPath(std::vector<std::shared_ptr<City>> path); // calculate the number of spies on a specific path
         std::shared_ptr<Scenario> readScenario( int scen ); // creating an appropriate object for the specified scenario and reading the related information
-        std::shared_ptr<Enemy> getWeakEnemy();
+        std::shared_ptr<Enemy> getWeakEnemy(); // returns the weakest enemy city (with the lowest defense level)
         std::vector<Bird> & getBirds();
         std::vector<std::shared_ptr<City>> getPath();
         std::vector<std::shared_ptr<City>> getEnemies();
