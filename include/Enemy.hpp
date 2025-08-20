@@ -6,25 +6,22 @@
 
 #include <bits/stdc++.h>
 
-class Enemy : public City {
-
+class Enemy : public City
+{
     public:
+        virtual ~Enemy() = default;
         Enemy();
         Enemy(std::string name, ld x, ld y, bool is, int level);
-        virtual ~Enemy() = default;
-        void setDefenseLevel(int defenseLevel);
         int getDefenseLevel();
+        void setDefenseLevel(int defenseLevel);
         void pushReachBird(Bird bird);
-        std::vector<Bird> getReachBirds();
         void setBirdPath(std::vector<std::shared_ptr<City>> & path);
         void clearReachBirds();
+        std::vector<Bird> getReachBirds();
 
     private:
         int defenseLevel;
-        std::vector<Bird> reachBirds;
-       
-
-
+        std::vector<Bird> reachBirds; // the birds that reached the destination
 };
 
 #endif

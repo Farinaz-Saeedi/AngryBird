@@ -14,18 +14,19 @@
 #include "Scenario7.hpp"
 #include "Enemy.hpp"
 
+#include <vector>
 
 #define ll long long
 #define ld long double
 
-#include <vector>
 
-struct Node {
+struct Node // structure used for the A* pathfinding algorithm
+{
     std::string cityName;
-    ld gCost; 
-    ld fCost; 
+    ld gCost; // the actual cost of the path from the origin to this city
+    ld fCost; // the estimated cost to reach the goal
 
-    bool operator>(const Node & other) const 
+    bool operator>(const Node & other) const // for use in a priority_queue, ensuring that the lowest fCost is always prioritized first
     {
         return fCost > other.fCost;
     }
@@ -36,31 +37,30 @@ class Controler
     public:
         Controler();
         ll getNumberOfCities();
-        ll calDistance(City a , City b);
-        void readCities();
+        ll calDistance(City a , City b); // calculating the distance between two cities
+        ld heuristic(City & a , City & b); // calculate the Euclidean distance between two cities (used as heuristic in A*)
+        ld totoalDamage(std::vector<std::shared_ptr<City>> & path , Bird & bird); // calculate the total damage dealt by a bird 
+        void readCities(); // reads city data from Cities.txt file and creates City, Enemy, and Home objects
         void setNumberOfCities(ll numberOfCities);
-        std::shared_ptr<Scenario> readScenario( int scen ); // read each scenario
         void run();
-        std::pair<std::string, bool> findBestPairFor(std::shared_ptr<City> & start , Bird & bird, std::vector<std::shared_ptr<City>> & path, ll & distance);
-        ld heuristic(City & a , City & b);
-        bool aStar(std::string start , std::string goal, Bird myBird, std::vector<std::shared_ptr<City>> & path, ll & totalDistance, ld & cost);
-        bool canBirdReach(Bird & bird , ld distance);
-        bool canDestroy(Bird & bird , ld distance);
-        bool isDetected(Bird & bird);
         void shootDownBird(std::string enemyName);
-        ld totoalDamage(std::vector<std::shared_ptr<City>> & path , Bird & bird);
-        std::vector<Bird> &getBirds();
-        std::vector<std::shared_ptr<City>> getPath();
-        int countSpiesOnPath(std::vector<std::shared_ptr<City>> path);
-        void newSpies(int targetNight);
-        void setReachBird(std::string enemyName, Bird &bird , std::vector<std::shared_ptr<City>> & path);
+        void newSpies(int targetNight); // updating the status of spies
+        void setReachBird(std::string enemyName, Bird &bird , std::vector<std::shared_ptr<City>> & path);// add a bird that reached a specific enemy and store its path
+
         void attack();
         void delBird(Bird & bird);
         void deadBird(Bird & bird, ll & totalDistanc);
-        std::vector<std::shared_ptr<City>> getEnemies();
-        int getBirdIdx(Bird & bird);
+        bool aStar(std::string start , std::string goal, Bird myBird, std::vector<std::shared_ptr<City>> & path, ll & totalDistance, ld & cost);
+        bool canBirdReach(Bird & bird , ld distance); // check if the bird can reach a target given its maximum range (out-of-control distance)
+        bool canDestroy(Bird & bird , ld distance); // check if the bird can destroy a target at a given distance (total distance)
+        bool isDetected(Bird & bird); // check if the bird is detected by spies along its path
+        int countSpiesOnPath(std::vector<std::shared_ptr<City>> path);
+        std::shared_ptr<Scenario> readScenario( int scen ); // creating an appropriate object for the specified scenario and reading the related information
         std::shared_ptr<Enemy> getWeakEnemy();
-
+        std::vector<Bird> & getBirds();
+        std::vector<std::shared_ptr<City>> getPath();
+        std::vector<std::shared_ptr<City>> getEnemies();
+        std::pair<std::string, bool> findBestPairFor(std::shared_ptr<City> & start , Bird & bird, std::vector<std::shared_ptr<City>> & path, ll & distance);
 
     private:
         std::vector<Bird> birds;
@@ -68,7 +68,6 @@ class Controler
         std::vector<std::shared_ptr<City>> goalCities;
         std::vector<std::shared_ptr<City>> startCities;
         std::vector<std::shared_ptr<City>> chosenPath;
-       
         ll numberOfCities;
 };
 

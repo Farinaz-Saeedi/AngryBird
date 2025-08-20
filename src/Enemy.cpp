@@ -1,8 +1,6 @@
 #include "Enemy.hpp"
-#include <iostream>
 
 Enemy::Enemy() {};
-
 Enemy::Enemy(std::string name, ld x, ld y, bool is, int level)
 {
     setCityName(name);
@@ -11,11 +9,7 @@ Enemy::Enemy(std::string name, ld x, ld y, bool is, int level)
     setIsSpy(is);
     setDefenseLevel(level);
 }
-void Enemy::setDefenseLevel(int defenseLevel)
-{
-    this->defenseLevel = defenseLevel;
-}
-int Enemy::getDefenseLevel()
+int  Enemy::getDefenseLevel()
 {
     return defenseLevel;
 }
@@ -23,15 +17,19 @@ void Enemy::pushReachBird(Bird bird)
 {
     reachBirds.push_back(bird);
 }
-std::vector<Bird> Enemy::getReachBirds()
-{
-    return reachBirds;
-}
 void Enemy::setBirdPath(std::vector<std::shared_ptr<City>> & path)
 {
     reachBirds.back().setThePath(path);
 }
+void Enemy::setDefenseLevel(int defenseLevel)
+{
+    this->defenseLevel = defenseLevel;
+}
 void Enemy::clearReachBirds()
 {
     reachBirds.clear();
+}
+std::vector<Bird> Enemy::getReachBirds()
+{
+    return reachBirds;
 }

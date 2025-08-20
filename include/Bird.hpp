@@ -1,12 +1,14 @@
 #ifndef BIRD_H
 #define BIRD_H
 
-#include <bits/stdc++.h>
 #include "City.hpp"
+
+#include <bits/stdc++.h>
 
 #define ll long long
 
-enum Type {
+enum Type
+{
     A , B , C , D
 };
 
@@ -43,11 +45,11 @@ class Bird
         ll outOfControl;
         ll demolition;
         int degree;
+        int ID;
         std::string name;
         std::string homePlace;
         Type type;
         std::vector<std::shared_ptr<City>> thePath;
-        int ID;
 
 };
 

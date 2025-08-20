@@ -1,9 +1,6 @@
-#include <bits/stdc++.h>
-
 #include "Home.hpp"
 
 Home::Home() {}
-
 Home::Home(std::string name, ld x, ld y, bool is, int cap)
 {
     setCapacity(cap);
@@ -20,18 +17,9 @@ void Home::setCapacity(int capacity)
 {
     this->capacity = capacity;
 }
-void Home::setCoordinates(ld newX, ld newY)
-{
-    setX(newX);
-    setY(newY);
-}
-void Home::push(Bird &bird)
+void Home::push(Bird & bird)
 {
     myBirds.push_back(bird);
-}
-std::vector<Bird> &Home::getMyBirds()
-{
-    return myBirds;
 }
 void Home::del(std::vector<Bird>::iterator it)
 {
@@ -40,4 +28,8 @@ void Home::del(std::vector<Bird>::iterator it)
 void Home::reduceCapacity()
 {
     capacity--;
+}
+std::vector<Bird> & Home::getMyBirds()
+{
+    return myBirds;
 }

@@ -11,19 +11,17 @@ enum Status
     N, E, H
 };
 
-
 class City
 {
     public:
+        virtual ~City() = default;
         City();
         City(std::string name, ld x, ld y, bool is);
-        virtual ~City() = default;
         std::string getCityName();
         Status getStatus();
         ld getX();
         ld getY();
         bool getIsSpy();
-
         void setCityName(std::string countryName);
         void setStatus(Status status);
         void setX(ld x);
@@ -32,7 +30,7 @@ class City
 
     private:
         std::string cityName;
-        Status status; // Normal city - Enemy city - Home base
+        Status status; // Normal City - Enemy City - Home Base
         ld x;
         ld y;
         bool isSpy;

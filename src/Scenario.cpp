@@ -1,8 +1,6 @@
-#include <bits/stdc++.h>
-
 #include "Scenario.hpp"
 
-Bird Scenario::readBird(std::string targetName, std::vector<Bird> &birds)
+Bird Scenario::readBird(std::string targetName, std::vector<Bird> & birds)
 {
     std::ifstream input("../src/Birds.txt");
     if (!input.is_open())
@@ -17,6 +15,7 @@ Bird Scenario::readBird(std::string targetName, std::vector<Bird> &birds)
         int degree, count;
         Type t;
         std::istringstream iss(line);
+
         if (iss >> name >> dist >> out >> degree >> demol >> t)
         {
             if (name == targetName)
@@ -29,5 +28,6 @@ Bird Scenario::readBird(std::string targetName, std::vector<Bird> &birds)
             }
         }
     }
+
     return {};
 }

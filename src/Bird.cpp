@@ -68,10 +68,13 @@ std::string Bird::getHomePlace()
 {
     return homePlace;
 }
-
 Type Bird::getType()
 {
     return type;
+}
+std::vector<std::shared_ptr<City>> Bird::getThePath()
+{
+    return thePath;
 }
 void Bird::setDistance(ll distance)
 {
@@ -109,8 +112,3 @@ void Bird::setID(int id)
 {
     ID = id;
 }
-std::vector<std::shared_ptr<City>> Bird::getThePath()
-{
-    return thePath;
-}
-

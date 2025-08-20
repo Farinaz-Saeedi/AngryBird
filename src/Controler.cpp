@@ -2,165 +2,40 @@
 
 #include "Controler.hpp"
 
-#define ll long long
-
 Controler::Controler() {}
-
 ll Controler::getNumberOfCities()
 {
     return numberOfCities;
 }
-std::vector<Bird> &Controler::getBirds()
-{
-    return birds;
-}
-ll Controler::calDistance(City a, City b)
+ll Controler::calDistance(City a, City b) 
 {
     ll yPow = pow((a.getY() - b.getY()), 2);
     ll xPow = pow((a.getX() - b.getX()), 2);
     return sqrt(yPow + xPow);
 }
-void Controler::readCities()
-{
-    std::ifstream input("../src/Cities.txt");
-    if (!input.is_open())
-        std::cerr << " Unable to open Cities file ! \n";
-
-    ll count;
-    ld x, y;
-    std::string str, situation;
-    bool spy;
-    
-    while (!input.eof())
-    {
-        input >> count;
-        for (int i = 0; i < count; ++i)
-        {
-            input >> str >> x >> y >> situation >> spy;
-            
-            if (situation == "Normal")
-            {
-                auto city = std::make_shared<City>(str, x, y, spy);
-                city->setStatus(N);
-                cities.push_back(city);
-            }
-            else if (situation == "Enemy")
-            {
-                int level;
-                input >> level;
-                
-                auto city = std::make_shared<Enemy>(str, x, y, spy, level);
-                city->setStatus(E);
-                cities.push_back(city);
-                goalCities.push_back(city);
-            }
-            else if (situation == "Home")
-            {
-                int capacity;
-                input >> capacity;
-
-                auto city = std::make_shared<Home>(str, x, y, spy, capacity);
-                city->setStatus(H);
-                cities.push_back(city);
-                startCities.push_back(city);
-            }
-        }
-    }
-    input.close(); 
-}
-void Controler::setNumberOfCities(ll numberOfCities)
-{
-    this->numberOfCities = numberOfCities;
-}
-std::shared_ptr<Scenario> Controler::readScenario(int scen)
-{
-    std::shared_ptr<Scenario> scenario;
-    if (scen == 1)
-    {
-        scenario = std::make_shared<Scenario1>();
-    }
-    else if (scen == 2)
-    {
-        scenario = std::make_shared<Scenario2>();
-    }
-    else if (scen == 3)
-    {
-        scenario = std::make_shared<Scenario3>();
-    }
-    else if (scen == 4)
-    {
-        scenario = std::make_shared<Scenario4>();
-    }
-    else if (scen == 5)
-    {
-        scenario = std::make_shared<Scenario5>();
-    }
-    else if (scen == 6)
-    {
-        scenario = std::make_shared<Scenario6>();
-    }
-    else if (scen == 7)
-    {
-        scenario = std::make_shared<Scenario7>();
-    }
-    else
-        std::cout << "WRONG NUMBER!";
-    scenario->readInputs(birds, startCities);
-    return scenario;
-}
-void Controler::run()
-{
-    readCities();
-
-    std::ifstream input("../src/Scenario.txt");
-    if (!input.is_open())
-        std::cerr << " Unable to open Scenario file ! \n";
-
-    int numberOfScen;
-    input >> numberOfScen;
-    std::shared_ptr<Scenario> whichScen = readScenario(numberOfScen);
-    whichScen->printOutput(*this , startCities);
-}
-std::pair<std::string, bool> Controler::findBestPairFor(std::shared_ptr<City> & start , Bird & bird, std::vector<std::shared_ptr<City>> & path, ll & distance)
-{
-    int minSpies = INT_MAX;
-    ld minCost = LDBL_MAX;
-    std::shared_ptr<City> bestGoal = nullptr;
-    std::vector<std::shared_ptr<City>> bestPath;
-    ll bestDis;
-    bool temp;
-
-    for (auto & goal : goalCities) 
-    {
-        ld cost;
-        temp = aStar(start->getCityName(), goal->getCityName(), bird, path, distance, cost); 
-        if (!path.empty())
-        {
-            int spies = countSpiesOnPath(path);
-
-            if (spies <= minSpies) 
-            {
-                if (cost < minCost) 
-                {
-                    minSpies = spies;
-                    bestGoal = goal;
-                    bestPath = path;
-                    bestDis = distance;
-                }
-            } 
-        } 
-    }
-
-    path = bestPath;
-    distance = bestDis;
-    if (bestGoal == nullptr)
-        return {"", false};
-
-    return {bestGoal->getCityName(), temp};
-}
-ld Controler::heuristic(City &a, City &b)
+ld Controler::heuristic(City &a, City &b) 
 {
     return sqrt(pow((a.getX() - b.getX()), 2) + pow((a.getY() - b.getY()), 2));
+}
+ld Controler::totoalDamage(std::vector<std::shared_ptr<City>> & path, Bird & bird)
+{
+    ld damage = 0.0;
+
+    std::unordered_set<std::string> enemyCityNames;
+    for (auto &goalCity : goalCities)
+    {
+        enemyCityNames.insert(goalCity->getCityName()); // for quick searching
+    }
+
+    for (auto &city : path)
+    {
+        if (enemyCityNames.count(city->getCityName()))
+        {
+            damage += bird.getDemolition();
+        }
+    }
+
+    return damage;
 }
 bool Controler::aStar(std::string start, std::string goal, Bird myBird, std::vector<std::shared_ptr<City>> & path, ll & totalDistance, ld & cost)
 {
@@ -269,20 +144,20 @@ bool Controler::aStar(std::string start, std::string goal, Bird myBird, std::vec
     }
     return false;
 }
-bool Controler::canBirdReach(Bird &bird, ld distance)
+bool Controler::canBirdReach(Bird & bird, ld distance)
 {
     return bird.getOutOfControl() > distance;
 }
-bool Controler::canDestroy(Bird &bird, ld distance)
+bool Controler::canDestroy(Bird & bird, ld distance)
 {
-    if (bird.getDistance() >= 10000)
+    if (bird.getDistance() >= 10000) // for Titan
     {
         return true;
     }
     
     return bird.getDistance() >= distance;
 }
-bool Controler::isDetected(Bird &bird)
+bool Controler::isDetected(Bird & bird)
 {
     int numberOfSpy = countSpiesOnPath(bird.getThePath());
 
@@ -290,7 +165,78 @@ bool Controler::isDetected(Bird &bird)
     {
         return true;
     }
+
     return false;
+}
+void Controler::readCities()
+{
+    std::ifstream input("../src/Cities.txt");
+    if (!input.is_open())
+        std::cerr << " Unable to open Cities file ! \n";
+
+    ll count; // number of cities
+    ld x, y;
+    std::string name, situation;
+    bool spy;
+    
+    while (!input.eof())
+    {
+        input >> count;
+        for (int i = 0; i < count; ++i)
+        {
+            input >> name >> x >> y >> situation >> spy;
+
+            // creating an object of the appropriate type :
+            if (situation == "Normal")
+            {
+                auto city = std::make_shared<City>(name, x, y, spy);
+                city->setStatus(N);
+
+                cities.push_back(city);
+            }
+            else if (situation == "Enemy")
+            {
+                int level;
+                input >> level;
+                
+                auto city = std::make_shared<Enemy>(name, x, y, spy, level);
+                city->setStatus(E);
+
+                cities.push_back(city);
+                goalCities.push_back(city);
+            }
+            else if (situation == "Home")
+            {
+                int capacity;
+                input >> capacity;
+
+                auto city = std::make_shared<Home>(name, x, y, spy, capacity);
+                city->setStatus(H);
+
+                cities.push_back(city);
+                startCities.push_back(city);
+            }
+        }
+    }
+    input.close(); 
+}
+void Controler::setNumberOfCities(ll numberOfCities)
+{
+    this->numberOfCities = numberOfCities;
+}
+void Controler::run()
+{
+    readCities();
+
+    std::ifstream input("../src/Scenario.txt");
+    if (!input.is_open())
+        std::cerr << " Unable to open Scenario file ! \n";
+
+    int numberOfScen;
+    input >> numberOfScen;
+
+    std::shared_ptr<Scenario> whichScen = readScenario(numberOfScen);
+    whichScen->printOutput(*this , startCities);
 }
 void Controler::shootDownBird(std::string enemyName) 
 {
@@ -330,42 +276,9 @@ void Controler::shootDownBird(std::string enemyName)
         delBird(detectedBirds[i]);
     }
 }
-ld Controler::totoalDamage(std::vector<std::shared_ptr<City>> &path, Bird &bird)
-{
-    ld damage = 0.0;
-
-    std::unordered_set<std::string> enemyCityNames;
-    for (auto &goalCity : goalCities)
-    {
-        enemyCityNames.insert(goalCity->getCityName());
-    }
-
-    for (auto &city : path)
-    {
-        if (enemyCityNames.count(city->getCityName()))
-        {
-            damage += bird.getDemolition();
-        }
-    }
-    return damage;
-}
-std::vector<std::shared_ptr<City>> Controler::getPath()
-{
-    return chosenPath;
-}
-int Controler::countSpiesOnPath(std::vector<std::shared_ptr<City>> path)
-{
-    int numberOfspies = 0;
-    for ( auto & city : path )
-    {
-        if (city->getIsSpy())
-            numberOfspies++;
-    }
-    return numberOfspies;
-}
 void Controler::newSpies(int targetNight)
 { 
-    std::unordered_map<std::string , std::shared_ptr<City>> nameToCity;
+    std::unordered_map<std::string , std::shared_ptr<City>> nameToCity; // for quick access
     for (auto & city : cities)
     {
         nameToCity[city->getCityName()] = city;
@@ -381,7 +294,7 @@ void Controler::newSpies(int targetNight)
         if (line.empty()) continue;
 
         std::istringstream iss(line);
-        int night;
+        int night; // night number
         iss >> night;
 
         if (night != targetNight) continue;
@@ -389,17 +302,17 @@ void Controler::newSpies(int targetNight)
         std::string cityName;
         while(iss >> cityName)
         {
-            nameToCity[cityName]->setIsSpy(true);
+            nameToCity[cityName]->setIsSpy(true); // mark city as newly infiltrated by spies
         }
     }
 }
-void Controler::setReachBird(std::string enemyName, Bird &bird, std::vector<std::shared_ptr<City>> & path)
+void Controler::setReachBird(std::string enemyName, Bird & bird, std::vector<std::shared_ptr<City>> & path)
 {
-    std::shared_ptr<Enemy> enemy ;
+    std::shared_ptr<Enemy> enemy;
     for (auto & city : goalCities)
     {
         if (city->getCityName() == enemyName)
-        enemy = std::dynamic_pointer_cast<Enemy>(city);
+            enemy = std::dynamic_pointer_cast<Enemy>(city);
     }
             
     if (enemy)
@@ -435,22 +348,27 @@ void Controler::deadBird(Bird & myBird , ll & totalDistance)
         std::cout << myBird.getName() << " is dead in the path! \n" ;  
     }
 }
+int Controler::countSpiesOnPath(std::vector<std::shared_ptr<City>> path)
+{
+    int numberOfspies = 0;
+    for ( auto & city : path )
+    {
+        if (city->getIsSpy())
+            numberOfspies++;
+    }
+    return numberOfspies;
+}
+std::vector<Bird> & Controler::getBirds()
+{
+    return birds;
+}
+std::vector<std::shared_ptr<City>> Controler::getPath()
+{
+    return chosenPath;
+}
 std::vector<std::shared_ptr<City>> Controler::getEnemies()
 {
     return goalCities;
-}
-int Controler::getBirdIdx(Bird & bird)
-{
-     auto it = std::find(birds.begin(), birds.end(), bird);
-
-    if (it != birds.end())
-    {
-        int index = std::distance(birds.begin(), it);
-        return index;
-    } else 
-    {
-        return -1;
-    }
 }
 std::shared_ptr<Enemy> Controler::getWeakEnemy()
 {
@@ -467,3 +385,91 @@ std::shared_ptr<Enemy> Controler::getWeakEnemy()
     }
     return weakest ;
 }
+std::shared_ptr<Scenario> Controler::readScenario(int scen)
+{
+    std::shared_ptr<Scenario> scenario;
+    
+    if (scen == 1)
+    {
+        scenario = std::make_shared<Scenario1>();
+    }
+    else if (scen == 2)
+    {
+        scenario = std::make_shared<Scenario2>();
+    }
+    else if (scen == 3)
+    {
+        scenario = std::make_shared<Scenario3>();
+    }
+    else if (scen == 4)
+    {
+        scenario = std::make_shared<Scenario4>();
+    }
+    else if (scen == 5)
+    {
+        scenario = std::make_shared<Scenario5>();
+    }
+    else if (scen == 6)
+    {
+        scenario = std::make_shared<Scenario6>();
+    }
+    else if (scen == 7)
+    {
+        scenario = std::make_shared<Scenario7>();
+    }
+    else
+    {
+        std::cout << "WRONG NUMBER!";
+    }
+
+    scenario->readInputs(birds, startCities);
+    return scenario;
+}
+std::pair<std::string, bool> Controler::findBestPairFor(std::shared_ptr<City> & start , Bird & bird, std::vector<std::shared_ptr<City>> & path, ll & distance)
+{
+    int minSpies = INT_MAX;
+    ld minCost = LDBL_MAX;
+    std::shared_ptr<City> bestGoal = nullptr;
+    std::vector<std::shared_ptr<City>> bestPath;
+    ll bestDis;
+    bool temp;
+
+    for (auto & goal : goalCities) 
+    {
+        ld cost;
+        temp = aStar(start->getCityName(), goal->getCityName(), bird, path, distance, cost); 
+        if (!path.empty())
+        {
+            int spies = countSpiesOnPath(path);
+
+            if (spies <= minSpies) 
+            {
+                if (cost < minCost) 
+                {
+                    minSpies = spies;
+                    bestGoal = goal;
+                    bestPath = path;
+                    bestDis = distance;
+                }
+            } 
+        } 
+    }
+
+    path = bestPath;
+    distance = bestDis;
+    if (bestGoal == nullptr)
+        return {"", false};
+
+    return {bestGoal->getCityName(), temp};
+}
+
+
+
+
+
+
+
+
+
+
+
