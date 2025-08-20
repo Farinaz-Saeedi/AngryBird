@@ -43,7 +43,7 @@ class Controler
         void readCities(); // reads city data from Cities.txt file and creates City, Enemy, and Home objects
         void setNumberOfCities(ll numberOfCities);
         void run();
-        void shootDownBird(std::string enemyName);
+        void shootDownBird(std::string enemyName); // simulate enemy shooting down detected birds based on defense level.
         void newSpies(int targetNight); // updating the status of spies
         void setReachBird(std::string enemyName, Bird &bird , std::vector<std::shared_ptr<City>> & path);// add a bird that reached a specific enemy and store its path
         void attack(); // shooting down birds and clearing the list of reached birds for each enemy city

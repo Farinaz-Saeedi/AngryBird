@@ -240,15 +240,22 @@ void Controler::run()
 }
 void Controler::shootDownBird(std::string enemyName) 
 {
-    std::shared_ptr<Enemy> enemy;
-    for (auto & city : goalCities)
+    std::unordered_map<std::string, std::shared_ptr<Enemy>> enemyMap;
+    for (auto &city : goalCities)
     {
-        if (city->getCityName() == enemyName)
-        {
-            enemy = std::dynamic_pointer_cast<Enemy>(city);
-        }
+        auto enemyPtr = std::dynamic_pointer_cast<Enemy>(city);
+        if (enemyPtr)
+            enemyMap[city->getCityName()] = enemyPtr;
     }
-    
+
+    auto itEnemy = enemyMap.find(enemyName);
+    if (itEnemy == enemyMap.end())
+    {
+        std::cerr << "Enemy " << enemyName << " not found!\n";
+        return;
+    }
+
+    std::shared_ptr<Enemy> enemy = itEnemy->second;
     std::vector<Bird> detectedBirds;
     
     for (auto &it : enemy->getReachBirds())
@@ -261,13 +268,6 @@ void Controler::shootDownBird(std::string enemyName)
     
     std::sort(detectedBirds.begin(), detectedBirds.end(), [](Bird a, Bird b)
     { return a.getDemolition() > b.getDemolition(); });
-    
-    std::unordered_map<std::string, std::vector<Bird>::iterator> birdMap;
-    
-    for (auto it = detectedBirds.begin(); it != detectedBirds.end(); it++)
-    {
-        birdMap[it->getName()] = it;
-    }
     
     int range = std::min((int)detectedBirds.size(), enemy->getDefenseLevel());
     for (int i = 0; i < range ; i++)
