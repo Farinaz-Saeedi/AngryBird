@@ -5,6 +5,7 @@ Each bird must respect its **flight distance limits per launch** and avoid or de
 
 The challenge is to find the **optimal assignment of birds to enemy cities** while ensuring they can actually reach their targets . To achieve this , the project uses:
 - **Hungarian Algorithm:** for maximizing overall destruction through bird-to-city assignment .  
-- **Astar:** pathfinding to navigate the map , considering distance and obstacles .  
+- **Astar:** pathfinding to navigate the map , considering distance and obstacles .
+- **Knapsack:** for finding the options which have the minimum cost .
 
 Scenarios with different configurations of cities , birds , and spies are supported , making the problem both dynamic and challenging .
