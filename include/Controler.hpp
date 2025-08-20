@@ -46,15 +46,14 @@ class Controler
         void shootDownBird(std::string enemyName);
         void newSpies(int targetNight); // updating the status of spies
         void setReachBird(std::string enemyName, Bird &bird , std::vector<std::shared_ptr<City>> & path);// add a bird that reached a specific enemy and store its path
-
-        void attack();
-        void delBird(Bird & bird);
+        void attack(); // shooting down birds and clearing the list of reached birds for each enemy city
+        void delBird(Bird & bird); // remove the specified bird from the birds vector
         void deadBird(Bird & bird, ll & totalDistanc);
         bool aStar(std::string start , std::string goal, Bird myBird, std::vector<std::shared_ptr<City>> & path, ll & totalDistance, ld & cost);
         bool canBirdReach(Bird & bird , ld distance); // check if the bird can reach a target given its maximum range (out-of-control distance)
         bool canDestroy(Bird & bird , ld distance); // check if the bird can destroy a target at a given distance (total distance)
         bool isDetected(Bird & bird); // check if the bird is detected by spies along its path
-        int countSpiesOnPath(std::vector<std::shared_ptr<City>> path);
+        int countSpiesOnPath(std::vector<std::shared_ptr<City>> path); // calculate the number of spies on a specific path
         std::shared_ptr<Scenario> readScenario( int scen ); // creating an appropriate object for the specified scenario and reading the related information
         std::shared_ptr<Enemy> getWeakEnemy();
         std::vector<Bird> & getBirds();

@@ -341,7 +341,6 @@ void Controler::delBird(Bird & bird)
 }
 void Controler::deadBird(Bird & myBird , ll & totalDistance)
 {
-
     auto it = std::find(birds.begin(), birds.end(), myBird);
     if (it != birds.end())
     {
@@ -352,13 +351,10 @@ void Controler::deadBird(Bird & myBird , ll & totalDistance)
 }
 int Controler::countSpiesOnPath(std::vector<std::shared_ptr<City>> path)
 {
-    int numberOfspies = 0;
-    for ( auto & city : path )
+    return std::count_if(path.begin(), path.end(), [](const std::shared_ptr<City> &city)
     {
-        if (city->getIsSpy())
-            numberOfspies++;
-    }
-    return numberOfspies;
+        return city->getIsSpy();
+    });
 }
 std::vector<Bird> & Controler::getBirds()
 {
