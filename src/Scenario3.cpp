@@ -24,15 +24,7 @@ void Scenario3::readInputs(std::vector<Bird> &birds, std::vector<std::shared_ptr
 
     input.close();
 }
-void Scenario3::setSlingshot(int number)
-{
-    numberOfSlingshot = number;
-}
-int Scenario3::getSlingshot()
-{
-    return numberOfSlingshot;
-}
-void Scenario3::printOutput(Controler & control , std::vector<std::shared_ptr<City>> &homes)
+void Scenario3::printOutput(Controler &control, std::vector<std::shared_ptr<City>> &homes)
 {
     int count = 0;
     ll totalDamage = 0;
@@ -55,9 +47,6 @@ void Scenario3::printOutput(Controler & control , std::vector<std::shared_ptr<Ci
         for (auto city : path)
             std::cout << city->getCityName() << " ";
         std::cout << "\n---------------------------------------\n";
-
-        // auto myHome = std::dynamic_pointer_cast<Home>(opt.home);
-        // myHome->reduceCapacity();
     }
 
     control.attack();
@@ -193,7 +182,6 @@ std::vector<std::vector<ll>> Scenario3::buildProfitMatrix(Controler &control)
     for (int j = 0; j < m; ++j)
     {
         const auto &option = options[j];
-        // std::cout << option.home->getCityName() << " -> " << option.target->getCityName() << " -- " << option.birdIdx << " cost : " << option.cost << '\n';
         profit[option.birdIdx][j] = option.cost;
     }
 
