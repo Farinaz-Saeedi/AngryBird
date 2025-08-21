@@ -57,7 +57,7 @@ void Scenario4::printOutput(Controler &control, std::vector<std::shared_ptr<City
             continue;
             
 
-        ll distance = 0;
+        ld distance = 0;
         std::vector<std::shared_ptr<City>> path;
         auto [enemy, canDestroy] = control.findBestPairFor(itHome->second, bird, path, distance);
         std::cout << "Bird : " << bird.getName() << "\nPath: ";

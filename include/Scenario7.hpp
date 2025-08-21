@@ -18,7 +18,7 @@ struct OptionScen7
     std::vector<std::shared_ptr<City>> path;
     ll damage;
     ld cost;
-    ll distance;
+    ld distance;
     int radarLevel;
 };
 

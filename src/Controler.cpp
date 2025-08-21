@@ -329,7 +329,7 @@ void Controler::delBird(Bird & bird)
         birds.erase(it);
     }
 }
-void Controler::deadBird(Bird & myBird , ll & totalDistance)
+void Controler::deadBird(Bird & myBird , ld & totalDistance)
 {
     auto it = std::find(birds.begin(), birds.end(), myBird);
     if (it != birds.end())

@@ -47,7 +47,7 @@ class Controler
         void setReachBird(std::string enemyName, Bird &bird , std::vector<std::shared_ptr<City>> & path);// add a bird that reached a specific enemy and store its path
         void attack(); // shooting down birds and clearing the list of reached birds for each enemy city
         void delBird(Bird & bird); // remove the specified bird from the birds vector
-        void deadBird(Bird & bird, ll & totalDistanc); // removes a bird from the active birds list if it dies during the path
+        void deadBird(Bird & bird, ld & totalDistanc); // removes a bird from the active birds list if it dies during the path
         bool aStar(std::string start , std::string goal, Bird myBird, std::vector<std::shared_ptr<City>> & path, ld & totalDistance, ld & cost);
         bool canBirdReach(Bird & bird , ld distance); // check if the bird can reach a target given its maximum range (out-of-control distance)
         bool canDestroy(Bird & bird , ld distance); // check if the bird can destroy a target at a given distance (total distance)

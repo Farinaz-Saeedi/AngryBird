@@ -70,7 +70,7 @@ void Scenario6::printOutput(Controler & control , std::vector<std::shared_ptr<Ci
             if (!myHome)
             continue;
 
-            ll distance = 0.0;
+            ld distance = 0.0;
             ld cost;
             std::vector<std::shared_ptr<City>> path;
 

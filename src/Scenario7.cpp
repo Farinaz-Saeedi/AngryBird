@@ -91,7 +91,7 @@ void Scenario7::printOutput(Controler &control, std::vector<std::shared_ptr<City
             for (auto &enemy : control.getEnemies())
             {
                 std::vector<std::shared_ptr<City>> path;
-                ll distance = 0;
+                ld distance = 0.0;
                 ld cost = getBirdCost(bird.getName());
                 ld pathCost;
 

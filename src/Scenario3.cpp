@@ -76,7 +76,7 @@ std::vector<OptionScen3> Scenario3::assignOptions(Controler &control, std::vecto
 {
     std::vector<Bird> birds = control.getBirds();
     std::vector<std::shared_ptr<City>> path;
-    ll distance;
+    ld distance;
 
     std::sort(birds.begin(), birds.end(), [](Bird &a, Bird &b)
               { return a.getDemolition() > b.getDemolition(); });
