@@ -340,10 +340,6 @@ std::vector<Bird> & Controler::getBirds()
 {
     return birds;
 }
-std::vector<std::shared_ptr<City>> Controler::getPath()
-{
-    return chosenPath;
-}
 std::vector<std::shared_ptr<City>> Controler::getEnemies()
 {
     return goalCities;

@@ -56,7 +56,6 @@ class Controler
         std::shared_ptr<Scenario> readScenario( int scen ); // creating an appropriate object for the specified scenario and reading the related information
         std::shared_ptr<Enemy> getWeakEnemy(); // returns the weakest enemy city (with the lowest defense level)
         std::vector<Bird> & getBirds();
-        std::vector<std::shared_ptr<City>> getPath();
         std::vector<std::shared_ptr<City>> getEnemies();
         std::pair<std::string, bool> findBestPairFor(std::shared_ptr<City> & start , Bird & bird, std::vector<std::shared_ptr<City>> & path, ll & distance);
 
@@ -65,7 +64,6 @@ class Controler
         std::vector<std::shared_ptr<City>> cities;
         std::vector<std::shared_ptr<City>> goalCities;
         std::vector<std::shared_ptr<City>> startCities;
-        std::vector<std::shared_ptr<City>> chosenPath;
         ll numberOfCities;
 };
 
