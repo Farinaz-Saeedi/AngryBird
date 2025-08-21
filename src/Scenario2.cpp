@@ -73,8 +73,7 @@ void Scenario2::printOutput(Controler &control, std::vector<std::shared_ptr<City
                 std::cout << city->getCityName() << " ";
             }
         }
-        std::cout << "\n---------------------------------------\n";
-        std::cout << "\n";
+        std::cout << "\n---------------------------------------\n\n";
     }
 
     std::cout << "\n---------------------------------------\n";
@@ -87,7 +86,7 @@ void Scenario2::printOutput(Controler &control, std::vector<std::shared_ptr<City
         totalDamage += bird.getDemolition();
     }
 
-    std::cout << "---------------------------------------";
-    std::cout << "\nTotal Damage: " << totalDamage << "\n";
+    std::cout << "---------------------------------------\n";
+    std::cout << "Total Damage: " << totalDamage << "\n";
     std::cout << "---------------------------------------\n";
 }

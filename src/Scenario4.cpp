@@ -6,30 +6,27 @@ void Scenario4::readInputs(std::vector<Bird> &birds, std::vector<std::shared_ptr
     if (!input.is_open())
         std::cerr << " Unable to open Scen-4 file ! \n";
 
-    ll count;
-    std::string name, city;
+    ll numberOfBirds;
+    std::string birdName, cityName;
 
-    while (!input.eof())
+    while (input >> numberOfBirds)
     {
-        input >> count;
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < numberOfBirds; i++)
         {
-            input >> name;
-            Bird temp = readBird(name, birds);
+            input >> birdName >> cityName;
+            Bird temp = readBird(birdName, birds); // create a new bird of this type
+            birds.back().setHomePlace(cityName);   // set the bird's home city
 
-            input >> city;
-            birds[birds.size() - 1].setHomePlace(city);
-
-            for (int j = 0; j < homes.size(); j++)
+            // find the corresponding home city and add the bird
+            auto itHome = std::find_if(homes.begin(), homes.end(), [&](auto &homePtr)
             {
-                auto home = std::dynamic_pointer_cast<Home>(homes[j]);
-                if (!home)
-                    continue;
-                if (home->getCityName() == city)
-                {
-                    home->push(temp);
-                    break;
-                }
+                auto home = std::dynamic_pointer_cast<Home>(homePtr);
+                return home && home->getCityName() == cityName; 
+            });
+
+            if (itHome != homes.end())
+            {
+                std::dynamic_pointer_cast<Home>(*itHome)->push(temp); // add bird to home's list
             }
         }
     }
@@ -42,26 +39,30 @@ void Scenario4::printOutput(Controler &control, std::vector<std::shared_ptr<City
     std::vector<Bird> birds = control.getBirds();
     std::vector<std::shared_ptr<City>> enemies = control.getEnemies();
 
+    // create a map from home city names to their objects for quick lookup
     std::unordered_map<std::string, std::shared_ptr<City>> homeMap;
     for (auto &home : homes)
         homeMap[home->getCityName()] = home;
-
+    
+    // create a map from enemy city names to their objects for quick lookup
     std::unordered_map<std::string, std::shared_ptr<City>> enemyMap;
     for (auto &enemy : enemies)
         enemyMap[enemy->getCityName()] = enemy;
 
+    // iterate through each bird to determine its path and actions
     for (auto &bird : birds)
     {
         auto itHome = homeMap.find(bird.getHomePlace());
         if (itHome == homeMap.end())
             continue;
-            
 
         ld distance = 0;
         std::vector<std::shared_ptr<City>> path;
-        auto [enemy, canDestroy] = control.findBestPairFor(itHome->second, bird, path, distance);
+        auto [enemy, canDestroy] = control.findBestPairFor(itHome->second, bird, path, distance); // find best target city
+
         std::cout << "Bird : " << bird.getName() << "\nPath: ";
-        if (canDestroy != 1)
+
+        if (canDestroy != 1) // bird cannot reach target
             control.deadBird(bird, distance);
         else
         {
@@ -71,22 +72,20 @@ void Scenario4::printOutput(Controler &control, std::vector<std::shared_ptr<City
                 std::cout << city->getCityName() << " ";
             }
         }
-        std::cout << "\n---------------------------------------\n";
-        std::cout << "\n";
-        
+        std::cout << "\n---------------------------------------\n\n";
     }
 
     std::cout << "\n---------------------------------------\n";
 
-    control.attack();
+    control.attack(); // execute attacks by enemies
 
     auto aliveBirds = control.getBirds();
-    for (auto &bird : aliveBirds)
+    for (auto &bird : aliveBirds) // sum total damage caused by surviving birds
     {
         totalDamage += bird.getDemolition();
     }
 
-    std::cout << "---------------------------------------";
-    std::cout << "\nTotal Damage: " << totalDamage << "\n";
+    std::cout << "---------------------------------------\n";
+    std::cout << "Total Damage: " << totalDamage << "\n";
     std::cout << "---------------------------------------\n";
 }
