@@ -407,44 +407,34 @@ std::pair<std::string, bool> Controler::findBestPairFor(std::shared_ptr<City> & 
     std::shared_ptr<City> bestGoal = nullptr;
     std::vector<std::shared_ptr<City>> bestPath;
     ll bestDis;
-    bool temp;
+    bool flag;
 
     for (auto & goal : goalCities) 
     {
         ld cost;
-        temp = aStar(start->getCityName(), goal->getCityName(), bird, path, distance, cost); 
-        if (!path.empty())
-        {
-            int spies = countSpiesOnPath(path);
+        flag = aStar(start->getCityName(), goal->getCityName(), bird, path, distance, cost); 
+        if (path.empty()) continue;
+        
+        int spies = countSpiesOnPath(path);
 
-            if (spies <= minSpies) 
+        if (spies <= minSpies) 
+        {
+            if (cost < minCost) 
             {
-                if (cost < minCost) 
-                {
-                    minSpies = spies;
-                    bestGoal = goal;
-                    bestPath = path;
-                    bestDis = distance;
-                }
-            } 
+                minSpies = spies;
+                bestGoal = goal;
+                bestPath = path;
+                bestDis = distance;
+            }
         } 
     }
 
+    // after processing all paths, update the optimal path and its distance
     path = bestPath;
     distance = bestDis;
+
     if (bestGoal == nullptr)
         return {"", false};
 
-    return {bestGoal->getCityName(), temp};
+    return {bestGoal->getCityName(), flag};
 }
-
-
-
-
-
-
-
-
-
-
-

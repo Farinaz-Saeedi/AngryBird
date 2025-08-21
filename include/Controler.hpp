@@ -47,7 +47,7 @@ class Controler
         void setReachBird(std::string enemyName, Bird &bird , std::vector<std::shared_ptr<City>> & path);// add a bird that reached a specific enemy and store its path
         void attack(); // shooting down birds and clearing the list of reached birds for each enemy city
         void delBird(Bird & bird); // remove the specified bird from the birds vector
-        void deadBird(Bird & bird, ll & totalDistanc);
+        void deadBird(Bird & bird, ll & totalDistanc); // removes a bird from the active birds list if it dies during the path
         bool aStar(std::string start , std::string goal, Bird myBird, std::vector<std::shared_ptr<City>> & path, ll & totalDistance, ld & cost);
         bool canBirdReach(Bird & bird , ld distance); // check if the bird can reach a target given its maximum range (out-of-control distance)
         bool canDestroy(Bird & bird , ld distance); // check if the bird can destroy a target at a given distance (total distance)
@@ -57,13 +57,14 @@ class Controler
         std::shared_ptr<Enemy> getWeakEnemy(); // returns the weakest enemy city (with the lowest defense level)
         std::vector<Bird> & getBirds();
         std::vector<std::shared_ptr<City>> getEnemies();
+        // finds the best target city for a given bird starting from 'start'
         std::pair<std::string, bool> findBestPairFor(std::shared_ptr<City> & start , Bird & bird, std::vector<std::shared_ptr<City>> & path, ll & distance);
 
     private:
         std::vector<Bird> birds;
         std::vector<std::shared_ptr<City>> cities;
-        std::vector<std::shared_ptr<City>> goalCities;
-        std::vector<std::shared_ptr<City>> startCities;
+        std::vector<std::shared_ptr<City>> goalCities; // enemy cities
+        std::vector<std::shared_ptr<City>> startCities; // home cities
         ll numberOfCities;
 };
 
