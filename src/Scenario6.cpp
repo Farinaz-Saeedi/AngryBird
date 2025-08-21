@@ -41,17 +41,13 @@ void Scenario6::printOutput(Controler & control , std::vector<std::shared_ptr<Ci
     std::vector<std::shared_ptr<City>> enemies = control.getEnemies();
     giveBirdsID();
 
+    // create a map for homes using city names as key for quick access
     std::unordered_map<std::string, std::shared_ptr<City>> homeMap;
     for (auto &home : homes)
-        homeMap[home->getCityName()] = home;
-
-    std::unordered_map<std::string, std::shared_ptr<City>> enemyMap;
-    for (auto &enemy : enemies)
-        enemyMap[enemy->getCityName()] = enemy;
-        
+        homeMap[home->getCityName()] = home;  
             
-    bool nightPass = true;
-    int night = 1 ;
+    bool nightPass = true; // to manage the nights
+    int night = 1 ; // number of night
     while(!birds.empty())
     {
         std::cout << "Night " << night << " begins ...\n\n";
@@ -59,6 +55,7 @@ void Scenario6::printOutput(Controler & control , std::vector<std::shared_ptr<Ci
         firstOptions.clear();
         firstOptions.reserve(birds.size());
 
+        // create a map for options using enemy name as key for quick access        
         std::unordered_map<std::string, std::vector<OptionScen6>> enemyToSecondOptions;
         
         for (auto & bird : birds)
@@ -74,31 +71,33 @@ void Scenario6::printOutput(Controler & control , std::vector<std::shared_ptr<Ci
             ld cost;
             std::vector<std::shared_ptr<City>> path;
 
-            for (auto &target : control.getEnemies())
+            for (auto & target : control.getEnemies())
             {
                 bool can = control.aStar(itHome->second->getCityName(), target->getCityName(), bird, path, distance, cost);
-                if (path.empty() || !can)
+                if (path.empty() || !can) // check that if bird can reach the goal
                     continue;
 
-                OptionScen6 opt{bird.getID(), itHome->second, target, path, bird.getDemolition(), distance, 0.0};
+                OptionScen6 opt{bird.getID(), itHome->second, target, path, bird.getDemolition()};
                 bird.setThePath(path);
                 if (control.isDetected(bird))
                 {
+                    // if the bird can be shot down by the enemy
                     enemyToSecondOptions[target->getCityName()].push_back(opt);
                     continue;
                 } else
                 {
-                    firstOptions.push_back(opt);
+                    firstOptions.push_back(opt); // the options which are generated 
                 }
             }
         }
 
+        // sort options based on the demolition
         std::sort(firstOptions.begin() , firstOptions.end() , [](OptionScen6 & a , OptionScen6 & b)
         {
             return a.damage < b.damage ;
         });
 
-        std::unordered_set<int> usedBirds;
+        std::unordered_set<int> usedBirds;  // to not use a bird twice
         usedBirds.clear();
         birdsToRemove.clear();
 
@@ -123,6 +122,7 @@ void Scenario6::printOutput(Controler & control , std::vector<std::shared_ptr<Ci
             int capacity = weakEnemy->getDefenseLevel();
             auto opts = enemyToSecondOptions[weakEnemy->getCityName()];
 
+            // sort options based on the demolition
             std::sort(opts.begin() , opts.end() , [](auto &a , auto &b) 
             {
                 return a.damage > b.damage;
@@ -130,7 +130,7 @@ void Scenario6::printOutput(Controler & control , std::vector<std::shared_ptr<Ci
 
             for (int i = 0 ; i < capacity + 1 ; ++i)
             {
-                if ((opts.size()) < capacity + 1)
+                if ((opts.size()) < capacity + 1) // when the birds are not enough
                 {
                     nightPass = false;
                     birds.clear();
@@ -154,8 +154,9 @@ void Scenario6::printOutput(Controler & control , std::vector<std::shared_ptr<Ci
             }  
         }
             
-        control.attack();
-            
+        control.attack(); // execute attacks based on assignments
+
+        // Sorting bird indices in reverse order to prevent deletion errors
         std::sort(birdsToRemove.rbegin(), birdsToRemove.rend());
         for (int idx : birdsToRemove)
         {
@@ -168,7 +169,7 @@ void Scenario6::printOutput(Controler & control , std::vector<std::shared_ptr<Ci
         std::cout << "\n--------------------------------\n";
     }
 
-    std::vector<Bird> aliveBirds = control.getBirds();
+    std::vector<Bird> aliveBirds = control.getBirds(); // get surviving birds after attack
     for (int i = 0 ; i < aliveBirds.size() ; ++i)
     {
         totalDamage += aliveBirds[i].getDemolition();
@@ -181,10 +182,11 @@ void Scenario6::giveBirdsID()
 {
     for (int i = 0 ; i < birds.size() ; ++i)
     {
+        // set their first indices as ID
         birds[i].setID(i);
     }
 }
-int Scenario6::getBirdIndex(int id)
+int Scenario6::getBirdIndex(int id) 
 {
     for (int i = 0 ; i < birds.size() ; ++i)
     {
