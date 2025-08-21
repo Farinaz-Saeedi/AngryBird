@@ -30,14 +30,14 @@ void Scenario5::readInputs(std::vector<Bird> &birds, std::vector<std::shared_ptr
             Bird temp = readBird(name, birds);
 
             input >> name;
-            birds[birds.size() - 1].setHomePlace(name);
+            birds[birds.size() - 1].setHomePlace(name); // set the slingshot of bird 
 
             for (int j = 0; j < homes.size(); j++)
             {
                 auto home = std::dynamic_pointer_cast<Home>(homes[j]);
                 if (home->getCityName() == name)
                 {
-                    home->push(temp);
+                    home->push(temp); // push bird to a vector for each home
                     break;
                 }
             }
@@ -51,25 +51,23 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
     std::vector<Bird> birds = control.getBirds();
     std::vector<std::shared_ptr<City>> enemies = control.getEnemies();
 
-    std::unordered_map<std::string, std::shared_ptr<City>> homeMap;
+    // create a map for homes using city names as key for quick access
+    std::unordered_map<std::string, std::shared_ptr<City>> homeMap; 
     for (auto &home : homes)
         homeMap[home->getCityName()] = home;
-
-    std::unordered_map<std::string, std::shared_ptr<City>> enemyMap;
-    for (auto &enemy : enemies)
-        enemyMap[enemy->getCityName()] = enemy;
 
     bool nightPass = true;
     for (int night = 1; night <= getNumberOfNights(); ++night)
     {
         std::cout << "\nNight " << night << " begins ...\n\n";
 
-        control.newSpies(night);
+        control.newSpies(night); // read new spies of each night from file 
 
         firstOptions.clear();
         allOptions.clear();
         firstOptions.reserve(birds.size());
 
+        // create a map for options using enemy name as key for quick access   
         std::unordered_map<std::string, std::vector<OptionScen5>> enemyToSecondOptions;
 
         for (int b = 0; b < birds.size(); ++b)
@@ -89,14 +87,15 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
             for (auto &target : control.getEnemies())
             {
                 bool can = control.aStar(itHome->second->getCityName(), target->getCityName(), birds[b], path, distance, cost);
-                if (path.empty() || !can)
+                if (path.empty() || !can) // check that if bird can reach the goal
                     continue;
                 
-                OptionScen5 opt{b, birds[b].getDegree(), itHome->second, target, path, birds[b].getDemolition(), distance, 0.0};
-                birds[b].setThePath(path);
-                allOptions.push_back(opt);
+                OptionScen5 opt{b, birds[b].getDegree(), itHome->second, target, path, birds[b].getDemolition()};
+                birds[b].setThePath(path); 
+                allOptions.push_back(opt); // push all possible options
                 if (control.isDetected(birds[b]))
                 {
+                    // if the bird can be shot down by the enemy
                     enemyToSecondOptions[target->getCityName()].push_back(opt);
                     continue;
                 } else
@@ -104,13 +103,14 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
             }
         }
 
+        // sort first options based on number of spies and damage
         std::sort(firstOptions.begin() , firstOptions.end() , [](OptionScen5 & a , OptionScen5 & b)
         {
             if ( a.spyNum != b.spyNum ) return a.spyNum > b.spyNum ;
             return a.damage < b.damage ;
         });
 
-        std::unordered_set<int> usedBirds;
+        std::unordered_set<int> usedBirds; // to not use a bird twice
         usedBirds.clear();
         birdsToRemove.clear();
 
@@ -126,23 +126,24 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
             std::cout << "\n--------------------------------\n";
             birdsToRemove.push_back(opt.birdIdx);
         } 
-        else 
+        else // when the first options vector is empty
         {
             std::shared_ptr<Enemy> weakEnemy = control.getWeakEnemy();
             int capacity = weakEnemy->getDefenseLevel();
             auto opts = enemyToSecondOptions[weakEnemy->getCityName()];
 
+            // sort options based on the demolition
             std::sort(opts.begin() , opts.end() , [](auto &a , auto &b) 
             {
                 return a.damage > b.damage;
-            });
+            }); 
 
             for (int i = 0 ; i < capacity + 1 ; ++i)
             {
                 if (usedBirds.count(opts[i].birdIdx)) continue;
                 if ((opts.size()) < capacity + 1)
                 {
-                    nightPass = false;
+                    nightPass = false; // to manage the night 
                     birds.clear();
                     break;
                 }
@@ -160,9 +161,9 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
             }
         }
         
-        if (night == getNumberOfNights())
+        if (night == getNumberOfNights()) // for the last night 
         {
-            for (auto & opt : allOptions)
+            for (auto & opt : allOptions) // use all options to increase destruction
             {
                 if (usedBirds.count(opt.birdIdx)) continue;
                 
@@ -180,8 +181,9 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
 
         if (!nightPass) std::cout << "No launches possible this night .\n";
 
-        control.attack();
+        control.attack(); // execute attacks based on assignments
 
+        // Sorting bird indices in reverse order to prevent deletion errors
         std::sort(birdsToRemove.rbegin(), birdsToRemove.rend());
         for (int idx : birdsToRemove)
         {
@@ -189,7 +191,7 @@ void Scenario5::printOutput(Controler &control, std::vector<std::shared_ptr<City
         }
     }
 
-    std::vector<Bird> aliveBirds = control.getBirds();
+    auto aliveBirds = control.getBirds(); // get surviving birds after attack
     for (int i = 0 ; i < aliveBirds.size() ; ++i)
     {
         totalDamage += aliveBirds[i].getDemolition();

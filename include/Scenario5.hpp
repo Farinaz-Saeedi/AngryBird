@@ -4,19 +4,17 @@
 #include "Scenario.hpp"
 #include "Controler.hpp"
 
-struct OptionScen5
+struct OptionScen5 // store a flight option for the bird
 {
     int birdIdx;
-    int spyNum;
-    std::shared_ptr<City> home;
-    std::shared_ptr<City> target;
-    std::vector<std::shared_ptr<City>> path;
-    ll damage;
-    ld distance = 0.0;
-    double survProb;
+    int spyNum; // number of spies in the path
+    std::shared_ptr<City> home; // pointer to the bird's home city
+    std::shared_ptr<City> target; // Pointer to the target city (enemy)
+    std::vector<std::shared_ptr<City>> path; // The path from home to target
+    ll damage; 
 
-    OptionScen5(int b, int num, std::shared_ptr<City> h, std::shared_ptr<City> t,std::vector<std::shared_ptr<City>> p, ll dmg, ld dis, double prob)
-        : birdIdx(b), spyNum(num), home(h), target(t), path(p), damage(dmg), distance(dis), survProb(prob) {}
+    OptionScen5(int b, int num, std::shared_ptr<City> h, std::shared_ptr<City> t,std::vector<std::shared_ptr<City>> p, ll dmg)
+        : birdIdx(b), spyNum(num), home(h), target(t), path(p), damage(dmg) {}
 };
 
 class Scenario5 : public Scenario
@@ -29,9 +27,9 @@ public:
 
 private:
     int numberOfNights;
-    std::vector<OptionScen5> firstOptions;
-    std::vector<OptionScen5> allOptions;
-    std::vector<int> birdsToRemove;
+    std::vector<OptionScen5> firstOptions; // birds which definitely reach their target
+    std::vector<OptionScen5> allOptions; // all possible options
+    std::vector<int> birdsToRemove; // keep the indices of removed birds
 };
 
 #endif
