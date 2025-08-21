@@ -39,7 +39,6 @@ class Controler
         ll getNumberOfCities();
         ll calDistance(City a , City b); // calculating the distance between two cities
         ld heuristic(City & a , City & b); // calculate the Euclidean distance between two cities (used as heuristic in A*)
-        ld totoalDamage(std::vector<std::shared_ptr<City>> & path , Bird & bird); // calculate the total damage dealt by a bird 
         void readCities(); // reads city data from Cities.txt file and creates City, Enemy, and Home objects
         void setNumberOfCities(ll numberOfCities);
         void run();

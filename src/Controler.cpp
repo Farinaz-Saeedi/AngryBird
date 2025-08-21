@@ -17,26 +17,6 @@ ld Controler::heuristic(City &a, City &b)
 {
     return sqrt(pow((a.getX() - b.getX()), 2) + pow((a.getY() - b.getY()), 2));
 }
-ld Controler::totoalDamage(std::vector<std::shared_ptr<City>> & path, Bird & bird)
-{
-    ld damage = 0.0;
-
-    std::unordered_set<std::string> enemyCityNames;
-    for (auto &goalCity : goalCities)
-    {
-        enemyCityNames.insert(goalCity->getCityName()); // for quick searching
-    }
-
-    for (auto &city : path)
-    {
-        if (enemyCityNames.count(city->getCityName()))
-        {
-            damage += bird.getDemolition();
-        }
-    }
-
-    return damage;
-}
 bool Controler::aStar(std::string start, std::string goal, Bird myBird, std::vector<std::shared_ptr<City>> & path, ll & totalDistance, ld & cost)
 {
     ll n = cities.size();
