@@ -40,17 +40,17 @@ void Scenario7::readInputs(std::vector<Bird> &birds, std::vector<std::shared_ptr
             input >> temp;
             Bird tempBird = readBird(name, birds);
 
-            lst.push_back({name, temp});
+            lst.push_back({name, temp}); // Store cost
 
             input >> name;
-            birds[birds.size() - 1].setHomePlace(name);
+            birds[birds.size() - 1].setHomePlace(name); // set the slingshot of bird 
 
             for (int j = 0; j < homes.size(); j++)
             {
                 auto home = std::dynamic_pointer_cast<Home>(homes[j]);
                 if (home->getCityName() == name)
                 {
-                    home->push(tempBird);
+                    home->push(tempBird); // Push bird to the corresponding home
                     break;
                 }
             }
@@ -68,6 +68,7 @@ void Scenario7::printOutput(Controler &control, std::vector<std::shared_ptr<City
     birds = control.getBirds();
     giveBirdsID();
 
+    // create a map for homes using city names as key for quick access
     std::unordered_map<std::string, std::shared_ptr<City>> homeMap;
     for (auto &home : homes)
         homeMap[home->getCityName()] = home;
@@ -79,7 +80,8 @@ void Scenario7::printOutput(Controler &control, std::vector<std::shared_ptr<City
         std::cout << "\nNight " << night << " begins...\n\n";
         options.clear();
 
-        for (auto &bird : birds)
+        // Generate all attack options for this night
+        for (auto & bird : birds)
         {
             auto it = homeMap.find(bird.getHomePlace());
             if (it == homeMap.end())
@@ -95,13 +97,11 @@ void Scenario7::printOutput(Controler &control, std::vector<std::shared_ptr<City
                 ld cost = getBirdCost(bird.getName());
                 ld pathCost;
 
-                bool can = control.aStar(myHome->getCityName(), enemy->getCityName(),
-                                         bird, path, distance, pathCost);
+                bool can = control.aStar(myHome->getCityName(), enemy->getCityName(), bird, path, distance, pathCost);
                 if (!can || path.empty())
                     continue;
 
-                options.push_back({bird.getID(), myHome, enemy, path,
-                                   bird.getDemolition(), cost, distance, bird.getDegree()});
+                options.push_back({bird.getID(), myHome, enemy, path, bird.getDemolition(), cost, distance, bird.getDegree()});
             }
         }
 
@@ -111,17 +111,20 @@ void Scenario7::printOutput(Controler &control, std::vector<std::shared_ptr<City
             continue;
         }
 
+        // Calculate damage to target for tonight
         ld remainingDamage = getDamage() - totalDamage;
         ld damagePerNight = std::ceil((ld)getDamage() / nights);
         ld targetTonight = (night == nights) ? remainingDamage : std::min(damagePerNight, remainingDamage);
 
+         // Select birds using knapsack approach (maximize damage / minimize cost)
         auto chosen = knapsackMinCost(options, targetTonight, maxBirdsPerNight);
 
         ld nightDamage = 0;
         ll nightCost = 0;
         std::vector<int> birdsToRemove;
 
-        for (auto &opt : chosen)
+        // Execute chosen attacks
+        for (auto & opt : chosen)
         {
             int idx = getBirdIndex(opt.birdId);
             if (idx == -1)
@@ -159,15 +162,16 @@ void Scenario7::printOutput(Controler &control, std::vector<std::shared_ptr<City
             break;
         }
 
+        // Sorting bird indices in reverse order to prevent deletion errors
         std::sort(birdsToRemove.rbegin(), birdsToRemove.rend());
         for (int idx : birdsToRemove)
             birds.erase(birds.begin() + idx);
 
-        control.attack();
+        control.attack(); // execute attacks based on assignments
     }
 
-    std::cout << "\n=== Total Damage: " << totalDamage
-              << " | Total Cost: " << totalCost << " ===\n";
+    std::cout << "\n--- Total Damage: " << totalDamage
+              << " | Total Cost: " << totalCost << " ---\n";
 }
 
 std::vector<OptionScen7> Scenario7::knapsackMinCost(const std::vector<OptionScen7> &options, ld targetDamage, int maxBirds)
@@ -178,11 +182,12 @@ std::vector<OptionScen7> Scenario7::knapsackMinCost(const std::vector<OptionScen
     ld currentDamage = 0;
     int birdsUsed = 0;
 
+    // Sort by damage-to-cost ratio descending
     std::vector<OptionScen7> sorted = options;
     std::sort(sorted.begin(), sorted.end(), [](const OptionScen7 &a, const OptionScen7 &b)
               { return (a.damage / a.cost) > (b.damage / b.cost); });
 
-    for (auto &opt : sorted)
+    for (auto & opt : sorted)
     {
         if (birdsUsed >= maxBirds)
             break;
