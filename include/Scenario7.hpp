@@ -18,8 +18,11 @@ struct OptionScen7
     std::vector<std::shared_ptr<City>> path; // The path from home to target
     ll damage;
     ld cost;
-    ld distance;
     int radarLevel;
+    bool isDetect;
+
+    OptionScen7(int id, std::shared_ptr<City> & h, std::shared_ptr<City> & t, std::vector<std::shared_ptr<City>> & p, ll dmg, ld c, int lvl, bool is)
+    : birdId(id), home(h), target(t), path(p), damage(dmg), cost(c), radarLevel(lvl), isDetect(is){}
 };
 
 class Scenario7 : public Scenario
@@ -28,13 +31,14 @@ public:
     void readInputs(std::vector<Bird> &birds, std::vector<std::shared_ptr<City>> &homes) override;
     void printOutput(Controler &control, std::vector<std::shared_ptr<City>> &homes) override;
     void setNumberOfNights(int numberOfNights);
-    int getNumberOfNights();
-    ld getDamage();
     void setDamage(ld damage);
     void giveBirdsID();  // Assign unique IDs to birds for safe removal
+    int getNumberOfNights();
     int getBirdIndex(int id);
+    ld getDamage();
+    ld getBirdCost(const std::string &birdName); // Retrieve the cost of a specific bird
 
-    std::vector<OptionScen7> knapsackMinCost(const std::vector<OptionScen7> &options, ld targetDamage, int maxBirds);
+    std::vector<OptionScen7> knapsackMinCost(const std::vector<OptionScen7> &options, ld targetDamage, ld & damage);
     // Knapsack function to select birds for minimum cost while reaching target damage
 
 private:
@@ -42,7 +46,7 @@ private:
     ld damage;
     std::vector<std::pair<std::string, ld>> lst; // Stores bird cost data
     std::vector<OptionScen7> options; // List of calculated options for the night
-    ld getBirdCost(const std::string &birdName); // Retrieve the cost of a specific bird
+    std::vector<OptionScen7> secondOptions; // List of bad options for the night
     std::vector<Bird> birds;
 };
 
