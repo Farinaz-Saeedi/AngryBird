@@ -107,22 +107,23 @@ void Scenario7::printOutput(Controler &control, std::vector<std::shared_ptr<City
             if (!control.isDetected(bird))
             options.push_back(OptionScen7{bird.getID(), it->second, enemyMap[pair.first], path, bird.getDemolition(), cost, bird.getDegree(), false});   
             else
-            secondOptions.push_back(OptionScen7{bird.getID(), it->second, enemyMap[pair.first], path, bird.getDemolition(), cost, bird.getDegree(), true});
+            options.push_back(OptionScen7{bird.getID(), it->second, enemyMap[pair.first], path, bird.getDemolition(), cost, bird.getDegree(), true});
         }
 
         if (options.empty())
         {
-            options = secondOptions;
-        } 
-        if (secondOptions.empty() && options.empty())
-        {
             std::cout << "No launches possible this night .\n";
             continue;
-        }
+        } 
 
-         // Select birds using knapsack approach (maximize damage / minimize cost)
-         ld nightDamage = 0;
-        auto chosen = knapsackMinCost(options, damage, nightDamage);
+        // Calculate damage to target for tonight
+        ld remainingDamage = getDamage() - totalDamage;
+        ld damagePerNight = std::ceil((ld)getDamage() / nights);
+        ld targetTonight = (night == nights) ? remainingDamage : std::min(damagePerNight, remainingDamage);
+
+        // Select birds using knapsack approach (maximize damage / minimize cost)
+        ld nightDamage = 0;
+        auto chosen = knapsackMinCost(options, targetTonight, nightDamage);
 
         ll nightCost = 0;
         std::vector<int> birdsToRemove;
@@ -160,11 +161,6 @@ void Scenario7::printOutput(Controler &control, std::vector<std::shared_ptr<City
                   << " | Night cost: " << nightCost
                   << " | Total damage so far: " << totalDamage << "\n";
 
-        if (totalDamage >= getDamage())
-        {
-            std::cout << "\n Enemy surrendered :)";
-            break;
-        }
 
         // Sorting bird indices in reverse order to prevent deletion errors
         std::sort(birdsToRemove.rbegin(), birdsToRemove.rend());
@@ -172,6 +168,12 @@ void Scenario7::printOutput(Controler &control, std::vector<std::shared_ptr<City
             birds.erase(birds.begin() + idx);
 
         control.attack(); // execute attacks based on assignments
+
+        if (totalDamage >= getDamage())
+        {
+            std::cout << "\n Enemy surrendered :)";
+            break;
+        }
     }
 
     std::cout << "\n--- Total Damage: " << totalDamage << " | Total Cost: " << totalCost << " ---\n";
@@ -201,15 +203,12 @@ std::vector<OptionScen7> Scenario7::knapsackMinCost(const std::vector<OptionScen
         chosen.push_back(opt);
         if (!opt.isDetect)
         {
-            std::cout << "plus\n";
             currentDamage += opt.damage;
         }
         else 
         {
-            std::cout << "second\n";
             if (numberOfKills >= lvl)
                 currentDamage += opt.damage;
-            std::cout << numberOfKills << " = num \n";
             numberOfKills++;
         }
         birdsUsed++;
