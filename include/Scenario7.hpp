@@ -27,27 +27,27 @@ struct OptionScen7
 
 class Scenario7 : public Scenario
 {
-public:
-    void readInputs(std::vector<Bird> &birds, std::vector<std::shared_ptr<City>> &homes) override;
-    void printOutput(Controler &control, std::vector<std::shared_ptr<City>> &homes) override;
-    void setNumberOfNights(int numberOfNights);
-    void setDamage(ld damage);
-    void giveBirdsID();  // Assign unique IDs to birds for safe removal
-    int getNumberOfNights();
-    int getBirdIndex(int id);
-    ld getDamage();
-    ld getBirdCost(const std::string &birdName); // Retrieve the cost of a specific bird
+    public:
+        void readInputs(std::vector<Bird> &birds, std::vector<std::shared_ptr<City>> &homes) override;
+        void printOutput(Controler &control, std::vector<std::shared_ptr<City>> &homes) override;
+        void setNumberOfNights(int numberOfNights);
+        void setDamage(ld damage);
+        void giveBirdsID();  // Assign unique IDs to birds for safe removal
+        int getNumberOfNights();
+        int getBirdIndex(int id);
+        ld getDamage();
+        ld getBirdCost(const std::string &birdName); // Retrieve the cost of a specific bird
 
-    std::vector<OptionScen7> knapsackMinCost(const std::vector<OptionScen7> &options, ld targetDamage, ld & damage);
-    // Knapsack function to select birds for minimum cost while reaching target damage
+        std::vector<OptionScen7> knapsackMinCost(const std::vector<OptionScen7> &options, ld targetDamage, ld & damage);
+        // Knapsack function to select birds for minimum cost while reaching target damage
 
-private:
-    int numberOfNights;
-    ld damage;
-    std::vector<std::pair<std::string, ld>> lst; // Stores bird cost data
-    std::vector<OptionScen7> options; // List of calculated options for the night
-    std::vector<OptionScen7> secondOptions; // List of bad options for the night
-    std::vector<Bird> birds;
+    private:
+        int numberOfNights;
+        ld damage;
+        std::vector<std::pair<std::string, ld>> lst; // Stores bird cost data
+        std::vector<OptionScen7> options; // List of calculated options for the night
+        std::vector<OptionScen7> secondOptions; // List of bad options for the night
+        std::vector<Bird> birds;
 };
 
 #endif
